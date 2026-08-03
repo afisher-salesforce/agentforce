@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agentforce Workshop | Siemens DISW IT Leadership</title>
+  <style>
+    :root {
+      --bg: #050b11;
+      --panel: #0c1722;
+      --panel-soft: #112131;
+      --text: #e9f4ff;
+      --muted: #9fb2c7;
+      --accent: #00b7b7;
+      --accent-soft: rgba(0, 183, 183, 0.12);
+      --border: #203447;
+      --max: 1180px;
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      background: radial-gradient(circle at top right, #14324a 0%, var(--bg) 45%);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      min-height: 100vh;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: rgba(8, 18, 30, 0.96);
+      border-right: 1px solid var(--border);
+      padding: 24px 18px;
+    }
+
+    .brand {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(155deg, var(--panel), #09131c);
+      padding: 16px;
+      margin-bottom: 18px;
+    }
+
+    .brand h1 {
+      margin: 0 0 8px;
+      font-size: 1.12rem;
+      line-height: 1.25;
+      letter-spacing: 0.01em;
+    }
+
+    .brand p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.87rem;
+    }
+
+    .nav-group { margin-bottom: 18px; }
+    .nav-title {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin: 0 0 8px;
+    }
+
+    .nav-link {
+      display: block;
+      margin: 4px 0;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      color: #d2e0ef;
+      font-size: 0.94rem;
+    }
+
+    .nav-link:hover {
+      background: var(--accent-soft);
+      border-color: rgba(0, 183, 183, 0.3);
+      color: #f1fbff;
+    }
+
+    .main {
+      padding: 26px 28px 42px;
+      width: 100%;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    section {
+      background: linear-gradient(160deg, rgba(16, 30, 43, 0.95), rgba(10, 20, 31, 0.95));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 380px;
+      display: grid;
+      align-items: end;
+      background-image: url("assets/hero-disw.png");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.12), rgba(5,11,17,0.8) 65%, var(--bg) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 34px;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 183, 183, 0.45);
+      background: rgba(0, 183, 183, 0.17);
+      color: #9ff3f3;
+      font-size: 0.76rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    h2 {
+      margin: 12px 0 8px;
+      font-size: 1.9rem;
+      line-height: 1.2;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 1.25rem;
+      color: #d8eaff;
+    }
+
+    .subhead {
+      color: #c6d7ea;
+      max-width: 820px;
+      margin: 0;
+    }
+
+    .pad { padding: 30px 34px; }
+    .muted { color: var(--muted); }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: rgba(17, 33, 49, 0.68);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .card p { margin: 0; color: #bdd0e2; }
+    ul { margin: 0; padding-left: 18px; }
+    li { margin-bottom: 6px; color: #c1d3e5; }
+
+    .topic {
+      border-top: 1px solid var(--border);
+      padding: 22px 34px;
+    }
+
+    .topic p { margin: 0 0 10px; color: #bdd0e2; }
+    .topic ul { margin-bottom: 0; }
+
+    footer {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.84rem;
+      padding: 8px 4px 14px;
+    }
+
+    @media (max-width: 980px) {
+      .shell { grid-template-columns: 1fr; }
+      .nav {
+        position: static;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .grid-2 { grid-template-columns: 1fr; }
+      .main { padding: 20px 14px 32px; }
+      .pad, .hero-content, .topic { padding: 22px 18px; }
+      h2 { font-size: 1.58rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="nav">
+      <div class="brand">
+        <h1>Agentforce Workshop</h1>
+        <p>Siemens DISW IT Leadership Executive Discussion</p>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-title">Briefing Pages</p>
+        <a class="nav-link" href="#executive-summary">Executive Summary</a>
+        <a class="nav-link" href="#external-research">External Research</a>
+        <a class="nav-link" href="#embedded-ai">Embedded AI</a>
+        <a class="nav-link" href="#agentforce">Agentforce</a>
+        <a class="nav-link" href="#data-360">Data 360</a>
+        <a class="nav-link" href="#headless-360">Headless 360</a>
+        <a class="nav-link" href="#observability">Observability</a>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-title">Discussion Goal</p>
+        <p class="muted" style="font-size:0.86rem;margin:0;">
+          Align DISW IT leadership on practical architecture decisions for
+          scaling trusted, governed, agentic workflows across support,
+          revenue, and digital experience surfaces.
+        </p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="container">
+        <section id="executive-summary">
+          <div class="hero">
+            <div class="hero-content">
+              <span class="pill">Executive Enablement</span>
+              <h2>Agentic AI for Siemens DISW: From Strategy to Scaled Execution</h2>
+              <p class="subhead">
+                This workshop is designed for Siemens Digital Industries Software IT leadership to
+                evaluate how Embedded AI, Agentforce, Data 360, Headless 360, and Observability
+                combine into one governed architecture that accelerates idea-to-production outcomes.
+              </p>
+            </div>
+          </div>
+          <div class="pad">
+            <div class="grid-2">
+              <div class="card">
+                <h3>Executive Purpose</h3>
+                <p>
+                  Establish a shared operating model for AI adoption that keeps IT in control while
+                  delivering measurable business value faster than custom-only approaches.
+                </p>
+              </div>
+              <div class="card">
+                <h3>Session Outcome</h3>
+                <p>
+                  A practical enablement path for DISW teams to move from concept, to architecture,
+                  to deployment and ongoing governance using Salesforce as the trusted AI execution layer.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="external-research">
+          <div class="pad">
+            <span class="pill">External Research</span>
+            <h2>Siemens DISW Context and Alignment Signals</h2>
+            <p class="subhead">
+              Public and account-level research indicates DISW is balancing SaaS transition, post-M&amp;A
+              integration, and AI-led growth targets—creating strong demand for governed automation and
+              unified data context.
+            </p>
+          </div>
+          <div class="topic">
+            <h3>Business and Transformation Signals</h3>
+            <ul>
+              <li>DISW is transitioning from perpetual licensing toward SaaS/subscription under Xcelerator.</li>
+              <li>Recent Altair and Dotmatics integrations increase urgency for customer data unification.</li>
+              <li>Digital business growth and AI investment are high, but margin and complexity pressures remain.</li>
+              <li>IT leadership is focused on platform governance, rationalization, and faster value realization.</li>
+            </ul>
+          </div>
+          <div class="topic">
+            <h3>Implications for the Session</h3>
+            <ul>
+              <li>Anchor the conversation in architecture decisions, not isolated feature demonstrations.</li>
+              <li>Show how governed AI execution reduces long-term maintenance burden and operational risk.</li>
+              <li>Emphasize measurable outcomes: resolution rates, cycle-time reduction, and workload deflection.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="embedded-ai">
+          <div class="pad">
+            <span class="pill">Domain 01</span>
+            <h2>Embedded AI</h2>
+            <p class="subhead">
+              Embedded AI gives DISW teams an immediate productivity layer within existing workflows, while
+              preserving governance controls and human oversight.
+            </p>
+          </div>
+          <div class="topic">
+            <h3>Executive Talking Points</h3>
+            <ul>
+              <li>Shift teams from low-value manual orchestration to higher-order design and decision work.</li>
+              <li>Use embedded assistants to standardize responses, recommendations, and operational playbooks.</li>
+              <li>Position IT as an enablement center that governs models, prompts, and policy guardrails.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="agentforce">
+          <div class="pad">
+            <span class="pill">Domain 02</span>
+            <h2>Agentforce</h2>
+            <p class="subhead">
+              Agentforce turns natural language intent into deployable agents with structured topics, actions,
+              and guardrails for enterprise-grade execution.
+            </p>
+          </div>
+          <div class="topic">
+            <h3>Executive Talking Points</h3>
+            <ul>
+              <li>Move from “AI pilot” to production workflows with repeatable deployment patterns.</li>
+              <li>Balance build vs buy using governed platform primitives instead of fragmented custom stacks.</li>
+              <li>Create agent portfolios mapped to DISW priorities: support, entitlement, quoting, and partner operations.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="data-360">
+          <div class="pad">
+            <span class="pill">Domain 03</span>
+            <h2>Data 360</h2>
+            <p class="subhead">
+              Data 360 provides the unified context fabric for grounded AI decisions across Salesforce and external
+              systems, including SAP and product telemetry sources.
+            </p>
+          </div>
+          <div class="topic">
+            <h3>Executive Talking Points</h3>
+            <ul>
+              <li>Ground agent outputs in current customer, entitlement, and adoption context—not disconnected data snapshots.</li>
+              <li>Support zero-copy patterns to avoid unnecessary replication and new data-silo creation.</li>
+              <li>Improve trust and actionability by unifying context before inference and automation decisions.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="headless-360">
+          <div class="pad">
+            <span class="pill">Domain 04</span>
+            <h2>Headless 360</h2>
+            <p class="subhead">
+              Headless 360 enables Salesforce capabilities on non-Salesforce digital surfaces, turning portals and
+              apps into governed AI engagement channels without duplicative backend sprawl.
+            </p>
+          </div>
+          <div class="topic">
+            <h3>Executive Talking Points</h3>
+            <ul>
+              <li>Deliver agentic experiences in DISW-preferred interfaces while retaining platform trust controls.</li>
+              <li>Reduce integration and maintenance overhead from custom middleware-heavy patterns.</li>
+              <li>Support decoupled front-end innovation while centralizing execution, data policy, and governance.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="observability">
+          <div class="pad">
+            <span class="pill">Domain 05</span>
+            <h2>Observability</h2>
+            <p class="subhead">
+              Observability is the control layer that makes agentic systems production-ready by exposing health,
+              quality, escalation patterns, and improvement opportunities over time.
+            </p>
+          </div>
+          <div class="topic">
+            <h3>Executive Talking Points</h3>
+            <ul>
+              <li>Track outcomes with business and IT metrics: containment, escalation, quality, and cycle time.</li>
+              <li>Operationalize an agentic DevOps lifecycle: build, test, deploy, observe, and optimize.</li>
+              <li>Build leadership confidence with transparent governance and continuous quality scoring.</li>
+            </ul>
+          </div>
+        </section>
+
+        <footer>
+          Prepared for Siemens DISW IT Leadership discussion · Agentforce Workshop · August 2026
+        </footer>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
