@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="120" viewBox="0 0 360 120" role="img" aria-label="Salesforce">
+  <rect width="360" height="120" rx="18" fill="#ffffff"/>
+  <g transform="translate(18,22)">
+    <path d="M70 59c0 9-8 16-18 16H24C11 75 1 65 1 52s10-23 23-23c1 0 3 0 4 .4C32 19 41 12 52 12c13 0 24 11 24 24 0 2 0 4-.5 6.1C84 44 91 51 91 59c0 9-8 16-18 16H70z" fill="#00A1E0"/>
+    <text x="108" y="52" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700" fill="#00A1E0">salesforce</text>
+  </g>
+</svg>

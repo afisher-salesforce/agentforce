@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Menu, X, CheckCircle2 } from 'lucide-react';
+import { Menu, X, CheckCircle2, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import heroDISW from "@assets/hero-disw.png";
+import sfLogo from "@assets/salesforce-logo-badge.svg";
 
 type TopicZone = {
   heading: string;
@@ -333,25 +334,114 @@ const sections: Section[] = [
       },
     ],
   },
+  {
+    id: "capability-map",
+    pill: "Architecture",
+    heading: "Capability Map and Delivery Sequencing",
+    subhead:
+      "Organize cross-domain capabilities into a phased delivery sequence that balances value realization speed, dependency order, and operational risk.",
+    topics: [
+      {
+        heading: "Phase 1: Immediate Value and Enablement",
+        items: [
+          "Embedded AI copilots for support and internal preparation workflows.",
+          "Agentforce coworker summaries in Salesforce and Teams-facing patterns.",
+          "Instructor-led enablement for Vibe Coding and Claude Code across delivery roles.",
+        ],
+      },
+      {
+        heading: "Phase 2: Core Agentic Workflows",
+        items: [
+          "Renewals Agent for retention and expansion orchestration.",
+          "Support Agent on Headless 360 portal with Data 360 grounding.",
+          "Observability baseline: interaction quality, escalation patterns, and run health.",
+        ],
+      },
+      {
+        heading: "Phase 3: Strategic Differentiation",
+        items: [
+          "Quoting Agent modernization through Agentforce for Revenue Management.",
+          "Trade Compliance Agent with SAP and third-party data orchestration.",
+          "COE-driven governance and cross-org scale standards.",
+        ],
+      },
+      {
+        heading: "Domain Mapping",
+        items: [
+          "Data and AI: Data 360, Agentforce grounding, observability metrics.",
+          "Integration: Agent Fabric and MuleSoft action orchestration.",
+          "Service and Revenue: support, renewals, quoting, and compliance domains.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "forward-looking-statement",
+    pill: "Appendix",
+    heading: "Forward Looking Statement",
+    subhead:
+      "This page is reserved for the approved legal forward-looking statement language used in executive-facing Salesforce presentations.",
+    topics: [
+      {
+        heading: "Safe Harbor",
+        items: [
+          "Safe harbor statement content should be inserted here verbatim from the approved legal source for the meeting package. No legal language should be paraphrased, shortened, or inferred.",
+        ],
+      },
+    ],
+  },
 ];
 
-const navLinks = [
-  { id: "executive-summary", label: "Executive Summary" },
-  { id: "success-criteria", label: "Success Criteria" },
-  { id: "current-state", label: "Current State" },
-  { id: "external-research", label: "External Research" },
-  { id: "embedded-ai", label: "Embedded AI" },
-  { id: "agentforce", label: "Agentforce" },
-  { id: "data-360", label: "Data 360" },
-  { id: "headless-360", label: "Headless 360" },
-  { id: "observability", label: "Observability" },
-  { id: "decision-framework", label: "Decision Framework" },
-  { id: "operating-model", label: "Operating Model & Next Steps" },
+const navGroups = [
+  {
+    title: "Overview",
+    links: [
+      { id: "executive-summary", label: "Executive Summary" },
+      { id: "success-criteria", label: "Success Criteria" },
+      { id: "current-state", label: "Current State" },
+    ],
+  },
+  {
+    title: "Vignettes",
+    links: [
+      { id: "embedded-ai", label: "Embedded AI" },
+      { id: "agentforce", label: "Agentforce" },
+      { id: "data-360", label: "Data 360" },
+      { id: "headless-360", label: "Headless 360" },
+      { id: "observability", label: "Observability" },
+    ],
+  },
+  {
+    title: "Architecture",
+    links: [
+      { id: "decision-framework", label: "Decision Framework" },
+      { id: "capability-map", label: "Capability Map & Sequencing" },
+      { id: "operating-model", label: "Operating Model & Next Steps" },
+    ],
+  },
+  {
+    title: "Appendix",
+    links: [
+      { id: "external-research", label: "External Research" },
+      { id: "forward-looking-statement", label: "Forward Looking Statement" },
+    ],
+  },
 ];
 
 export default function Workshop() {
   const [activeSection, setActiveSection] = useState<string>("executive-summary");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [navCollapsed, setNavCollapsed] = useState<boolean>(() => {
+    try { return localStorage.getItem("afw-nav-collapsed") === "1"; } catch { return false; }
+  });
+
+  const toggleNav = () => {
+    setNavCollapsed((prev) => {
+      const next = !prev;
+      try { localStorage.setItem("afw-nav-collapsed", next ? "1" : "0"); } catch {}
+      return next;
+    });
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -413,49 +503,73 @@ export default function Workshop() {
         />
       )}
 
+      {/* Desktop nav collapse toggle */}
+      <button
+        onClick={toggleNav}
+        className="hidden lg:flex items-center gap-1.5 fixed top-3.5 z-50 border border-border bg-background/95 text-muted-foreground hover:text-foreground rounded-lg px-3 py-2 text-xs font-medium tracking-wide transition-all duration-300"
+        style={{ left: navCollapsed ? "14px" : "calc(290px + 14px)" }}
+        aria-label={navCollapsed ? "Show navigation" : "Hide navigation"}
+        data-testid="button-nav-toggle"
+      >
+        {navCollapsed
+          ? <><PanelLeftOpen size={14} /><span>Show Navigation</span></>
+          : <><PanelLeftClose size={14} /><span>Hide Navigation</span></>
+        }
+      </button>
+
       {/* Sidebar */}
       <aside
         className={`
           fixed top-0 bottom-0 left-0 z-40 w-[290px] border-r border-border bg-sidebar/95 backdrop-blur
-          transition-transform duration-300 ease-in-out lg:translate-x-0 pt-20 lg:pt-0
+          transition-all duration-300 ease-in-out pt-20 lg:pt-0
           ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
+          ${navCollapsed ? "lg:-translate-x-full lg:opacity-0 lg:pointer-events-none" : "lg:translate-x-0 lg:opacity-100"}
         `}
       >
         <div className="h-full flex flex-col p-6 overflow-y-auto">
           {/* Brand */}
-          <div className="hidden lg:block mb-8 border border-border rounded-xl bg-gradient-to-br from-card to-background p-4">
+          <div className="hidden lg:block mb-6 border border-border rounded-xl bg-gradient-to-br from-card to-background p-4">
             <h1 className="font-semibold text-base text-foreground tracking-tight leading-tight">
               Agentforce Workshop
             </h1>
             <p className="text-xs text-muted-foreground mt-1 leading-snug">
               Siemens DISW IT Leadership Executive Discussion
             </p>
+            <img
+              src={sfLogo}
+              alt="Salesforce"
+              className="mt-4 h-7 w-auto opacity-80"
+            />
           </div>
 
-          {/* Briefing Pages Nav */}
-          <nav className="flex-1 mb-6">
-            <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] mb-4">
-              Briefing Pages
-            </h3>
-            <ul className="space-y-0.5">
-              {navLinks.map((link) => (
-                <li key={link.id}>
-                  <button
-                    onClick={() => scrollToSection(link.id)}
-                    data-testid={`nav-link-${link.id}`}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-200
-                      ${
-                        activeSection === link.id
-                          ? "bg-accent/15 text-accent shadow-[inset_0_0_0_1px_rgba(0,183,183,0.2)]"
-                          : "text-muted-foreground hover:bg-accent/5 hover:text-foreground"
-                      }
-                    `}
-                  >
-                    {link.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
+          {/* Grouped Nav */}
+          <nav className="flex-1 mb-6 space-y-5">
+            {navGroups.map((group) => (
+              <div key={group.title}>
+                <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] mb-2">
+                  {group.title}
+                </h3>
+                <ul className="space-y-0.5">
+                  {group.links.map((link) => (
+                    <li key={link.id}>
+                      <button
+                        onClick={() => scrollToSection(link.id)}
+                        data-testid={`nav-link-${link.id}`}
+                        className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-200
+                          ${
+                            activeSection === link.id
+                              ? "bg-accent/15 text-accent shadow-[inset_0_0_0_1px_rgba(0,183,183,0.2)]"
+                              : "text-muted-foreground hover:bg-accent/5 hover:text-foreground"
+                          }
+                        `}
+                      >
+                        {link.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </nav>
 
           {/* Discussion Goal */}
@@ -472,7 +586,9 @@ export default function Workshop() {
       </aside>
 
       {/* Main Content */}
-      <main className="lg:ml-[290px] pt-16 lg:pt-0">
+      <main
+        className={`pt-16 lg:pt-0 transition-all duration-300 ${navCollapsed ? "lg:ml-0" : "lg:ml-[290px]"}`}
+      >
 
         {/* Sections */}
         <div className="p-4 md:p-8 lg:p-12 space-y-6">
