@@ -2,8 +2,7 @@ const NAV_SECTIONS = [
   {
     title: "Overview",
     links: [
-      { href: "index.html", label: "Executive Summary" },
-      { href: "external-research.html", label: "External Research" }
+      { href: "index.html", label: "Executive Summary" }
     ]
   },
   {
@@ -26,6 +25,7 @@ const NAV_SECTIONS = [
   {
     title: "Appendix",
     links: [
+      { href: "external-research.html", label: "External Research" },
       { href: "forward-looking-statement.html", label: "Forward Looking Statement" }
     ]
   }
@@ -76,14 +76,26 @@ function initNav() {
   if (!toggle) return;
   const saved = localStorage.getItem("afw-nav-collapsed");
   if (saved === "1") document.body.classList.add("nav-collapsed");
-  toggle.textContent = document.body.classList.contains("nav-collapsed") ? "Show Navigation" : "Hide Navigation";
+  syncToggle(toggle);
 
   toggle.addEventListener("click", () => {
     document.body.classList.toggle("nav-collapsed");
     const collapsed = document.body.classList.contains("nav-collapsed");
     localStorage.setItem("afw-nav-collapsed", collapsed ? "1" : "0");
-    toggle.textContent = collapsed ? "Show Navigation" : "Hide Navigation";
+    syncToggle(toggle);
   });
+
+  const navFooter = document.querySelector(".nav-footer");
+  if (navFooter) {
+    navFooter.innerHTML = "<img src=\"assets/salesforce-logo-badge.svg\" alt=\"Salesforce logo\" />";
+  }
+}
+
+function syncToggle(toggle) {
+  const collapsed = document.body.classList.contains("nav-collapsed");
+  toggle.textContent = collapsed ? "Show Navigation" : "Hide Navigation";
+  toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+  toggle.setAttribute("aria-label", collapsed ? "Show navigation sidebar" : "Hide navigation sidebar");
 }
 
 function initSearch() {
