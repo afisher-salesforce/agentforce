@@ -3,862 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agentforce Workshop | Siemens DISW IT Leadership</title>
-  <style>
-    :root {
-      --bg: #050b11;
-      --panel: #0c1722;
-      --panel-soft: #112131;
-      --text: #e9f4ff;
-      --muted: #9fb2c7;
-      --accent: #00b7b7;
-      --accent-soft: rgba(0, 183, 183, 0.12);
-      --border: #203447;
-      --max: 1180px;
-      --radius: 14px;
-    }
-
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
-    body {
-      font-family: Inter, Segoe UI, Arial, sans-serif;
-      background: radial-gradient(circle at top right, #14324a 0%, var(--bg) 45%);
-      color: var(--text);
-      line-height: 1.55;
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    .shell {
-      display: grid;
-      grid-template-columns: 290px 1fr;
-      min-height: 100vh;
-    }
-
-    .nav {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-      background: rgba(8, 18, 30, 0.96);
-      border-right: 1px solid var(--border);
-      padding: 24px 18px;
-    }
-
-    .brand {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: linear-gradient(155deg, var(--panel), #09131c);
-      padding: 16px;
-      margin-bottom: 18px;
-    }
-
-    .brand h1 {
-      margin: 0 0 8px;
-      font-size: 1.12rem;
-      line-height: 1.25;
-      letter-spacing: 0.01em;
-    }
-
-    .brand p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.87rem;
-    }
-
-    .nav-group { margin-bottom: 18px; }
-    .nav-title {
-      font-size: 0.75rem;
-      color: var(--muted);
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      margin: 0 0 8px;
-    }
-
-    .nav-link {
-      display: block;
-      margin: 4px 0;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid transparent;
-      color: #d2e0ef;
-      font-size: 0.94rem;
-    }
-
-    .nav-link:hover {
-      background: var(--accent-soft);
-      border-color: rgba(0, 183, 183, 0.3);
-      color: #f1fbff;
-    }
-
-    .search-shell {
-      position: relative;
-      margin-bottom: 18px;
-    }
-
-    .search-input {
-      width: 100%;
-      background: rgba(14, 30, 45, 0.85);
-      color: #e9f4ff;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: 0.92rem;
-      outline: none;
-    }
-
-    .search-input:focus {
-      border-color: rgba(0, 183, 183, 0.7);
-      box-shadow: 0 0 0 2px rgba(0, 183, 183, 0.2);
-    }
-
-    .search-card {
-      position: absolute;
-      top: calc(100% + 8px);
-      left: 0;
-      width: 100%;
-      background: rgba(10, 20, 31, 0.98);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      box-shadow: 0 22px 45px rgba(0, 0, 0, 0.45);
-      z-index: 20;
-      overflow: hidden;
-      display: none;
-    }
-
-    .search-card.is-open { display: block; }
-
-    .search-card-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      border-bottom: 1px solid var(--border);
-      padding: 10px 12px;
-      font-size: 0.78rem;
-      color: var(--muted);
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-    }
-
-    .search-close {
-      border: 1px solid var(--border);
-      background: rgba(17, 33, 49, 0.85);
-      color: #d2e0ef;
-      border-radius: 8px;
-      font-size: 0.75rem;
-      padding: 4px 8px;
-      cursor: pointer;
-    }
-
-    .search-results {
-      max-height: 340px;
-      overflow: auto;
-      padding: 6px;
-    }
-
-    .search-result {
-      border: 1px solid transparent;
-      border-radius: 10px;
-      padding: 10px;
-      margin-bottom: 6px;
-      cursor: pointer;
-      background: rgba(14, 30, 45, 0.45);
-    }
-
-    .search-result:hover,
-    .search-result.is-active {
-      border-color: rgba(0, 183, 183, 0.45);
-      background: rgba(0, 183, 183, 0.12);
-    }
-
-    .search-result code {
-      color: #99f2f2;
-      font-size: 0.76rem;
-      letter-spacing: 0.04em;
-    }
-
-    .search-result h4 {
-      margin: 5px 0 6px;
-      font-size: 0.9rem;
-      line-height: 1.25;
-      color: #e8f6ff;
-    }
-
-    .search-result p {
-      margin: 0 0 6px;
-      font-size: 0.82rem;
-      color: #b9cee1;
-    }
-
-    .search-result small {
-      font-size: 0.74rem;
-      color: #8fabc3;
-    }
-
-    .main {
-      padding: 26px 28px 42px;
-      width: 100%;
-    }
-
-    .container {
-      width: 100%;
-      max-width: var(--max);
-      margin: 0 auto;
-    }
-
-    section {
-      background: linear-gradient(160deg, rgba(16, 30, 43, 0.95), rgba(10, 20, 31, 0.95));
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      margin-bottom: 20px;
-      overflow: hidden;
-    }
-
-    .hero {
-      position: relative;
-      min-height: 380px;
-      display: grid;
-      align-items: end;
-      background-image: url("assets/hero-disw.png");
-      background-size: cover;
-      background-position: center;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(to bottom, rgba(0,0,0,0.12), rgba(5,11,17,0.8) 65%, var(--bg) 100%);
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      padding: 34px;
-    }
-
-    .pill {
-      display: inline-block;
-      padding: 5px 11px;
-      border-radius: 999px;
-      border: 1px solid rgba(0, 183, 183, 0.45);
-      background: rgba(0, 183, 183, 0.17);
-      color: #9ff3f3;
-      font-size: 0.76rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    h2 {
-      margin: 12px 0 8px;
-      font-size: 1.9rem;
-      line-height: 1.2;
-    }
-
-    h3 {
-      margin: 0 0 10px;
-      font-size: 1.25rem;
-      color: #d8eaff;
-    }
-
-    .subhead {
-      color: #c6d7ea;
-      max-width: 820px;
-      margin: 0;
-    }
-
-    .pad { padding: 30px 34px; }
-    .muted { color: var(--muted); }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .card {
-      background: rgba(17, 33, 49, 0.68);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
-    }
-
-    .floating-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 14px 26px rgba(0, 0, 0, 0.28);
-      border-color: rgba(0, 183, 183, 0.5);
-    }
-
-    .card p { margin: 0; color: #bdd0e2; }
-    ul { margin: 0; padding-left: 18px; }
-    li { margin-bottom: 6px; color: #c1d3e5; }
-
-    .topic {
-      border-top: 1px solid var(--border);
-      padding: 22px 34px;
-      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
-    }
-
-    .topic.floating-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(0, 183, 183, 0.45);
-      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
-    }
-
-    .topic p { margin: 0 0 10px; color: #bdd0e2; }
-    .topic ul { margin-bottom: 0; }
-
-    footer {
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 0.84rem;
-      padding: 8px 4px 14px;
-    }
-
-    @media (max-width: 980px) {
-      .shell { grid-template-columns: 1fr; }
-      .nav {
-        position: static;
-        height: auto;
-        border-right: 0;
-        border-bottom: 1px solid var(--border);
-      }
-      .grid-2 { grid-template-columns: 1fr; }
-      .main { padding: 20px 14px 32px; }
-      .pad, .hero-content, .topic { padding: 22px 18px; }
-      h2 { font-size: 1.58rem; }
-    }
-  </style>
+  <title>Agentforce Workshop | Executive Summary</title>
+  <link rel="stylesheet" href="shared.css" />
 </head>
 <body>
+  <button id="nav-toggle" class="nav-toggle" type="button">Hide Navigation</button>
   <div class="shell">
     <aside class="nav">
       <div class="brand">
         <h1>Agentforce Workshop</h1>
         <p>Siemens DISW IT Leadership Executive Discussion</p>
       </div>
-
-      <div class="nav-group search-shell" id="capability-search-shell">
-        <p class="nav-title">Search</p>
-        <input
-          id="capability-search-input"
-          class="search-input"
-          type="text"
-          placeholder="Search capabilities, use cases, or domains"
-          aria-label="Capability search"
-          autocomplete="off"
-        />
-        <div id="capability-search-card" class="search-card" role="dialog" aria-label="Capability search results">
-          <div class="search-card-head">
-            <span>Capability Results</span>
-            <button class="search-close" id="capability-search-close" type="button" aria-label="Close search results">Close</button>
-          </div>
+      <div class="search-shell" id="capability-search-shell">
+        <p class="search-title">Search</p>
+        <input id="capability-search-input" class="search-input" type="text" placeholder="Search capabilities, use cases, or domains" autocomplete="off" />
+        <div id="capability-search-card" class="search-card">
+          <div class="search-card-head">Capability Results</div>
           <div id="capability-search-results" class="search-results"></div>
         </div>
       </div>
-
-      <div class="nav-group">
-        <p class="nav-title">Briefing Pages</p>
-        <a class="nav-link" href="#executive-summary">Executive Summary</a>
-        <a class="nav-link" href="#success-criteria">Success Criteria</a>
-        <a class="nav-link" href="#current-state">Current State</a>
-        <a class="nav-link" href="#external-research">External Research</a>
-        <a class="nav-link" href="#embedded-ai">Embedded AI</a>
-        <a class="nav-link" href="#agentforce">Agentforce</a>
-        <a class="nav-link" href="#data-360">Data 360</a>
-        <a class="nav-link" href="#headless-360">Headless 360</a>
-        <a class="nav-link" href="#observability">Observability</a>
-        <a class="nav-link" href="#decision-framework">Decision Framework</a>
-        <a class="nav-link" href="#operating-model">Operating Model & Next Steps</a>
-      </div>
-
-      <div class="nav-group">
-        <p class="nav-title">Discussion Goal</p>
-        <p class="muted" style="font-size:0.86rem;margin:0;">
-          Expose DISW IT leadership to Salesforce AI depth beyond CPQ+ and
-          align on a practical path to accelerate time-to-value with
-          governed delivery at enterprise scale.
-        </p>
-      </div>
+      <div id="nav-groups"></div>
+      <div class="nav-footer">Salesforce</div>
     </aside>
-
     <main class="main">
       <div class="container">
-        <section id="executive-summary">
-          <div class="hero">
-            <div class="hero-content">
-              <span class="pill">Executive Enablement</span>
-              <h2>Agentic AI for Siemens DISW: From Strategy to Scaled Execution</h2>
-              <p class="subhead">
-                This workshop is designed to expose Siemens Digital Industries Software IT leaders to
-                Salesforce AI capabilities beyond CPQ+, including Vibe Coding, Agentforce, Data 360,
-                Agent Fabric, Headless 360, and Observability in a single enterprise delivery motion.
-              </p>
-            </div>
+        <section class="hero" style="background-image:url('assets/hero-disw.png');">
+          <div class="hero-content">
+            <span class="pill">Executive Enablement</span>
+            <h2>Agentic AI for Siemens DISW: From Strategy to Scaled Execution</h2>
+            <p class="subhead">Expose Siemens DISW IT leaders to Salesforce AI capabilities beyond CPQ+, including Vibe Coding, Agentforce, Data 360, Agent Fabric, Headless 360, and Observability.</p>
           </div>
+        </section>
+
+        <section class="panel">
           <div class="pad">
+            <span class="pill">Session Objective</span>
+            <h2>Purpose and Outcomes</h2>
             <div class="grid-2">
               <div class="card">
                 <h3>Executive Purpose</h3>
-                <p>
-                  Demonstrate how DISW can accelerate from idea to production by combining Salesforce-native
-                  AI capabilities with governance, security, and architecture patterns that enterprise IT can trust.
-                </p>
+                <p>Show how DISW can accelerate from idea to production using Salesforce-native AI capabilities with enterprise-grade governance and delivery controls.</p>
               </div>
               <div class="card">
-                <h3>Session Outcome</h3>
-                <p>
-                  Align on immediate next steps for whiteboarding, enablement, and a Center of Excellence
-                  that improves consumption and business impact under the Siemens SELA.
-                </p>
+                <h3>Success Outcome</h3>
+                <p>Align on a practical next-step plan for whiteboarding, training, and COE setup to improve SELA consumption and business impact.</p>
               </div>
             </div>
           </div>
+          <div class="topic">
+            <h3>What Must Be True at Session End</h3>
+            <ul>
+              <li>Leaders understand Salesforce AI depth beyond CPQ+, including platform-wide architecture implications.</li>
+              <li>Stakeholders align on where Agentforce and Vibe Coding improve delivery speed and confidence.</li>
+              <li>DISW commits to enablement and governance actions that can scale across multiple orgs.</li>
+            </ul>
+          </div>
+          <div class="topic">
+            <h3>Executive Stakes by Persona</h3>
+            <ul>
+              <li>IT Strategy: show measurable business outcomes and platform-level governance confidence.</li>
+              <li>Security: define control points for A2A and MCP access to operational systems.</li>
+              <li>Application Support: improve containment, response consistency, and service quality at scale.</li>
+              <li>Development and Testing: reduce build cycle time while preserving quality and release discipline.</li>
+            </ul>
+          </div>
         </section>
 
-        <section id="success-criteria">
+        <section class="panel">
           <div class="pad">
-            <span class="pill">Executive Alignment</span>
-            <h2>Session Success Criteria</h2>
-            <p class="subhead">
-              Success is not just awareness of features. Success is IT leadership consensus on how to operationalize
-              Salesforce AI as a delivery system across support, development, and strategy teams.
-            </p>
+            <span class="pill">Current Baseline</span>
+            <h2>DISW Current State</h2>
           </div>
           <div class="topic">
-            <h3>What Must Be True at the End of the Meeting</h3>
             <ul>
-              <li>IT leadership understands Salesforce AI capabilities beyond CPQ+, including build and governance implications.</li>
-              <li>Leaders agree on where Vibe Coding and Agentforce can accelerate time-to-value in current initiatives.</li>
-              <li>DISW identifies candidate business workflows for rapid AI whiteboarding and pilot design.</li>
-              <li>Stakeholders align on a practical enablement sequence: whiteboard, train, pilot, govern, scale.</li>
+              <li>Multiple Salesforce orgs with CPQ+ already in production increase complexity and make architecture choices critical.</li>
+              <li>Agentforce for Revenue Management pilot is strategically important as the quoting modernization bridge.</li>
+              <li>No formal Salesforce AI Center of Excellence yet, creating variability in practices and delivery quality.</li>
             </ul>
           </div>
         </section>
 
-        <section id="current-state">
-          <div class="pad">
-            <span class="pill">DISW Baseline</span>
-            <h2>Current State, Friction Points, and Constraints</h2>
-            <p class="subhead">
-              The architecture and organizational baseline creates both urgency and opportunity for a more unified
-              AI operating model anchored on Salesforce.
-            </p>
-          </div>
-          <div class="topic">
-            <h3>Primary Pain Points</h3>
-            <ul>
-              <li>Current team structures are not yet optimized to deliver Salesforce AI at speed and enterprise scale.</li>
-              <li>SELA breadth is under-consumed despite Agentforce expansion and strategic platform commitment.</li>
-              <li>Most stakeholders still view Salesforce primarily through the CPQ+ lens, limiting platform-wide AI adoption.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>Architecture and Delivery Reality</h3>
-            <ul>
-              <li>Multiple Salesforce orgs increase integration and governance complexity.</li>
-              <li>CPQ+ is implemented, while Agentforce for Revenue Management is entering pilot evaluation.</li>
-              <li>CPQ+ constraints limit direct agentic extensibility, reinforcing the need for a broader Salesforce AI pattern.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>Strategic Constraints</h3>
-            <ul>
-              <li>Competing platforms shape stakeholder expectations (Teams, Copilot, SAP, open-source AI initiatives).</li>
-              <li>Buy-vs-build concerns include services cost, internal capability development, and speed-to-market pressure.</li>
-              <li>No formal Salesforce Center of Excellence currently standardizes best practices and reusable delivery patterns.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section id="external-research">
-          <div class="pad">
-            <span class="pill">External Research</span>
-            <h2>Siemens DISW Context and Alignment Signals</h2>
-            <p class="subhead">
-              Public and account-level research indicates DISW is balancing SaaS transition, post-M&amp;A
-              integration, and AI-led growth targets—creating strong demand for governed automation and
-              unified data context.
-            </p>
-          </div>
-          <div class="topic">
-            <h3>Business and Transformation Signals</h3>
-            <ul>
-              <li>DISW is transitioning from perpetual licensing toward SaaS/subscription under Xcelerator.</li>
-              <li>Recent Altair and Dotmatics integrations increase urgency for customer data unification.</li>
-              <li>Digital business growth and AI investment are high, but margin and complexity pressures remain.</li>
-              <li>IT leadership is focused on platform governance, rationalization, and faster value realization.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>Implications for the Session</h3>
-            <ul>
-              <li>Anchor the discussion in architecture and operating model decisions, not isolated feature demos.</li>
-              <li>Frame Salesforce AI as the path to execution speed within an already-approved global platform commitment.</li>
-              <li>Position measurable progress around use-case adoption and capability consumption rather than customer-specific metrics.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section id="embedded-ai">
-          <div class="pad">
-            <span class="pill">Domain 01</span>
-            <h2>Embedded AI</h2>
-            <p class="subhead">
-              Embedded AI is the lowest-friction path to visible value because it augments existing workflows
-              inside the systems where DISW teams already operate.
-            </p>
-          </div>
-          <div class="topic">
-            <h3>Executive Discussion Focus</h3>
-            <ul>
-              <li>Use embedded copilots to reduce repetitive work in support, testing, and internal operational handoffs.</li>
-              <li>Standardize knowledge and recommendations while preserving human review for high-risk decisions.</li>
-              <li>Establish prompt and guardrail governance as a reusable IT capability, not team-by-team improvisation.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>Why IT Leaders Should Care</h3>
-            <ul>
-              <li>Fastest path to early wins and stakeholder trust without requiring immediate large-scale replatforming.</li>
-              <li>Creates internal momentum for larger Agentforce and Data 360 initiatives.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section id="agentforce">
-          <div class="pad">
-            <span class="pill">Domain 02</span>
-            <h2>Agentforce</h2>
-            <p class="subhead">
-              Agentforce operationalizes agentic workflows with enterprise controls, enabling DISW to move from
-              experimentation to repeatable production deployment.
-            </p>
-          </div>
-          <div class="topic">
-            <h3>Executive Discussion Focus</h3>
-            <ul>
-              <li>Show the journey from Vibe Coding prompt to deployable agent using Agentforce Labs and governance controls.</li>
-              <li>Reframe developer value: less boilerplate, more architecture, orchestration, and policy design.</li>
-              <li>Prioritize use cases where reasoning, context synthesis, and conversational interfaces outperform static automation.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>CPQ+ Context for DISW</h3>
-            <ul>
-              <li>Acknowledge CPQ+ limitations for native agentic extensibility and API flexibility.</li>
-              <li>Position Agentforce for Revenue Management pilot as the strategic bridge to modern quoting AI capabilities.</li>
-              <li>Tie urgency to SELA consumption and value realization rather than product replacement rhetoric.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section id="data-360">
-          <div class="pad">
-            <span class="pill">Domain 03</span>
-            <h2>Data 360</h2>
-            <p class="subhead">
-              Data 360 provides the unified context fabric for grounded AI decisions across Salesforce and external
-              systems, including SAP, product telemetry, and multi-org Salesforce footprints.
-            </p>
-          </div>
-          <div class="topic">
-            <h3>Executive Discussion Focus</h3>
-            <ul>
-              <li>Ground agent outputs in current customer, entitlement, and adoption context—not disconnected data snapshots.</li>
-              <li>Support zero-copy patterns to avoid unnecessary replication and new data-silo creation.</li>
-              <li>Improve trust and actionability by unifying context before inference, automation, and escalation decisions.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>Objection Handling</h3>
-            <ul>
-              <li>Address uncertainty on Data 360 consumption by clarifying unmetered access alignment in current licensing constructs.</li>
-              <li>Compare to custom data engineering alternatives on speed, governance, and long-term maintenance burden.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section id="headless-360">
-          <div class="pad">
-            <span class="pill">Domain 04</span>
-            <h2>Headless 360</h2>
-            <p class="subhead">
-              Headless 360 enables Salesforce capabilities on non-Salesforce digital surfaces, turning portals and
-              apps into governed AI engagement channels without duplicative backend sprawl.
-            </p>
-          </div>
-          <div class="topic">
-            <h3>Executive Discussion Focus</h3>
-            <ul>
-              <li>Deliver AI experiences in DISW-preferred interfaces while retaining Salesforce trust and governance controls.</li>
-              <li>Reduce integration and maintenance overhead from custom middleware-heavy patterns.</li>
-              <li>Support decoupled front-end innovation while centralizing execution, data policy, and governance.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>Competitive Context</h3>
-            <ul>
-              <li>Do not force a Teams-vs-Salesforce debate; show how Salesforce can execute intelligence across heterogeneous channels.</li>
-              <li>Position Agent Fabric with MuleSoft as the integration nervous system for secure external actions.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section id="observability">
-          <div class="pad">
-            <span class="pill">Domain 05</span>
-            <h2>Observability</h2>
-            <p class="subhead">
-              Observability is the control layer that makes agentic systems production-ready by exposing health,
-              quality, escalation patterns, and improvement opportunities over time.
-            </p>
-          </div>
-          <div class="topic">
-            <h3>Executive Discussion Focus</h3>
-            <ul>
-              <li>Track outcomes with business and IT metrics: containment, escalation, quality, and cycle time.</li>
-              <li>Operationalize an agentic DevOps lifecycle: build, test, deploy, observe, and optimize.</li>
-              <li>Build leadership confidence with transparent governance and continuous quality scoring.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>Leadership Relevance</h3>
-            <ul>
-              <li>Observability gives IT strategy leaders a concrete way to prove AI value and manage risk over time.</li>
-              <li>Supports governance reporting required for cross-org scaling and enterprise confidence.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section id="decision-framework">
-          <div class="pad">
-            <span class="pill">Decision Framework</span>
-            <h2>Build vs Buy and Delivery Governance</h2>
-            <p class="subhead">
-              The goal is pragmatic architecture choice per use case, not ideology. Use Salesforce-native capabilities
-              where they create speed, governance, and maintainability advantages.
-            </p>
-          </div>
-          <div class="topic">
-            <h3>When to Favor Agentforce</h3>
-            <ul>
-              <li>Use cases require reasoning over ambiguous inputs and multi-system context.</li>
-              <li>Business users need conversational interaction and explainable recommendations.</li>
-              <li>IT needs governed iteration speed without rebuilding security and trust controls from scratch.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>When to Favor Traditional Patterns</h3>
-            <ul>
-              <li>Deterministic transactional logic with strict rule execution may remain in Flow, Apex, or integration code.</li>
-              <li>High-throughput backend processing without conversational requirements may not require an agentic interface.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>Known Objections to Address in the Room</h3>
-            <ul>
-              <li>No Salesforce AI Center of Excellence today: solve with phased governance model, not ad hoc project delivery.</li>
-              <li>No time to develop resources: use instructor-led enablement plus role-based learning paths.</li>
-              <li>Services cost concerns: focus on targeted co-delivery to establish reusable internal accelerators.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>Audience-Specific Stakes</h3>
-            <ul>
-              <li>Execution confidence: teams need a repeatable knowledge-acquisition model for a platform with three major releases per year.</li>
-              <li>Value confidence: consumption-model concerns should be reframed around operating expense reduction and growth impact.</li>
-              <li>Security confidence: IT leaders need controls for A2A and MCP interactions across Salesforce and external operational systems.</li>
-              <li>Platform confidence: Salesforce must be positioned as an intelligence and execution layer, not a commoditized data store.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section id="operating-model">
-          <div class="pad">
-            <span class="pill">Execution Path</span>
-            <h2>Operating Model and Immediate Next Steps</h2>
-            <p class="subhead">
-              A practical sequence to convert leadership alignment into measurable execution against business priorities.
-            </p>
-          </div>
-          <div class="topic">
-            <h3>Phase 1: Whiteboarding and Use-Case Prioritization</h3>
-            <ul>
-              <li>Run targeted architecture whiteboarding across prioritized Sales and Service scenarios.</li>
-              <li>Select 2-3 high-confidence scenarios for rapid pilot design and governance review.</li>
-              <li>Candidate scenarios: Renewals Agent, Support Agent for Headless 360 portal, and Agentforce Coworker for seller and support productivity.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>Phase 2: Skills Uplift and Delivery Readiness</h3>
-            <ul>
-              <li>Launch instructor-led enablement for IT leaders and practitioner teams.</li>
-              <li>Incentivize Trailhead completion tied to role-specific adoption outcomes.</li>
-              <li>Include Vibe Coding and Claude Code enablement to accelerate delivery across the full Salesforce stack, not only AI workloads.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>Phase 3: Salesforce AI Center of Excellence</h3>
-            <ul>
-              <li>Define cross-functional COE charter spanning support, security, development, testing, and IT strategy.</li>
-              <li>Establish standards for architecture reviews, guardrails, prompt governance, and observability KPIs.</li>
-              <li>Create a repeatable scale pattern across multiple orgs while preserving local execution velocity.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>Priority Use-Case Portfolio for DISW</h3>
-            <ul>
-              <li>Internal Quoting Agent using Agentforce for Revenue Management capabilities.</li>
-              <li>Internal and external Renewals Agent for proactive retention and expansion orchestration.</li>
-              <li>Trade Compliance Agent integrating SAP and third-party sources for export controls and tariff-aware recommendations.</li>
-              <li>External Support Agent on Headless 360 with MCP access patterns for Salesforce and SAP context via Data 360.</li>
-              <li>Agentforce Coworker summaries in Salesforce and Microsoft Teams surfaces through Headless 360 delivery patterns.</li>
-              <li>Development acceleration agents using Agentforce Vibes and Claude Code for faster Salesforce configuration and engineering cycles.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>Executive Call-to-Action</h3>
-            <ul>
-              <li>Commit to a formal training and enablement program for DISW IT leaders and delivery teams.</li>
-              <li>Align on an Agentic Enterprise vision sponsored by IT strategy and business stakeholders.</li>
-              <li>Stand up a DISW Salesforce Center of Excellence to institutionalize standards, governance, and scale execution.</li>
-            </ul>
-          </div>
-        </section>
-
-        <footer>
-          Prepared for Siemens DISW IT Leadership discussion · Agentforce Workshop · Updated for Aug 12 executive enablement
-        </footer>
+        <div class="flow-nav">
+          <a href="forward-looking-statement.html">Previous: Forward Looking Statement</a>
+          <a href="external-research.html">Next: External Research</a>
+        </div>
+        <footer>Prepared for Siemens DISW IT Leadership discussion · Updated Aug 2026</footer>
       </div>
     </main>
   </div>
-  <script>
-    (function () {
-      const searchShell = document.getElementById("capability-search-shell");
-      const input = document.getElementById("capability-search-input");
-      const card = document.getElementById("capability-search-card");
-      const resultsContainer = document.getElementById("capability-search-results");
-      const closeBtn = document.getElementById("capability-search-close");
-      if (!searchShell || !input || !card || !resultsContainer || !closeBtn) return;
-
-      const capabilityIndex = [
-        { code: "EAI", name: "Embedded AI Productivity Layer", description: "Embedded assistants in Salesforce workflows reduce repetitive execution and improve speed of guided decisions.", location: "Embedded AI", pageTitle: "Embedded AI", pageHref: "#embedded-ai" },
-        { code: "AFR", name: "Agentforce Runtime and Guardrails", description: "Agentforce with topics, actions, and trust controls enables deployable enterprise agents for IT-managed operations.", location: "Agentforce", pageTitle: "Agentforce", pageHref: "#agentforce" },
-        { code: "ARM", name: "Agentforce for Revenue Management Bridge", description: "Strategic bridge from CPQ+ constraints to modern AI-driven quoting and renewal workflows.", location: "Agentforce", pageTitle: "Agentforce", pageHref: "#agentforce" },
-        { code: "D360", name: "Data 360 Context Fabric", description: "Zero-copy unification of Salesforce, SAP, and telemetry context for grounded agent decisions.", location: "Data 360", pageTitle: "Data 360", pageHref: "#data-360" },
-        { code: "H360", name: "Headless 360 Omnichannel Delivery", description: "Expose Salesforce intelligence to non-Salesforce channels with governed execution and no duplicated backend sprawl.", location: "Headless 360", pageTitle: "Headless 360", pageHref: "#headless-360" },
-        { code: "MCP", name: "MCP Context Access Pattern", description: "Model Context Protocol access pattern for support portal and external surfaces requiring Salesforce and SAP context.", location: "Headless 360", pageTitle: "Headless 360", pageHref: "#headless-360" },
-        { code: "OBS", name: "Observability and Control Plane", description: "Agentic monitoring, quality scoring, and governance telemetry for build-test-deploy-observe-operate cycles.", location: "Observability", pageTitle: "Observability", pageHref: "#observability" },
-        { code: "REN", name: "Renewals Agent", description: "Internal and external assistant for renewal risk, intervention recommendations, and expansion orchestration.", location: "Operating Model", pageTitle: "Operating Model", pageHref: "#operating-model" },
-        { code: "QOT", name: "Quoting Agent", description: "Internal quoting accelerator aligned to Agentforce for Revenue Management capabilities.", location: "Operating Model", pageTitle: "Operating Model", pageHref: "#operating-model" },
-        { code: "TCA", name: "Trade Compliance Agent", description: "Internal compliance assistant that combines SAP and third-party trade signals for export and tariff-aware guidance.", location: "Operating Model", pageTitle: "Operating Model", pageHref: "#operating-model" },
-        { code: "COW", name: "Agentforce Coworker Summary Agent", description: "Summarization and preparation layer surfaced in Salesforce and Microsoft Teams channels.", location: "Operating Model", pageTitle: "Operating Model", pageHref: "#operating-model" },
-        { code: "VIB", name: "Vibe Coding Delivery Acceleration", description: "Developer acceleration using Vibes and Claude Code to speed Salesforce configuration and implementation cycles.", location: "Operating Model", pageTitle: "Operating Model", pageHref: "#operating-model" },
-        { code: "COE", name: "Salesforce AI Center of Excellence", description: "Cross-functional governance and delivery model spanning support, security, development, testing, and IT strategy.", location: "Operating Model", pageTitle: "Operating Model", pageHref: "#operating-model" }
-      ];
-
-      let filtered = [];
-      let activeIndex = -1;
-
-      function openCard() {
-        card.classList.add("is-open");
-      }
-
-      function closeCard() {
-        card.classList.remove("is-open");
-      }
-
-      function matches(item, q) {
-        const text = [item.code, item.name, item.description, item.location, item.pageTitle].join(" ").toLowerCase();
-        return text.includes(q);
-      }
-
-      function renderResults(items) {
-        if (items.length === 0) {
-          resultsContainer.innerHTML = "<div class=\"search-result\"><h4>No matches</h4><p>Try broader keywords like agent, data, support, or governance.</p></div>";
-          return;
-        }
-        resultsContainer.innerHTML = items.map(function (item, index) {
-          const activeClass = index === activeIndex ? " is-active" : "";
-          return "<div class=\"search-result" + activeClass + "\" data-index=\"" + index + "\">" +
-            "<code>" + item.code + "</code>" +
-            "<h4>" + item.name + "</h4>" +
-            "<p>" + item.description + "</p>" +
-            "<small>" + item.location + " · " + item.pageTitle + "</small>" +
-            "</div>";
-        }).join("");
-      }
-
-      function runSearch() {
-        const q = input.value.trim().toLowerCase();
-        if (!q) {
-          filtered = capabilityIndex.slice(0, 8);
-        } else {
-          filtered = capabilityIndex.filter(function (item) { return matches(item, q); }).slice(0, 12);
-        }
-        activeIndex = filtered.length > 0 ? 0 : -1;
-        renderResults(filtered);
-        openCard();
-      }
-
-      function navigateTo(item) {
-        if (!item) return;
-        window.location.hash = item.pageHref;
-        const target = document.querySelector(item.pageHref);
-        if (target) {
-          target.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-        closeCard();
-      }
-
-      input.addEventListener("focus", runSearch);
-      input.addEventListener("input", runSearch);
-
-      input.addEventListener("keydown", function (event) {
-        if (!card.classList.contains("is-open")) return;
-        if (event.key === "ArrowDown") {
-          event.preventDefault();
-          if (filtered.length === 0) return;
-          activeIndex = (activeIndex + 1) % filtered.length;
-          renderResults(filtered);
-        } else if (event.key === "ArrowUp") {
-          event.preventDefault();
-          if (filtered.length === 0) return;
-          activeIndex = (activeIndex - 1 + filtered.length) % filtered.length;
-          renderResults(filtered);
-        } else if (event.key === "Enter") {
-          event.preventDefault();
-          navigateTo(filtered[activeIndex]);
-        } else if (event.key === "Escape") {
-          closeCard();
-        }
-      });
-
-      resultsContainer.addEventListener("click", function (event) {
-        const resultEl = event.target.closest(".search-result");
-        if (!resultEl) return;
-        const idx = Number(resultEl.getAttribute("data-index"));
-        navigateTo(filtered[idx]);
-      });
-
-      closeBtn.addEventListener("click", closeCard);
-
-      document.addEventListener("click", function (event) {
-        if (!searchShell.contains(event.target)) {
-          closeCard();
-        }
-      });
-
-      const floatingEls = document.querySelectorAll(".card, .topic");
-      floatingEls.forEach(function (el) {
-        el.classList.add("floating-card");
-      });
-    })();
-  </script>
+  <script src="shared.js"></script>
 </body>
 </html>
