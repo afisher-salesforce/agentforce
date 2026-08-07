@@ -120,12 +120,29 @@ function PageView({ path }) {
         {data.sections.map((section) => (
           <div className="topic" key={section.title}>
             <h3>{section.title}</h3>
+            {section.subhead && <p className="subhead topic-subhead">{section.subhead}</p>}
             {section.cards && (
               <div className="grid-3">
                 {section.cards.map((card) => (
                   <article className="card" key={card.title}>
                     <h4>{card.title}</h4>
                     <p>{card.body}</p>
+                  </article>
+                ))}
+              </div>
+            )}
+            {section.resources && (
+              <div className="grid-3">
+                {section.resources.map((resource) => (
+                  <article className="card resource-card" key={resource.title}>
+                    <h4>{resource.title}</h4>
+                    <p>{resource.body}</p>
+                    <p className="resource-meta">{resource.label}</p>
+                    <p className="resource-link-wrap">
+                      <a className="resource-link" href={resource.url} target="_blank" rel="noopener noreferrer">
+                        Open Trailhead resource
+                      </a>
+                    </p>
                   </article>
                 ))}
               </div>

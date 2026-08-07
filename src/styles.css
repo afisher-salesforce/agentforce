@@ -247,6 +247,9 @@ h2 {
 .topic h3 {
   margin: 0 0 12px;
 }
+.topic-subhead {
+  margin-bottom: 14px;
+}
 .grid-3 {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -265,6 +268,25 @@ h2 {
 .card p {
   margin: 0;
   color: #c2d5e9;
+}
+.resource-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.resource-meta {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.resource-link-wrap {
+  margin-top: auto;
+  font-size: 0.84rem;
+}
+.resource-link {
+  color: #9ff3f3;
+}
+.resource-link:hover {
+  text-decoration: underline;
 }
 ul {
   margin: 0;

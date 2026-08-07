@@ -109,6 +109,37 @@ export const pages = {
           { title: "Governable Rollout", body: "Start small with trusted use cases and expand through policy guardrails." },
         ],
       },
+      {
+        title: "Trailhead Resources (Public)",
+        subhead:
+          "Curated public learning paths to help teams operationalize embedded AI capabilities inside existing Salesforce workflows.",
+        resources: [
+          {
+            title: "Get Started with Prompts and Prompt Builder",
+            body: "Build practical prompt design foundations for governed business usage.",
+            label: "Trail · 80 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/get-started-with-prompts-and-prompt-studio",
+          },
+          {
+            title: "Take a Tour of the New Agentforce Builder",
+            body: "Explore modern builder capabilities for rapid AI experience design.",
+            label: "Trail · 50 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/get-ready-for-the-new-agentforce-builder",
+          },
+          {
+            title: "Get Smart with Salesforce Einstein",
+            body: "Executive-friendly overview of AI patterns and CRM impact opportunities.",
+            label: "Trail · 75 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/get_smart_einstein",
+          },
+          {
+            title: "Agentforce Vibes IDE Fundamentals",
+            body: "Understand pro-code acceleration fundamentals for builder productivity.",
+            label: "Module · 25 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/modules/agentforce-vibes-ide-fundamentals",
+          },
+        ],
+      },
     ],
   },
   "/agentforce": {
@@ -122,6 +153,37 @@ export const pages = {
           { title: "Actionable Agents", body: "Move from passive assistants to task-completing agents with business controls." },
           { title: "Bridge from CPQ+", body: "Create an actionable path from managed-package constraints to modern quoting workflows." },
           { title: "Faster Time-to-Value", body: "Combine pro-code acceleration and reusable delivery patterns." },
+        ],
+      },
+      {
+        title: "Trailhead Resources (Public)",
+        subhead:
+          "Curated enablement links grounded in current Trailhead search results to accelerate Agentforce readiness for DISW IT builders and architects.",
+        resources: [
+          {
+            title: "Build Agentforce Solutions with Pro-Code Tools",
+            body: "Comprehensive path for developing, testing, and deploying production Agentforce solutions.",
+            label: "Trail · 1130 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/build-agentforce-solutions-with-pro-code-tools",
+          },
+          {
+            title: "Agent Customization with Apex",
+            body: "Practical module on creating custom agent actions and extending behavior with Apex.",
+            label: "Module · 30 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/modules/agent-customization-with-apex",
+          },
+          {
+            title: "Build an Agent Using Agentforce DX",
+            body: "Hands-on project for creating and deploying a custom AI agent with pro-code tools.",
+            label: "Project · 35 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/projects/create-an-agent-using-pro-code-tools",
+          },
+          {
+            title: "Apex Testing",
+            body: "Core unit testing practices to improve reliability, deployment quality, and production confidence.",
+            label: "Module · 135 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/modules/apex_testing",
+          },
         ],
       },
     ],
@@ -139,6 +201,37 @@ export const pages = {
           { title: "Cross-Cloud Activation", body: "Operationalize insights across support, sales, and digital channels." },
         ],
       },
+      {
+        title: "Trailhead Resources (Public)",
+        subhead:
+          "Curated public learning paths to support Data 360 adoption, governance, and cross-cloud context strategy.",
+        resources: [
+          {
+            title: "Unlock Your Data with Data Cloud",
+            body: "Comprehensive path for Data Cloud foundations, unification, and activation.",
+            label: "Trail · 606 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/unlock-your-data-with-data-cloud",
+          },
+          {
+            title: "Model Data in Data 360",
+            body: "Practical modeling and mapping guidance for scalable context architecture.",
+            label: "Trail · 50 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/model-data-in-customer-data-platform",
+          },
+          {
+            title: "Administer Data 360",
+            body: "Admin-focused controls for data operations, quality, and platform readiness.",
+            label: "Trail · 110 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/administer-customer-data-platform",
+          },
+          {
+            title: "Use Data Insights Across Salesforce",
+            body: "Expand cloud use cases by activating shared customer insight across teams.",
+            label: "Trail · 50 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/use-data-insights-across-cloud",
+          },
+        ],
+      },
     ],
   },
   "/headless-360": {
@@ -152,6 +245,37 @@ export const pages = {
           { title: "Channel Flexibility", body: "Expose consistent intelligence in portals and custom experiences." },
           { title: "Governed Integration", body: "Use API and MCP patterns to keep execution controlled and auditable." },
           { title: "Lower Rebuild Cost", body: "Reuse enterprise capabilities instead of rebuilding logic per channel." },
+        ],
+      },
+      {
+        title: "Trailhead Resources (Public)",
+        subhead:
+          "Curated public learning paths to support integration architecture, API strategy, and agentic orchestration outside the core UI shell.",
+        resources: [
+          {
+            title: "Build Great APIs and Integrations with MuleSoft",
+            body: "Core foundations for connected architecture and API-led delivery design.",
+            label: "Trail · 60 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/great-integrations-mulesoft",
+          },
+          {
+            title: "Explore Integration Patterns and Practices",
+            body: "Pattern-based guidance for scalable and resilient enterprise integration.",
+            label: "Trail · 130 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/explore-integration-patterns-and-practices",
+          },
+          {
+            title: "Design Event-Driven Apps for Real-Time Integration",
+            body: "Apply event-driven design for real-time orchestration across systems.",
+            label: "Trail · 470 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/design-eventdriven-apps-for-realtime-integration",
+          },
+          {
+            title: "Agentic Integration with MuleSoft Vibes",
+            body: "Quick-start module for applying agentic AI concepts in integration workflows.",
+            label: "Module · 10 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/modules/agentic-integration-with-mulesoft-vibes",
+          },
         ],
       },
     ],
@@ -169,6 +293,37 @@ export const pages = {
           { title: "Governance Confidence", body: "Prove performance and policy adherence with measurable telemetry." },
         ],
       },
+      {
+        title: "Trailhead Resources (Public)",
+        subhead:
+          "Curated public learning paths for monitoring, quality control, and production governance across agentic implementations.",
+        resources: [
+          {
+            title: "Agent Analytics and Monitoring",
+            body: "Monitor agent performance and apply data-driven improvements to outcomes.",
+            label: "Module · 30 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/modules/agent-analytics-and-monitoring",
+          },
+          {
+            title: "Event Monitoring Basics",
+            body: "Use low-code Event Monitoring capabilities for security and operational visibility.",
+            label: "Module · 40 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/modules/event-monitoring-basics",
+          },
+          {
+            title: "Event Monitoring Analytics App",
+            body: "Visualize event log data to track risk, usage, and performance signals.",
+            label: "Module · 45 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/modules/event_monitoring_analytics",
+          },
+          {
+            title: "Apex Testing",
+            body: "Strengthen delivery confidence with robust unit testing and quality checks.",
+            label: "Module · 135 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/modules/apex_testing",
+          },
+        ],
+      },
     ],
   },
   "/capability-map": {
@@ -184,6 +339,49 @@ export const pages = {
           { title: "Phase 3", body: "Strategic differentiation through advanced orchestration and COE scale standards." },
         ],
       },
+      {
+        title: "Trailhead Learning Path by Delivery Phase (Public)",
+        subhead:
+          "Use these curated resources to align enablement sequencing with the same phased delivery model used in the capability roadmap.",
+        resources: [
+          {
+            title: "Phase 1 · Agentforce Vibes IDE Fundamentals",
+            body: "Rapid builder enablement for pro-code collaboration and AI-assisted development patterns.",
+            label: "Module · 25 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/modules/agentforce-vibes-ide-fundamentals",
+          },
+          {
+            title: "Phase 1 · Get Started with Prompts and Prompt Builder",
+            body: "Establish prompt-design fundamentals required for trusted, repeatable embedded AI usage.",
+            label: "Trail · 80 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/get-started-with-prompts-and-prompt-studio",
+          },
+          {
+            title: "Phase 2 · Build Agentforce Solutions with Pro-Code Tools",
+            body: "Deep execution path for building, testing, and deploying production-ready Agentforce solutions.",
+            label: "Trail · 1130 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/build-agentforce-solutions-with-pro-code-tools",
+          },
+          {
+            title: "Phase 2 · Unlock Your Data with Data Cloud",
+            body: "Build the unified data context needed for grounding, personalization, and cross-cloud decisions.",
+            label: "Trail · 606 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/unlock-your-data-with-data-cloud",
+          },
+          {
+            title: "Phase 3 · Explore Integration Patterns and Practices",
+            body: "Scale architecture through integration patterns that reduce complexity and improve resilience.",
+            label: "Trail · 130 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/explore-integration-patterns-and-practices",
+          },
+          {
+            title: "Phase 3 · Agent Analytics and Monitoring",
+            body: "Operationalize learning loops with agent monitoring and continuous outcome improvement.",
+            label: "Module · 30 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/modules/agent-analytics-and-monitoring",
+          },
+        ],
+      },
     ],
   },
   "/operating-model": {
@@ -197,6 +395,49 @@ export const pages = {
           { title: "Pilot Portfolio", body: "Select 2-3 high-confidence workflows with clear owners and baselines." },
           { title: "Enablement Motion", body: "Run instructor-led + Trailhead pathways across admin, dev, and architect roles." },
           { title: "COE Governance", body: "Set architecture standards, observability KPIs, and release controls from day one." },
+        ],
+      },
+      {
+        title: "COE Enablement Plan by Phase (Public Trailhead)",
+        subhead:
+          "Sequence capability building across IT roles so the Center of Excellence can move from pilot support to enterprise-scale governance.",
+        resources: [
+          {
+            title: "Phase 1 · Build Your Administrator Career on Salesforce",
+            body: "Establish admin-led platform fluency for secure configuration and operational ownership.",
+            label: "Trail · 910 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/build-your-admin-career-on-salesforce",
+          },
+          {
+            title: "Phase 1 · Get Started with Prompts and Prompt Builder",
+            body: "Build shared prompt design and governance fundamentals across delivery teams.",
+            label: "Trail · 80 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/get-started-with-prompts-and-prompt-studio",
+          },
+          {
+            title: "Phase 2 · Build Agentforce Solutions with Pro-Code Tools",
+            body: "Enable developers and architects to deliver production-grade agent workflows faster.",
+            label: "Trail · 1130 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/build-agentforce-solutions-with-pro-code-tools",
+          },
+          {
+            title: "Phase 2 · Unlock Your Data with Data Cloud",
+            body: "Build shared data-context capabilities required for grounded, cross-cloud agent outcomes.",
+            label: "Trail · 606 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/unlock-your-data-with-data-cloud",
+          },
+          {
+            title: "Phase 3 · Build Your Architect Career on Salesforce",
+            body: "Scale architecture standards, reference patterns, and cross-org governance rigor.",
+            label: "Trail · 355 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/trails/salesforce-architect-careers",
+          },
+          {
+            title: "Phase 3 · Agent Analytics and Monitoring",
+            body: "Operationalize learning loops and quality controls for sustained business outcomes.",
+            label: "Module · 30 min",
+            url: "https://trailhead.salesforce.com/en/content/learn/modules/agent-analytics-and-monitoring",
+          },
         ],
       },
     ],
