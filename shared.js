@@ -2,7 +2,8 @@ const NAV_SECTIONS = [
   {
     title: "Overview",
     links: [
-      { href: "index.html", label: "Executive Summary" }
+      { href: "index.html", label: "Executive Summary" },
+      { href: "genai-divide.html", label: "Crossing the GenAI Divide" }
     ]
   },
   {
@@ -19,7 +20,6 @@ const NAV_SECTIONS = [
     title: "Architecture",
     links: [
       { href: "capability-map.html", label: "Capability Map & Sequencing" },
-      { href: "genai-divide.html", label: "Crossing the GenAI Divide" },
       { href: "operating-model.html", label: "Operating Model & Next Steps" }
     ]
   },
