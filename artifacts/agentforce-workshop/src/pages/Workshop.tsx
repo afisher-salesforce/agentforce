@@ -47,8 +47,8 @@ const sections: Section[] = [
         body: "Demonstrate how DISW can accelerate from idea to production by combining Salesforce-native AI capabilities with governance, security, and architecture patterns that enterprise IT can trust.",
       },
       {
-        title: "Session Outcome",
-        body: "Align on immediate next steps for whiteboarding, enablement, and a Center of Excellence that improves consumption and business impact under the Siemens SELA.",
+        title: "Executive Enablement - Session Outcome",
+        body: "Align on immediate next steps for enablement, execution, and a Center of Excellence that improves consumption and business impact under the Siemens SELA.",
       },
     ],
     topics: [],
@@ -61,12 +61,11 @@ const sections: Section[] = [
       "Success is not just awareness of features. Success is IT leadership consensus on how to operationalize Salesforce AI as a delivery system across support, development, and strategy teams.",
     topics: [
       {
-        heading: "What Must Be True at the End of the Meeting",
+        heading: "What Must Be True at Session End",
         items: [
-          "IT leadership understands Salesforce AI capabilities beyond CPQ+, including build and governance implications.",
-          "Leaders agree on where Vibe Coding and Agentforce can accelerate time-to-value in current initiatives.",
+          "IT leadership understands Salesforce AI capabilities, including build and governance implications.",
+          "Leaders understand where Vibe Coding and Agentforce can accelerate time-to-value in current initiatives.",
           "DISW identifies candidate business workflows for rapid AI whiteboarding and pilot design.",
-          "Stakeholders align on a practical enablement sequence: whiteboard, train, pilot, govern, scale.",
         ],
       },
     ],
@@ -82,16 +81,15 @@ const sections: Section[] = [
         heading: "Primary Pain Points",
         items: [
           "Current team structures are not yet optimized to deliver Salesforce AI at speed and enterprise scale.",
-          "SELA breadth is under-consumed despite Agentforce expansion and strategic platform commitment.",
-          "Most stakeholders still view Salesforce primarily through the CPQ+ lens, limiting platform-wide AI adoption.",
+          "Most AI stakeholders do not have a clear definition of what tools to use when and how they can work together.",
         ],
       },
       {
         heading: "Architecture and Delivery Reality",
         items: [
           "Multiple Salesforce orgs increase integration and governance complexity.",
-          "CPQ+ is implemented, while Agentforce for Revenue Management is entering pilot evaluation.",
-          "CPQ+ constraints limit direct agentic extensibility, reinforcing the need for a broader Salesforce AI pattern.",
+          "Data needed to hydrate agents is scattered across the DISW landscape.",
+          "There is currently no overarching governance across all AI agents being created.",
         ],
       },
       {
@@ -100,13 +98,6 @@ const sections: Section[] = [
           "Competing platforms shape stakeholder expectations (Teams, Copilot, SAP, open-source AI initiatives).",
           "Buy-vs-build concerns include services cost, internal capability development, and speed-to-market pressure.",
           "No formal Salesforce Center of Excellence currently standardizes best practices and reusable delivery patterns.",
-        ],
-      },
-      {
-        heading: "Why This Matters Now",
-        items: [
-          "Recent market evidence shows most GenAI pilots do not create measurable P&L value without process-specific implementation and learning-loop design.",
-          "This workshop prioritizes the execution approach needed to avoid pilot stagnation and drive measurable enterprise outcomes.",
         ],
       },
     ],
@@ -704,13 +695,12 @@ const sections: Section[] = [
     id: "forward-looking-statement",
     pill: "Appendix",
     heading: "Forward Looking Statement",
-    subhead:
-      "This page is reserved for the approved legal forward-looking statement language used in executive-facing Salesforce presentations.",
+    subhead: "Approved legal language is reproduced below verbatim.",
     topics: [
       {
         heading: "Safe Harbor",
         items: [
-          "Safe harbor statement content should be inserted here verbatim from the approved legal source for the meeting package. No legal language should be paraphrased, shortened, or inferred.",
+          "This presentation contains forward-looking statements about, among other things, trend analyses and statements regarding future events, anticipated growth and industry prospects, and our strategies, expectation or plans regarding product releases and enhancements. The achievement or success of the matters covered by such forward-looking statements involves risks, uncertainties and assumptions. If any such risks or uncertainties materialize or if any of the assumptions prove incorrect, results or outcomes could differ materially from those expressed or implied by these forward-looking statements. The risks and uncertainties referred to above include those factors discussed in Salesforce's reports filed from time to time with the Securities and Exchange Commission, including, but not limited to our ability to meet the expectations of our customers; uncertainties regarding Al technologies and their integration into our product offerings; the effect of evolving domestic and foreign government regulations; regulatory developments and regulatory investigations involving us or affecting our industry; our ability to successfully introduce new services and product features, including related to AI and Agentforce; our ability to execute our business plans; the pace of change and innovation and our ability to compete in the markets in which we participate; and our ability to maintain and enhance our brands.",
         ],
       },
     ],
