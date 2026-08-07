@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Menu, X, CheckCircle2, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import heroDISW from "@assets/hero-disw.png";
-import sfLogo from "@assets/salesforce-logo.jpg";
+import sfLogo from "@assets/salesforce-logo.svg";
 
 type TopicZone = {
   heading: string;
