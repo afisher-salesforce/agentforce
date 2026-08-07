@@ -80,13 +80,13 @@ body.nav-collapsed .nav {
 }
 
 .logo-pill {
-  margin-top: 12px;
+  margin-top: 20px;
 }
 
 .logo-pill img {
   display: block;
-  width: 125px;
-  height: auto;
+  height: 40px;
+  width: auto;
 }
 
 .search-shell {
