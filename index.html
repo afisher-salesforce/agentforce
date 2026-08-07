@@ -1,103 +1,177 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agentforce Workshop | Executive Summary</title>
-  <link rel="stylesheet" href="shared.css" />
-</head>
-<body>
-  <button id="nav-toggle" class="nav-toggle" type="button">Hide Navigation</button>
-  <div class="shell">
-    <aside class="nav">
-      <div class="brand">
-        <h1>Agentforce Workshop</h1>
-        <p>Siemens DISW IT Leadership Executive Discussion</p>
-      <div class="logo-pill"><img class="brand-logo" src="public/salesforce-logo.jpg" alt="Salesforce logo" /></div></div>
-      <div class="search-shell" id="capability-search-shell">
-        <p class="search-title">Search</p>
-        <input id="capability-search-input" class="search-input" type="text" placeholder="Search capabilities, use cases, or domains" autocomplete="off" />
-        <div id="capability-search-card" class="search-card">
-          <div class="search-card-head">Capability Results</div>
-          <div id="capability-search-results" class="search-results"></div>
-        </div>
-      </div>
-      <div id="nav-groups"></div>
-      
-    </aside>
-    <main class="main">
-      <div class="container">
-        <section class="hero" style="background-image:url('assets/hero-disw.png');">
-          <div class="hero-content">
-            <span class="pill">Executive Enablement</span>
-            <h2>Agentic AI for Siemens DISW: From Strategy to Scaled Execution</h2>
-            <p class="subhead">Expose Siemens DISW IT leaders to Salesforce AI capabilities beyond CPQ+, including Vibe Coding, Agentforce, Data 360, Agent Fabric, Headless 360, and Observability.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agentforce Workshop | Executive Summary</title>
+    <link rel="stylesheet" href="shared.css" />
+  </head>
+  <body>
+    <button id="nav-toggle" class="nav-toggle" type="button">
+      Hide Navigation
+    </button>
+    <div class="shell">
+      <aside class="nav">
+        <div class="brand">
+          <h1>Agentforce Workshop</h1>
+          <p>Siemens DISW IT Leadership Executive Discussion</p>
+          <div class="logo-pill">
+            <img
+              class="brand-logo"
+              src="public/salesforce-logo.jpg"
+              alt="Salesforce logo"
+            />
           </div>
-        </section>
+        </div>
+        <div class="search-shell" id="capability-search-shell">
+          <p class="search-title">Search</p>
+          <input
+            id="capability-search-input"
+            class="search-input"
+            type="text"
+            placeholder="Search capabilities, use cases, or domains"
+            autocomplete="off"
+          />
+          <div id="capability-search-card" class="search-card">
+            <div class="search-card-head">Capability Results</div>
+            <div id="capability-search-results" class="search-results"></div>
+          </div>
+        </div>
+        <div id="nav-groups"></div>
+      </aside>
+      <main class="main">
+        <div class="container">
+          <section
+            class="hero"
+            style="background-image: url(&quot;assets/hero-disw.png&quot;)"
+          >
+            <div class="hero-content">
+              <span class="pill">Executive Enablement</span>
+              <h2>
+                Agentic AI for Siemens DISW: From Strategy to Scaled Execution
+              </h2>
+              <p class="subhead">
+                Expose Siemens DISW IT leaders to Salesforce AI capabilities
+                beyond CPQ+, including Vibe Coding, Agentforce, Data 360, Agent
+                Fabric, Headless 360, and Observability.
+              </p>
+            </div>
+          </section>
 
-        <section class="panel">
-          <div class="pad">
-            <span class="pill">Session Objective</span>
-            <h2>Purpose and Outcomes</h2>
-            <div class="grid-2">
-              <div class="card">
-                <h3>Executive Purpose</h3>
-                <p>Show how DISW can accelerate from idea to production using Salesforce-native AI capabilities with enterprise-grade governance and delivery controls.</p>
-              </div>
-              <div class="card">
-                <h3>Success Outcome</h3>
-                <p>Align on a practical next-step plan for whiteboarding, training, and COE setup to improve SELA consumption and business impact.</p>
+          <section class="panel">
+            <div class="pad">
+              <span class="pill">Session Objective</span>
+              <h2>Purpose and Outcomes</h2>
+              <div class="grid-2">
+                <div class="card">
+                  <h3>Executive Purpose</h3>
+                  <p>
+                    Show how DISW can accelerate from idea to production using
+                    Salesforce-native AI capabilities with enterprise-grade
+                    governance and delivery controls.
+                  </p>
+                </div>
+                <div class="card">
+                  <h3>Success Outcome</h3>
+                  <p>
+                    Align on a practical next-step plan for whiteboarding,
+                    training, and COE setup to improve SELA consumption and
+                    business impact.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="topic">
-            <h3>What Must Be True at Session End</h3>
-            <ul>
-              <li>Leaders understand Salesforce AI depth beyond CPQ+, including platform-wide architecture implications.</li>
-              <li>Stakeholders align on where Agentforce and Vibe Coding improve delivery speed and confidence.</li>
-              <li>DISW commits to enablement and governance actions that can scale across multiple orgs.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>Executive Stakes by Persona</h3>
-            <ul>
-              <li>IT Strategy: show measurable business outcomes and platform-level governance confidence.</li>
-              <li>Security: define control points for A2A and MCP access to operational systems.</li>
-              <li>Application Support: improve containment, response consistency, and service quality at scale.</li>
-              <li>Development and Testing: reduce build cycle time while preserving quality and release discipline.</li>
-            </ul>
-          </div>
-        </section>
+            <div class="topic">
+              <h3>What Must Be True at Session End</h3>
+              <ul>
+                <li>
+                  Leaders understand Salesforce AI depth beyond CPQ+, including
+                  platform-wide architecture implications.
+                </li>
+                <li>
+                  Stakeholders align on where Agentforce and Vibe Coding improve
+                  delivery speed and confidence.
+                </li>
+                <li>
+                  DISW commits to enablement and governance actions that can
+                  scale across multiple orgs.
+                </li>
+              </ul>
+            </div>
+            <div class="topic">
+              <h3>Executive Stakes by Persona</h3>
+              <ul>
+                <li>
+                  IT Strategy: show measurable business outcomes and
+                  platform-level governance confidence.
+                </li>
+                <li>
+                  Security: define control points for A2A and MCP access to
+                  operational systems.
+                </li>
+                <li>
+                  Application Support: improve containment, response
+                  consistency, and service quality at scale.
+                </li>
+                <li>
+                  Development and Testing: reduce build cycle time while
+                  preserving quality and release discipline.
+                </li>
+              </ul>
+            </div>
+          </section>
 
-        <section class="panel">
-          <div class="pad">
-            <span class="pill">Current Baseline</span>
-            <h2>DISW Current State</h2>
-          </div>
-          <div class="topic">
-            <ul>
-              <li>Multiple Salesforce orgs with CPQ+ already in production increase complexity and make architecture choices critical.</li>
-              <li>Agentforce for Revenue Management pilot is strategically important as the quoting modernization bridge.</li>
-              <li>No formal Salesforce AI Center of Excellence yet, creating variability in practices and delivery quality.</li>
-            </ul>
-          </div>
-          <div class="topic">
-            <h3>Why This Matters Now</h3>
-            <ul>
-              <li>Recent market evidence shows most GenAI pilots do not create measurable P&amp;L value without process-specific implementation and learning-loop design.</li>
-              <li>This workshop prioritizes the execution approach needed to avoid pilot stagnation and drive measurable enterprise outcomes.</li>
-            </ul>
-          </div>
-        </section>
+          <section class="panel">
+            <div class="pad">
+              <span class="pill">Current Baseline</span>
+              <h2>DISW Current State</h2>
+            </div>
+            <div class="topic">
+              <ul>
+                <li>
+                  Multiple Salesforce orgs with CPQ+ already in production
+                  increase complexity and make architecture choices critical.
+                </li>
+                <li>
+                  Agentforce for Revenue Management pilot is strategically
+                  important as the quoting modernization bridge.
+                </li>
+                <li>
+                  No formal Salesforce AI Center of Excellence yet, creating
+                  variability in practices and delivery quality.
+                </li>
+              </ul>
+            </div>
+            <div class="topic">
+              <h3>Why This Matters Now</h3>
+              <ul>
+                <li>
+                  Recent market evidence shows most GenAI pilots do not create
+                  measurable P&amp;L value without process-specific
+                  implementation and learning-loop design.
+                </li>
+                <li>
+                  This workshop prioritizes the execution approach needed to
+                  avoid pilot stagnation and drive measurable enterprise
+                  outcomes.
+                </li>
+              </ul>
+            </div>
+          </section>
 
-        <div class="flow-nav">
-          <a href="forward-looking-statement.html">Previous: Forward Looking Statement</a>
-          <a href="external-research.html">Next: External Research</a>
+          <div class="flow-nav">
+            <a href="forward-looking-statement.html"
+              >Previous: Forward Looking Statement</a
+            >
+            <a href="external-research.html">Next: External Research</a>
+          </div>
+          <footer>
+            Prepared for Siemens DISW IT Leadership discussion · Updated Aug
+            2026
+          </footer>
         </div>
-        <footer>Prepared for Siemens DISW IT Leadership discussion · Updated Aug 2026</footer>
-      </div>
-    </main>
-  </div>
-  <script src="shared.js"></script>
-</body>
+      </main>
+    </div>
+    <script src="shared.js"></script>
+  </body>
 </html>
