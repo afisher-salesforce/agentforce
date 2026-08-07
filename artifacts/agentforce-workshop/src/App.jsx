@@ -14,10 +14,7 @@ function SearchCard() {
     const list = !q
       ? searchIndex.slice(0, 8)
       : searchIndex.filter((item) =>
-          [item.code, item.name, item.description, item.location]
-            .join(" ")
-            .toLowerCase()
-            .includes(q),
+          [item.code, item.name, item.description, item.location].join(" ").toLowerCase().includes(q),
         );
     return list.slice(0, 12);
   }, [query]);
@@ -42,13 +39,26 @@ function SearchCard() {
         placeholder="Search capabilities or domains"
         onFocus={() => setOpen(true)}
         onBlur={() => setTimeout(() => setOpen(false), 150)}
-        onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
-        onKeyDown={(e) => {
+        onChange={(event) => {
+          setQuery(event.target.value);
+          setOpen(true);
+        }}
+        onKeyDown={(event) => {
           if (!open) return;
-          if (e.key === "ArrowDown") { e.preventDefault(); setActive((p) => (p + 1) % filtered.length); }
-          else if (e.key === "ArrowUp") { e.preventDefault(); setActive((p) => (p - 1 + filtered.length) % filtered.length); }
-          else if (e.key === "Enter") { e.preventDefault(); go(filtered[active]); }
-          else if (e.key === "Escape") setOpen(false);
+          if (event.key === "ArrowDown") {
+            event.preventDefault();
+            if (!filtered.length) return;
+            setActive((prev) => (prev + 1) % filtered.length);
+          } else if (event.key === "ArrowUp") {
+            event.preventDefault();
+            if (!filtered.length) return;
+            setActive((prev) => (prev - 1 + filtered.length) % filtered.length);
+          } else if (event.key === "Enter") {
+            event.preventDefault();
+            go(filtered[active]);
+          } else if (event.key === "Escape") {
+            setOpen(false);
+          }
         }}
       />
       {open && (
@@ -56,12 +66,15 @@ function SearchCard() {
           <div className="search-card-head">Capability Results</div>
           <div className="search-results">
             {filtered.length === 0 ? (
-              <div className="search-result"><h4>No matches</h4><p>Try agent, data, governance, or support.</p></div>
+              <div className="search-result">
+                <h4>No matches</h4>
+                <p>Try agent, data, governance, or support.</p>
+              </div>
             ) : (
-              filtered.map((item, i) => (
+              filtered.map((item, index) => (
                 <button
                   key={item.code + item.name}
-                  className={`search-result ${i === active ? "is-active" : ""}`}
+                  className={`search-result ${index === active ? "is-active" : ""}`}
                   onMouseDown={() => go(item)}
                   type="button"
                 >
@@ -75,50 +88,6 @@ function SearchCard() {
           </div>
         </div>
       )}
-    </div>
-  );
-}
-
-function SectionBlock({ sec }) {
-  return (
-    <div className="section-block">
-      {sec.title && <h3 className="section-title">{sec.title}</h3>}
-      {sec.subhead && <p className="section-subhead">{sec.subhead}</p>}
-      {sec.note && (
-        <p className="section-note">
-          <a href={sec.note.href} target="_blank" rel="noopener noreferrer">{sec.note.label}</a>
-        </p>
-      )}
-      {sec.cards && (
-        <div className={`grid-${sec.cards.length === 3 ? "3" : "2"}`}>
-          {sec.cards.map((card, i) => (
-            <div key={i} className="card">
-              <h4>{card.title}</h4>
-              <p>{card.body}</p>
-            </div>
-          ))}
-        </div>
-      )}
-      {sec.bullets && (
-        <ul>
-          {sec.bullets.map((item, i) => <li key={i}>{item}</li>)}
-        </ul>
-      )}
-      {sec.trailhead && (
-        <>
-          {sec.trailhead.map((res, i) => (
-            <div key={i} className="card trailhead-card">
-              <h4>{res.title}</h4>
-              <p>{res.description}</p>
-              <span className="trailhead-meta">{res.meta}</span>
-              <a href={res.href} target="_blank" rel="noopener noreferrer" className="trailhead-link">
-                Open Trailhead resource ↗
-              </a>
-            </div>
-          ))}
-        </>
-      )}
-      {sec.legal && <p className="legal-text">{sec.legal}</p>}
     </div>
   );
 }
@@ -154,17 +123,47 @@ function PageView({ path }) {
             <span className="pill">{data.pill}</span>
             <h2>{data.title}</h2>
             <p className="subhead">{data.subhead}</p>
-            {data.citation && (
-              <p className="citation-link">
-                <a href={data.citation.href} target="_blank" rel="noopener noreferrer">
-                  {data.citation.label}
-                </a>
-              </p>
-            )}
           </div>
         )}
-        {data.sections.map((sec, i) => (
-          <SectionBlock key={i} sec={sec} />
+        {data.sections.map((section) => (
+          <div className="topic" key={section.title}>
+            <h3>{section.title}</h3>
+            {section.subhead && <p className="subhead topic-subhead">{section.subhead}</p>}
+            {section.cards && (
+              <div className="grid-3">
+                {section.cards.map((card) => (
+                  <article className="card" key={card.title}>
+                    <h4>{card.title}</h4>
+                    <p>{card.body}</p>
+                  </article>
+                ))}
+              </div>
+            )}
+            {section.resources && (
+              <div className="grid-3">
+                {section.resources.map((resource) => (
+                  <article className="card resource-card" key={resource.title}>
+                    <h4>{resource.title}</h4>
+                    <p>{resource.body}</p>
+                    <p className="resource-meta">{resource.label}</p>
+                    <p className="resource-link-wrap">
+                      <a className="resource-link" href={resource.url} target="_blank" rel="noopener noreferrer">
+                        Open Trailhead resource ↗
+                      </a>
+                    </p>
+                  </article>
+                ))}
+              </div>
+            )}
+            {section.bullets && (
+              <ul>
+                {section.bullets.map((bullet) => (
+                  <li key={bullet}>{bullet}</li>
+                ))}
+              </ul>
+            )}
+            {section.legal && <p className="legal-text">{section.legal}</p>}
+          </div>
         ))}
       </section>
 
@@ -229,11 +228,11 @@ export default function App() {
 
       <main className="main">
         <div className="controls-row">
-          <button className="nav-toggle" onClick={() => setCollapsed((p) => !p)} type="button">
+          <button className="nav-toggle" onClick={() => setCollapsed((prev) => !prev)} type="button">
             {collapsed ? "Show Navigation" : "Hide Navigation"}
           </button>
-          <button className="nav-toggle secondary" onClick={() => setPresentationMode((p) => !p)} type="button">
-            {presentationMode ? "Exit Presentation" : "Presentation Mode"}
+          <button className="nav-toggle secondary" onClick={() => setPresentationMode((prev) => !prev)} type="button">
+            {presentationMode ? "Exit Presentation Mode" : "Presentation Mode"}
           </button>
         </div>
         <Routes>
