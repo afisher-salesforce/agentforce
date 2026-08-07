@@ -18,6 +18,7 @@ type Section = {
   pill: string;
   heading: string;
   subhead: string;
+  citation?: { label: string; href: string };
   isHero?: boolean;
   cards?: Card[];
   topics: TopicZone[];
@@ -402,6 +403,10 @@ const sections: Section[] = [
     heading: "Crossing the GenAI Divide: From Pilots to P&L Impact",
     subhead:
       "Enterprise GenAI investment is substantial, but measurable outcomes remain concentrated in a small minority. The key differentiator is implementation approach, process integration, and learning-loop design.",
+    citation: {
+      label: "The GenAI Divide: State of AI in Business 2025",
+      href: "https://nanda.media.mit.edu/ai-pulse/reports/GenAI-Divide-Report-2025.pdf",
+    },
     topics: [
       {
         heading: "What the Data Indicates",
@@ -467,6 +472,7 @@ const navGroups = [
     title: "Overview",
     links: [
       { id: "executive-summary", label: "Executive Summary" },
+      { id: "genai-divide", label: "Crossing the GenAI Divide" },
       { id: "success-criteria", label: "Success Criteria" },
       { id: "current-state", label: "Current State" },
     ],
@@ -486,7 +492,6 @@ const navGroups = [
     links: [
       { id: "decision-framework", label: "Decision Framework" },
       { id: "capability-map", label: "Capability Map & Sequencing" },
-      { id: "genai-divide", label: "Crossing the GenAI Divide" },
       { id: "operating-model", label: "Operating Model & Next Steps" },
     ],
   },
@@ -724,6 +729,18 @@ export default function Workshop() {
                     <p className="text-base text-muted-foreground leading-relaxed max-w-3xl">
                       {section.subhead}
                     </p>
+                    {section.citation && (
+                      <p className="mt-3 text-xs text-muted-foreground/70">
+                        <a
+                          href={section.citation.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline underline-offset-2 hover:text-accent transition-colors"
+                        >
+                          {section.citation.label}
+                        </a>
+                      </p>
+                    )}
                   </div>
 
                   {/* Topic zones */}
