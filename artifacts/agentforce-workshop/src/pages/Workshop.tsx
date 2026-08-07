@@ -114,25 +114,32 @@ const sections: Section[] = [
   {
     id: "external-research",
     pill: "External Research",
-    heading: "Siemens DISW Context and Alignment Signals",
+    heading: "Siemens DISW Context and Market Signals",
     subhead:
-      "Public and account-level research indicates DISW is balancing SaaS transition, post-M&A integration, and AI-led growth targets—creating strong demand for governed automation and unified data context.",
+      "External and account-level research shows DISW balancing SaaS transition, integration complexity, and AI-led growth demands, creating urgency for a governed enterprise AI operating model.",
     topics: [
       {
-        heading: "Business and Transformation Signals",
+        heading: "Scale and Transformation Drivers",
         items: [
-          "DISW is transitioning from perpetual licensing toward SaaS/subscription under Xcelerator.",
-          "Recent Altair and Dotmatics integrations increase urgency for customer data unification.",
-          "Digital business growth and AI investment are high, but margin and complexity pressures remain.",
-          "IT leadership is focused on platform governance, rationalization, and faster value realization.",
+          "Xcelerator-led SaaS transition is reshaping go-to-market and operating model requirements.",
+          "Recent M&A activity increases cross-system data unification and process-governance pressure.",
+          "AI commitments at leadership level increase demand for visible execution outcomes from IT.",
         ],
       },
       {
-        heading: "Implications for the Session",
+        heading: "Competitive and Platform Dynamics",
         items: [
-          "Anchor the discussion in architecture and operating model decisions, not isolated feature demos.",
-          "Frame Salesforce AI as the path to execution speed within an already-approved global platform commitment.",
-          "Position measurable progress around use-case adoption and capability consumption rather than customer-specific metrics.",
+          "DISW must balance Salesforce platform acceleration with existing SAP, Microsoft, and open-source investments.",
+          "Execution speed, maintainability, and governance quality are stronger decision criteria than feature parity alone.",
+          "SELA commitment creates a strategic opportunity to shift from isolated pilots to scaled capability consumption.",
+        ],
+      },
+      {
+        heading: "Implications for This Discussion",
+        items: [
+          "Prioritize architecture and operating model decisions over tool-by-tool comparisons.",
+          "Tie every capability discussion to business value realization and measurable delivery outcomes.",
+          "Align leadership around a phased path from enablement to governed production scale.",
         ],
       },
     ],
@@ -142,21 +149,51 @@ const sections: Section[] = [
     pill: "Domain 01",
     heading: "Embedded AI",
     subhead:
-      "Embedded AI is the lowest-friction path to visible value because it augments existing workflows inside the systems where DISW teams already operate.",
+      "Embed AI into existing Salesforce workflows to create immediate, low-friction productivity gains with clear IT oversight and policy control.",
     topics: [
       {
         heading: "Executive Discussion Focus",
         items: [
-          "Use embedded copilots to reduce repetitive work in support, testing, and internal operational handoffs.",
-          "Standardize knowledge and recommendations while preserving human review for high-risk decisions.",
-          "Establish prompt and guardrail governance as a reusable IT capability, not team-by-team improvisation.",
+          "Reduce repetitive work across support and operations with guided copilots.",
+          "Standardize recommendations while preserving human decision authority for sensitive actions.",
+          "Build confidence through prompt governance and repeatable release controls.",
         ],
       },
       {
-        heading: "Why IT Leaders Should Care",
+        heading: "Potential DISW Fit",
         items: [
-          "Fastest path to early wins and stakeholder trust without requiring immediate large-scale replatforming.",
-          "Creates internal momentum for larger Agentforce and Data 360 initiatives.",
+          "Support case triage and summary generation.",
+          "Internal preparation and handoff copilots for service and revenue teams.",
+        ],
+      },
+      {
+        heading: "Trailhead Resources (Public)",
+        subhead: "Curated public learning paths to help teams operationalize embedded AI capabilities inside existing Salesforce workflows.",
+        resources: [
+          {
+            title: "Get Started with Prompts and Prompt Builder",
+            description: "Build practical prompt design foundations for governed business usage.",
+            meta: "Trail · 80 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/get-started-with-prompts-and-prompt-studio",
+          },
+          {
+            title: "Take a Tour of the New Agentforce Builder",
+            description: "Explore modern builder capabilities for rapid AI experience design.",
+            meta: "Trail · 50 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/get-ready-for-the-new-agentforce-builder",
+          },
+          {
+            title: "Get Smart with Salesforce Einstein",
+            description: "Executive-friendly overview of AI patterns and CRM impact opportunities.",
+            meta: "Trail · 75 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/get_smart_einstein",
+          },
+          {
+            title: "Agentforce Vibes IDE Fundamentals",
+            description: "Understand pro-code acceleration fundamentals for builder productivity.",
+            meta: "Module · 25 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/modules/agentforce-vibes-ide-fundamentals",
+          },
         ],
       },
     ],
@@ -221,21 +258,51 @@ const sections: Section[] = [
     pill: "Domain 03",
     heading: "Data 360",
     subhead:
-      "Data 360 provides the unified context fabric for grounded AI decisions across Salesforce and external systems, including SAP, product telemetry, and multi-org Salesforce footprints.",
+      "Create a unified context fabric across Salesforce orgs, SAP, and telemetry sources so every agent decision is grounded, explainable, and actionable.",
     topics: [
       {
         heading: "Executive Discussion Focus",
         items: [
-          "Ground agent outputs in current customer, entitlement, and adoption context—not disconnected data snapshots.",
-          "Support zero-copy patterns to avoid unnecessary replication and new data-silo creation.",
-          "Improve trust and actionability by unifying context before inference, automation, and escalation decisions.",
+          "Improve answer quality and escalation decisions with cross-system context.",
+          "Use zero-copy patterns to reduce data duplication and integration debt.",
+          "Support support-portal and renewal scenarios with a shared intelligence layer.",
         ],
       },
       {
         heading: "Objection Handling",
         items: [
-          "Address uncertainty on Data 360 consumption by clarifying unmetered access alignment in current licensing constructs.",
-          "Compare to custom data engineering alternatives on speed, governance, and long-term maintenance burden.",
+          "Address consumption concerns through value-backed use-case prioritization and unmetered capability planning where applicable.",
+          "Compare against custom data-engineering alternatives on speed, governance, and long-term maintainability.",
+        ],
+      },
+      {
+        heading: "Trailhead Resources (Public)",
+        subhead: "Curated public learning paths to support Data 360 adoption, governance, and cross-cloud context strategy.",
+        resources: [
+          {
+            title: "Unlock Your Data with Data Cloud",
+            description: "Comprehensive path for Data Cloud foundations, unification, and activation.",
+            meta: "Trail · 606 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/unlock-your-data-with-data-cloud",
+          },
+          {
+            title: "Model Data in Data 360",
+            description: "Practical modeling and mapping guidance for scalable context architecture.",
+            meta: "Trail · 50 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/model-data-in-customer-data-platform",
+          },
+          {
+            title: "Administer Data 360",
+            description: "Admin-focused controls for data operations, quality, and platform readiness.",
+            meta: "Trail · 110 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/administer-customer-data-platform",
+          },
+          {
+            title: "Use Data Insights Across Salesforce",
+            description: "Expand cloud use cases by activating shared customer insight across teams.",
+            meta: "Trail · 50 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/use-data-insights-across-cloud",
+          },
         ],
       },
     ],
@@ -245,21 +312,51 @@ const sections: Section[] = [
     pill: "Domain 04",
     heading: "Headless 360",
     subhead:
-      "Headless 360 enables Salesforce capabilities on non-Salesforce digital surfaces, turning portals and apps into governed AI engagement channels without duplicative backend sprawl.",
+      "Deliver Salesforce intelligence in non-Salesforce channels without creating duplicative backend platforms or weakening governance standards.",
     topics: [
       {
         heading: "Executive Discussion Focus",
         items: [
-          "Deliver AI experiences in DISW-preferred interfaces while retaining Salesforce trust and governance controls.",
-          "Reduce integration and maintenance overhead from custom middleware-heavy patterns.",
-          "Support decoupled front-end innovation while centralizing execution, data policy, and governance.",
+          "Enable external support portal experiences with Agentforce and MCP context access.",
+          "Support Microsoft Teams-facing coworker patterns while preserving centralized trust controls.",
+          "Use Agent Fabric with MuleSoft as the integration nervous system for secure action orchestration.",
         ],
       },
       {
-        heading: "Competitive Context",
+        heading: "Strategic Positioning",
         items: [
-          "Do not force a Teams-vs-Salesforce debate; show how Salesforce can execute intelligence across heterogeneous channels.",
-          "Position Agent Fabric with MuleSoft as the integration nervous system for secure external actions.",
+          "Avoid channel wars; focus on consistent intelligence delivery across preferred user surfaces.",
+          "Keep Salesforce as the governed execution engine, not just a data repository.",
+        ],
+      },
+      {
+        heading: "Trailhead Resources (Public)",
+        subhead: "Curated public learning paths to support integration architecture, API strategy, and agentic orchestration outside the core UI shell.",
+        resources: [
+          {
+            title: "Build Great APIs and Integrations with MuleSoft",
+            description: "Core foundations for connected architecture and API-led delivery design.",
+            meta: "Trail · 60 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/great-integrations-mulesoft",
+          },
+          {
+            title: "Explore Integration Patterns and Practices",
+            description: "Pattern-based guidance for scalable and resilient enterprise integration.",
+            meta: "Trail · 130 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/explore-integration-patterns-and-practices",
+          },
+          {
+            title: "Design Event-Driven Apps for Real-Time Integration",
+            description: "Apply event-driven design for real-time orchestration across systems.",
+            meta: "Trail · 470 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/design-eventdriven-apps-for-realtime-integration",
+          },
+          {
+            title: "Agentic Integration with MuleSoft Vibes",
+            description: "Quick-start module for applying agentic AI concepts in integration workflows.",
+            meta: "Module · 10 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/modules/agentic-integration-with-mulesoft-vibes",
+          },
         ],
       },
     ],
@@ -291,6 +388,36 @@ const sections: Section[] = [
         items: [
           "Observability gives IT strategy leaders a concrete way to prove AI value and manage risk over time.",
           "Supports governance reporting required for cross-org scaling and enterprise confidence.",
+        ],
+      },
+      {
+        heading: "Trailhead Resources (Public)",
+        subhead: "Curated public learning paths for monitoring, quality control, and production governance across agentic implementations.",
+        resources: [
+          {
+            title: "Agent Analytics and Monitoring",
+            description: "Monitor agent performance and apply data-driven improvements to outcomes.",
+            meta: "Module · 30 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/modules/agent-analytics-and-monitoring",
+          },
+          {
+            title: "Event Monitoring Basics",
+            description: "Use low-code Event Monitoring capabilities for security and operational visibility.",
+            meta: "Module · 40 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/modules/event-monitoring-basics",
+          },
+          {
+            title: "Event Monitoring Analytics App",
+            description: "Visualize event log data to track risk, usage, and performance signals.",
+            meta: "Module · 45 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/modules/event_monitoring_analytics",
+          },
+          {
+            title: "Apex Testing",
+            description: "Strengthen delivery confidence with robust unit testing and quality checks.",
+            meta: "Module · 135 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/modules/apex_testing",
+          },
         ],
       },
     ],
@@ -386,6 +513,48 @@ const sections: Section[] = [
         ],
       },
       {
+        heading: "COE Enablement Plan by Phase (Public Trailhead)",
+        subhead: "Sequence capability building across IT roles so the Center of Excellence can move from pilot support to enterprise-scale governance.",
+        resources: [
+          {
+            title: "Phase 1 · Build Your Administrator Career on Salesforce",
+            description: "Establish admin-led platform fluency for secure configuration and operational ownership.",
+            meta: "Trail · 910 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/build-your-admin-career-on-salesforce",
+          },
+          {
+            title: "Phase 1 · Get Started with Prompts and Prompt Builder",
+            description: "Build shared prompt design and governance fundamentals across delivery teams.",
+            meta: "Trail · 80 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/get-started-with-prompts-and-prompt-studio",
+          },
+          {
+            title: "Phase 2 · Build Agentforce Solutions with Pro-Code Tools",
+            description: "Enable developers and architects to deliver production-grade agent workflows faster.",
+            meta: "Trail · 1130 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/build-agentforce-solutions-with-pro-code-tools",
+          },
+          {
+            title: "Phase 2 · Unlock Your Data with Data Cloud",
+            description: "Build shared data-context capabilities required for grounded, cross-cloud agent outcomes.",
+            meta: "Trail · 606 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/unlock-your-data-with-data-cloud",
+          },
+          {
+            title: "Phase 3 · Build Your Architect Career on Salesforce",
+            description: "Scale architecture standards, reference patterns, and cross-org governance rigor.",
+            meta: "Trail · 355 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/salesforce-architect-careers",
+          },
+          {
+            title: "Phase 3 · Agent Analytics and Monitoring",
+            description: "Operationalize learning loops and quality controls for sustained business outcomes.",
+            meta: "Module · 30 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/modules/agent-analytics-and-monitoring",
+          },
+        ],
+      },
+      {
         heading: "Executive Call-to-Action",
         items: [
           "Commit to a formal training and enablement program for DISW IT leaders and delivery teams.",
@@ -432,6 +601,48 @@ const sections: Section[] = [
           "Data and AI: Data 360, Agentforce grounding, observability metrics.",
           "Integration: Agent Fabric and MuleSoft action orchestration.",
           "Service and Revenue: support, renewals, quoting, and compliance domains.",
+        ],
+      },
+      {
+        heading: "Trailhead Learning Path by Delivery Phase (Public)",
+        subhead: "Use these curated resources to align enablement sequencing with the same phased delivery model used in the capability roadmap.",
+        resources: [
+          {
+            title: "Phase 1 · Agentforce Vibes IDE Fundamentals",
+            description: "Rapid builder enablement for pro-code collaboration and AI-assisted development patterns.",
+            meta: "Module · 25 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/modules/agentforce-vibes-ide-fundamentals",
+          },
+          {
+            title: "Phase 1 · Get Started with Prompts and Prompt Builder",
+            description: "Establish prompt-design fundamentals required for trusted, repeatable embedded AI usage.",
+            meta: "Trail · 80 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/get-started-with-prompts-and-prompt-studio",
+          },
+          {
+            title: "Phase 2 · Build Agentforce Solutions with Pro-Code Tools",
+            description: "Deep execution path for building, testing, and deploying production-ready Agentforce solutions.",
+            meta: "Trail · 1130 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/build-agentforce-solutions-with-pro-code-tools",
+          },
+          {
+            title: "Phase 2 · Unlock Your Data with Data Cloud",
+            description: "Build the unified data context needed for grounding, personalization, and cross-cloud decisions.",
+            meta: "Trail · 606 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/unlock-your-data-with-data-cloud",
+          },
+          {
+            title: "Phase 3 · Explore Integration Patterns and Practices",
+            description: "Scale architecture through integration patterns that reduce complexity and improve resilience.",
+            meta: "Trail · 130 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/explore-integration-patterns-and-practices",
+          },
+          {
+            title: "Phase 3 · Agent Analytics and Monitoring",
+            description: "Operationalize learning loops with agent monitoring and continuous outcome improvement.",
+            meta: "Module · 30 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/modules/agent-analytics-and-monitoring",
+          },
         ],
       },
     ],
