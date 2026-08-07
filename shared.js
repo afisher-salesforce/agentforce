@@ -19,6 +19,7 @@ const NAV_SECTIONS = [
     title: "Architecture",
     links: [
       { href: "capability-map.html", label: "Capability Map & Sequencing" },
+      { href: "genai-divide.html", label: "Crossing the GenAI Divide" },
       { href: "operating-model.html", label: "Operating Model & Next Steps" }
     ]
   },
@@ -45,6 +46,7 @@ const SEARCH_INDEX = [
   { code: "COW", name: "Agentforce Coworker Summary Agent", description: "Summarization and preparation layer surfaced in Salesforce and Microsoft Teams channels.", location: "Operating Model", pageTitle: "Operating Model", pageHref: "operating-model.html" },
   { code: "VIB", name: "Vibe Coding Delivery Acceleration", description: "Developer acceleration using Vibes and Claude Code to speed Salesforce configuration and implementation cycles.", location: "Operating Model", pageTitle: "Operating Model", pageHref: "operating-model.html" },
   { code: "COE", name: "Salesforce AI Center of Excellence", description: "Cross-functional governance and delivery model spanning support, security, development, testing, and IT strategy.", location: "Operating Model", pageTitle: "Operating Model", pageHref: "operating-model.html" }
+  ,{ code: "GAD", name: "GenAI Divide Strategic Framework", description: "Framework for moving from pilot activity to measurable P&L outcomes through process-specific, learning-capable implementation patterns.", location: "Crossing the GenAI Divide", pageTitle: "Crossing the GenAI Divide", pageHref: "genai-divide.html" }
 ];
 
 function initSite() {
