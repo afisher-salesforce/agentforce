@@ -92,6 +92,13 @@ const sections: Section[] = [
           "No formal Salesforce Center of Excellence currently standardizes best practices and reusable delivery patterns.",
         ],
       },
+      {
+        heading: "Why This Matters Now",
+        items: [
+          "Recent market evidence shows most GenAI pilots do not create measurable P&L value without process-specific implementation and learning-loop design.",
+          "This workshop prioritizes the execution approach needed to avoid pilot stagnation and drive measurable enterprise outcomes.",
+        ],
+      },
     ],
   },
   {
@@ -233,6 +240,13 @@ const sections: Section[] = [
         ],
       },
       {
+        heading: "Learning Loop Imperative",
+        items: [
+          "Observability is the mechanism that converts pilot activity into learning-capable systems with sustained business value.",
+          "Feedback capture and score-driven iteration should be treated as required architecture, not post-launch optimization.",
+        ],
+      },
+      {
         heading: "Leadership Relevance",
         items: [
           "Observability gives IT strategy leaders a concrete way to prove AI value and manage risk over time.",
@@ -325,6 +339,13 @@ const sections: Section[] = [
         ],
       },
       {
+        heading: "Outcome Governance Standard",
+        items: [
+          "Every pilot should include baseline metrics, feedback loops, and predefined scale criteria before launch.",
+          "Prioritize process fit and measurable business outcomes over model novelty or software benchmark scores.",
+        ],
+      },
+      {
         heading: "Executive Call-to-Action",
         items: [
           "Commit to a formal training and enablement program for DISW IT leaders and delivery teams.",
@@ -376,6 +397,55 @@ const sections: Section[] = [
     ],
   },
   {
+    id: "genai-divide",
+    pill: "Strategic Signal",
+    heading: "Crossing the GenAI Divide: From Pilots to P&L Impact",
+    subhead:
+      "Enterprise GenAI investment is substantial, but measurable outcomes remain concentrated in a small minority. The key differentiator is implementation approach, process integration, and learning-loop design.",
+    topics: [
+      {
+        heading: "What the Data Indicates",
+        items: [
+          "95% of organizations report no measurable P&L impact from integrated GenAI pilots.",
+          "5% are generating multi-million-dollar value from targeted implementations.",
+          "80%+ explored general productivity tools, yet many outcomes remain individual-efficiency oriented instead of enterprise-financial.",
+          "Most enterprise-system evaluations fail to reach production due to brittle workflows and weak operational fit.",
+        ],
+      },
+      {
+        heading: "Four Patterns Behind the Divide",
+        items: [
+          "Limited disruption: structural transformation is concentrated in only a few sectors.",
+          "Enterprise paradox: large firms lead in pilots but lag in repeatable scale-up.",
+          "Investment bias: spending favors visible top-line use cases over high-ROI back-office processes.",
+          "Implementation advantage: external partnership-led execution reports materially higher success rates than internal-only builds.",
+        ],
+      },
+      {
+        heading: "Root Cause",
+        items: [
+          "The principal scaling barrier is learning behavior. Systems that do not retain feedback, adapt to context, and improve over time fail to create durable business outcomes.",
+        ],
+      },
+      {
+        heading: "DISW Implications",
+        items: [
+          "Prioritize process-specific use cases with baseline metrics, measurable outcomes, and governance owners.",
+          "Use architecture that integrates with existing workflows and operational systems instead of isolated assistants.",
+          "Evaluate success using retention, conversion, cycle-time, and cost-to-serve outcomes rather than software benchmarks.",
+        ],
+      },
+      {
+        heading: "Action Principles for Crossing the Divide",
+        items: [
+          "Target workflows with operational pain and direct business accountability.",
+          "Pair enablement with observability to create measurable learning loops from day one.",
+          "Scale through COE-led standards for architecture, testing, and policy guardrails.",
+        ],
+      },
+    ],
+  },
+  {
     id: "forward-looking-statement",
     pill: "Appendix",
     heading: "Forward Looking Statement",
@@ -416,6 +486,7 @@ const navGroups = [
     links: [
       { id: "decision-framework", label: "Decision Framework" },
       { id: "capability-map", label: "Capability Map & Sequencing" },
+      { id: "genai-divide", label: "Crossing the GenAI Divide" },
       { id: "operating-model", label: "Operating Model & Next Steps" },
     ],
   },
