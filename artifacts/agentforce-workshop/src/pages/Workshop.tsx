@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Menu, X, CheckCircle2, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import heroDISW from "@assets/hero-disw.png";
-import sfLogo from "@assets/salesforce-logo-badge.svg";
+import sfLogo from "@assets/salesforce-logo.jpg";
 
 type TopicZone = {
   heading: string;
@@ -535,11 +535,13 @@ export default function Workshop() {
             <p className="text-xs text-muted-foreground mt-1 leading-snug">
               Siemens DISW IT Leadership Executive Discussion
             </p>
-            <img
-              src={sfLogo}
-              alt="Salesforce"
-              className="mt-4 h-7 w-auto opacity-80"
-            />
+            <div className="mt-5 inline-block rounded-[3px] px-[9px] py-[5px] bg-white">
+              <img
+                src={sfLogo}
+                alt="Salesforce logo"
+                className="block h-5 w-auto"
+              />
+            </div>
           </div>
 
           {/* Grouped Nav */}
