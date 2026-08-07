@@ -3,9 +3,18 @@ import { Menu, X, CheckCircle2, PanelLeftClose, PanelLeftOpen } from 'lucide-rea
 import heroDISW from "@assets/hero-disw.png";
 import sfLogo from "@assets/salesforce-logo.jpg";
 
+type ResourceCard = {
+  title: string;
+  description: string;
+  meta: string;
+  href: string;
+};
+
 type TopicZone = {
   heading: string;
-  items: string[];
+  subhead?: string;
+  items?: string[];
+  resources?: ResourceCard[];
 };
 
 type Card = {
@@ -173,6 +182,36 @@ const sections: Section[] = [
           "Acknowledge CPQ+ limitations for native agentic extensibility and API flexibility.",
           "Position Agentforce for Revenue Management pilot as the strategic bridge to modern quoting AI capabilities.",
           "Tie urgency to SELA consumption and value realization rather than product replacement rhetoric.",
+        ],
+      },
+      {
+        heading: "Trailhead Resources (Public)",
+        subhead: "Curated enablement links grounded in current Trailhead search results to accelerate Agentforce readiness for DISW IT builders and architects.",
+        resources: [
+          {
+            title: "Build Agentforce Solutions with Pro-Code Tools",
+            description: "Comprehensive path for developing, testing, and deploying production Agentforce solutions.",
+            meta: "Trail · 1130 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/trails/build-agentforce-solutions-with-pro-code-tools",
+          },
+          {
+            title: "Agent Customization with Apex",
+            description: "Practical module on creating custom agent actions and extending behavior with Apex.",
+            meta: "Module · 30 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/modules/agent-customization-with-apex",
+          },
+          {
+            title: "Build an Agent Using Agentforce DX",
+            description: "Hands-on project for creating and deploying a custom AI agent with pro-code tools.",
+            meta: "Project · 35 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/projects/create-an-agent-using-pro-code-tools",
+          },
+          {
+            title: "Apex Testing",
+            description: "Core unit testing practices to improve reliability, deployment quality, and production confidence.",
+            meta: "Module · 135 min",
+            href: "https://trailhead.salesforce.com/en/content/learn/modules/apex_testing",
+          },
         ],
       },
     ],
@@ -749,20 +788,42 @@ export default function Workshop() {
                       key={tIdx}
                       className={`p-8 md:p-12 bg-black/20 ${tIdx < section.topics.length - 1 ? "border-b border-border/40" : ""}`}
                     >
-                      <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-foreground/70 mb-6 flex items-center gap-3">
+                      <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-foreground/70 mb-3 flex items-center gap-3">
                         <span className="h-px w-6 bg-accent/40 flex-shrink-0" />
                         {topic.heading}
                       </h3>
-                      <ul className="space-y-4">
-                        {topic.items.map((item, iIdx) => (
-                          <li key={iIdx} className="flex items-start gap-4" data-testid={`item-${section.id}-${tIdx}-${iIdx}`}>
-                            <div className="mt-0.5 flex-shrink-0 bg-accent/10 p-1 rounded-full">
-                              <CheckCircle2 size={15} className="text-accent" />
-                            </div>
-                            <p className="text-sm text-muted-foreground leading-relaxed">{item}</p>
-                          </li>
-                        ))}
-                      </ul>
+                      {topic.subhead && (
+                        <p className="text-sm text-muted-foreground leading-relaxed mb-5">{topic.subhead}</p>
+                      )}
+                      {topic.resources ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {topic.resources.map((res, rIdx) => (
+                            <a
+                              key={rIdx}
+                              href={res.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block rounded-xl border border-border bg-background/40 p-5 hover:border-accent/40 hover:bg-accent/5 transition-all group"
+                              data-testid={`resource-${section.id}-${tIdx}-${rIdx}`}
+                            >
+                              <p className="text-sm font-semibold text-foreground mb-2 group-hover:text-accent transition-colors leading-snug">{res.title}</p>
+                              <p className="text-xs text-muted-foreground leading-relaxed mb-3">{res.description}</p>
+                              <p className="text-[10px] font-medium text-accent/70 uppercase tracking-widest">{res.meta}</p>
+                            </a>
+                          ))}
+                        </div>
+                      ) : (
+                        <ul className="space-y-4">
+                          {(topic.items ?? []).map((item, iIdx) => (
+                            <li key={iIdx} className="flex items-start gap-4" data-testid={`item-${section.id}-${tIdx}-${iIdx}`}>
+                              <div className="mt-0.5 flex-shrink-0 bg-accent/10 p-1 rounded-full">
+                                <CheckCircle2 size={15} className="text-accent" />
+                              </div>
+                              <p className="text-sm text-muted-foreground leading-relaxed">{item}</p>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
                   ))}
                 </>
