@@ -84,11 +84,6 @@ function initNav() {
     localStorage.setItem("afw-nav-collapsed", collapsed ? "1" : "0");
     syncToggle(toggle);
   });
-
-  const navFooter = document.querySelector(".nav-footer");
-  if (navFooter) {
-    navFooter.innerHTML = "<img src=\"assets/salesforce-logo-badge.svg\" alt=\"Salesforce logo\" />";
-  }
 }
 
 function syncToggle(toggle) {
