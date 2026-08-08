@@ -104,7 +104,7 @@ function PageView({ path }) {
           <div className="hero-content">
             <span className="pill">{data.pill}</span>
             <h2>{data.title}</h2>
-            <p className="subhead">{data.subhead}</p>
+            {data.subhead ? <p className="subhead">{data.subhead}</p> : null}
           </div>
         </section>
       )}
@@ -114,7 +114,7 @@ function PageView({ path }) {
           <div className="pad">
             <span className="pill">{data.pill}</span>
             <h2>{data.title}</h2>
-            <p className="subhead">{data.subhead}</p>
+            {data.subhead ? <p className="subhead">{data.subhead}</p> : null}
           </div>
         )}
         {data.sections.map((section) => (
