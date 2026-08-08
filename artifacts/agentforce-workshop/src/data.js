@@ -90,11 +90,51 @@ export const pages = {
     subhead: "Move from pilot-heavy experimentation to measurable enterprise value through workflow-specific design and learning-system architecture.",
     sections: [
       {
-        title: "Enterprise Snapshot",
+        title: "Executive Snapshot",
         cards: [
-          { title: "95% See No Return", body: "Most integrated GenAI pilots never progress into measurable P&L impact." },
-          { title: "5% Capture Value", body: "A small set of organizations consistently generate multi-million-dollar outcomes." },
-          { title: "Execution Gap", body: "The largest blocker is implementation quality, not model quality." },
+          { title: "Market Reality", body: "Despite significant enterprise investment, most integrated GenAI pilots still show no measurable financial return." },
+          { title: "The Divide", body: "A small group is extracting million-dollar outcomes, while most organizations remain pilot-heavy and production-light." },
+        ],
+      },
+      {
+        title: "What the Data Indicates",
+        cards: [
+          { title: "95%", body: "of organizations report no measurable P&L impact from integrated GenAI pilots." },
+          { title: "5%", body: "are generating multi-million-dollar value from targeted implementations." },
+          { title: "80%+ Explored", body: "general productivity tools, yet many outcomes remain individual-efficiency oriented instead of enterprise-financial." },
+          { title: "60% to 5% Funnel", body: "Most enterprise-system evaluations fail to reach production due to brittle workflows and weak operational fit." },
+        ],
+      },
+      {
+        title: "Four Patterns Behind the Divide",
+        bullets: [
+          "Limited disruption: structural transformation is concentrated in only a few sectors.",
+          "Enterprise paradox: large firms lead in pilots but lag in repeatable scale-up.",
+          "Investment bias: spending favors visible top-line use cases over high-ROI back-office processes.",
+          "Implementation advantage: external partnership-led execution reports materially higher success rates than internal-only builds.",
+        ],
+      },
+      {
+        title: "Root Cause",
+        bullets: [
+          "The principal scaling barrier is learning behavior, not model sophistication.",
+          "Systems that do not retain feedback, adapt to context, and improve over time fail to create durable business outcomes.",
+        ],
+      },
+      {
+        title: "DISW Implications",
+        bullets: [
+          "Prioritize process-specific use cases with baseline metrics, measurable outcomes, and governance owners.",
+          "Use architecture that integrates with existing workflows and operational systems instead of isolated assistants.",
+          "Evaluate success using retention, conversion, cycle-time, and cost-to-serve outcomes rather than software benchmarks.",
+        ],
+      },
+      {
+        title: "Action Principles for Crossing the Divide",
+        bullets: [
+          "Target workflows with operational pain and direct business accountability.",
+          "Pair enablement with observability to create measurable learning loops from day one.",
+          "Scale through COE-led standards for architecture, testing, and policy guardrails.",
         ],
       },
     ],
@@ -105,6 +145,22 @@ export const pages = {
     title: "Embedded AI",
     subhead: "Improve decision velocity inside existing Salesforce workflows without forcing users into separate tools.",
     sections: [
+      {
+        title: "Executive Discussion Focus",
+        bullets: [
+          "Reduce repetitive work across support and operations with guided copilots.",
+          "Standardize recommendations while preserving human decision authority for sensitive actions.",
+          "Build confidence through prompt governance and repeatable release controls.",
+        ],
+      },
+      {
+        title: "Potential DISW Fit",
+        bullets: [
+          "Support case triage and summary generation.",
+          "Internal preparation and handoff copilots for service and revenue teams.",
+          "Knowledge-assisted decision support for application support and IT strategy reviews.",
+        ],
+      },
       {
         title: "Executive Value",
         cards: [
@@ -152,6 +208,22 @@ export const pages = {
     subhead: "Deploy enterprise-grade agents with governed actions, trusted grounding, and measurable operational outcomes.",
     sections: [
       {
+        title: "Executive Discussion Focus",
+        bullets: [
+          "Show concept-to-deployment flow: Vibe Coding to Agentforce runtime with trust controls.",
+          "Reframe development value toward architecture and orchestration, not manual boilerplate.",
+          "Prioritize use cases needing reasoning across multiple systems and ambiguous inputs.",
+        ],
+      },
+      {
+        title: "CPQ+ Bridge Strategy",
+        bullets: [
+          "CPQ+ constraints limit native agentic extensibility.",
+          "Agentforce for Revenue Management pilot is the modernization path for internal quoting agents.",
+          "Use this bridge to increase SELA value realization instead of defending legacy boundaries.",
+        ],
+      },
+      {
         title: "Executive Value",
         cards: [
           { title: "Actionable Agents", body: "Move from passive assistants to task-completing agents with business controls." },
@@ -197,6 +269,21 @@ export const pages = {
     title: "Data 360",
     subhead: "Unify the context agents need to act with confidence across Salesforce, SAP, and adjacent systems.",
     sections: [
+      {
+        title: "Executive Discussion Focus",
+        bullets: [
+          "Improve answer quality and escalation decisions with cross-system context.",
+          "Use zero-copy patterns to reduce data duplication and integration debt.",
+          "Support support-portal and renewal scenarios with a shared intelligence layer.",
+        ],
+      },
+      {
+        title: "Objection Handling",
+        bullets: [
+          "Address consumption concerns through value-backed use-case prioritization and unmetered capability planning where applicable.",
+          "Compare against custom data-engineering alternatives on speed, governance, and long-term maintainability.",
+        ],
+      },
       {
         title: "Executive Value",
         cards: [
@@ -244,6 +331,21 @@ export const pages = {
     subhead: "Deliver Salesforce-powered intelligence across external touchpoints without duplicating business logic.",
     sections: [
       {
+        title: "Executive Discussion Focus",
+        bullets: [
+          "Enable external support portal experiences with Agentforce and MCP context access.",
+          "Support Microsoft Teams-facing coworker patterns while preserving centralized trust controls.",
+          "Use Agent Fabric with MuleSoft as the integration nervous system for secure action orchestration.",
+        ],
+      },
+      {
+        title: "Strategic Positioning",
+        bullets: [
+          "Avoid channel wars; focus on consistent intelligence delivery across preferred user surfaces.",
+          "Keep Salesforce as the governed execution engine, not just a data repository.",
+        ],
+      },
+      {
         title: "Executive Value",
         cards: [
           { title: "Channel Flexibility", body: "Expose consistent intelligence in portals and custom experiences." },
@@ -289,6 +391,28 @@ export const pages = {
     title: "Observability",
     subhead: "Create learning loops that convert pilot activity into reliable, scalable business outcomes.",
     sections: [
+      {
+        title: "Executive Discussion Focus",
+        bullets: [
+          "Track containment, quality, escalation, and cycle-time trends in business and IT terms.",
+          "Operationalize build, test, deploy, observe, and optimize as a repeatable lifecycle.",
+          "Use evidence-based telemetry to improve confidence and budget support over time.",
+        ],
+      },
+      {
+        title: "Learning Loop Imperative",
+        bullets: [
+          "Observability is the mechanism that converts pilot activity into learning-capable systems with sustained business value.",
+          "Feedback capture and score-driven iteration should be treated as required architecture, not post-launch optimization.",
+        ],
+      },
+      {
+        title: "Why Leadership Cares",
+        bullets: [
+          "Observability turns AI from a leap of faith into a governed performance system.",
+          "Cross-org reporting enables consistent quality expectations despite multi-org complexity.",
+        ],
+      },
       {
         title: "Executive Value",
         cards: [
@@ -449,14 +573,66 @@ export const pages = {
   "/external-research": {
     pill: "Appendix",
     title: "External Research",
-    subhead: "DISW transformation signals indicate urgency for governed automation, data unification, and speed of execution.",
+    subhead: "Public and account-level research indicates DISW is balancing SaaS transition, post-M&A integration, and AI-led growth targets, creating strong demand for governed automation and unified data context.",
     sections: [
       {
-        title: "Alignment Signals",
+        title: "Siemens DISW Overview",
+        cards: [
+          {
+            title: "Scale and Scope",
+            body: "DISW operates as a global software business with broad product breadth, complex enterprise operations, and a high expectation for execution consistency across regions.",
+          },
+          {
+            title: "Transformation Moment",
+            body: "The business is actively balancing SaaS transition, post-acquisition integration, and AI-led growth objectives under margin pressure.",
+          },
+          {
+            title: "IT Imperative",
+            body: "Corporate IT is expected to move from tool support toward platform governance, capability reuse, and measurable value realization.",
+          },
+        ],
+      },
+      {
+        title: "Business and Transformation Signals",
         bullets: [
-          "SaaS transition increases retention sensitivity and recurring-value pressure.",
-          "Post-M&A integration amplifies need for unified data and process harmonization.",
-          "AI investment is increasing while margin discipline and complexity constraints remain.",
+          "DISW is transitioning from perpetual licensing toward SaaS/subscription, increasing retention and expansion sensitivity.",
+          "Continuing acquisitions increase urgency for customer data unification and process harmonization.",
+          "Digital business growth and AI investment are high while margin and complexity pressures remain.",
+          "Leadership expectations emphasize platform rationalization and accelerated time-to-value for enterprise initiatives.",
+        ],
+      },
+      {
+        title: "Competitive and Platform Dynamics",
+        cards: [
+          {
+            title: "Competing Stack Pressure",
+            body: "DISW must balance Salesforce acceleration with SAP, Microsoft, and open-source initiatives already influencing stakeholder preferences.",
+          },
+          {
+            title: "Buy-vs-Build Decision Lens",
+            body: "Service cost, internal capability constraints, and speed-to-market pressure require pragmatic architecture decisions and reusable patterns.",
+          },
+          {
+            title: "SELA Opportunity",
+            body: "The existing enterprise commitment creates a strong path to scale if capability consumption and governance become execution standards.",
+          },
+        ],
+      },
+      {
+        title: "Implications for This Discussion",
+        bullets: [
+          "Anchor discussion in architecture and operating model decisions, not isolated feature demos.",
+          "Frame Salesforce AI as the path to execution speed within an already-approved global platform commitment.",
+          "Position measurable progress around use-case adoption and capability consumption rather than customer-specific metrics.",
+          "Use phased enablement and governance motions to convert interest into repeatable production outcomes.",
+        ],
+      },
+      {
+        title: "Decision Prompts for IT Leadership",
+        bullets: [
+          "Which 2-3 workflows have the strongest blend of business urgency and operational feasibility for near-term pilots?",
+          "What governance controls are mandatory before scaling from pilot to broad rollout across multiple orgs?",
+          "Where should partner-led acceleration be used to close capability gaps without delaying execution?",
         ],
       },
     ],
@@ -465,7 +641,7 @@ export const pages = {
   "/forward-looking-statement": {
     pill: "Appendix",
     title: "Forward Looking Statement",
-    subhead: "Approved legal language is reproduced below verbatim.",
+    subhead: "",
     sections: [
       {
         title: "Legal Statement",
