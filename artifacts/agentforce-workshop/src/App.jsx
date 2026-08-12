@@ -1,9 +1,168 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { ClerkProvider, SignIn, SignUp, Show, useClerk, useUser } from "@clerk/react";
+import { publishableKeyFromHost } from "@clerk/react/internal";
+import { dark } from "@clerk/themes";
+import { Switch, Route, Link, Redirect, useLocation, Router as WouterRouter } from "wouter";
 import { navSections, pages, routeOrder, searchIndex } from "./data";
 
+// ── Clerk setup (verbatim) ────────────────────────────────────────────────────
+const clerkPubKey = publishableKeyFromHost(
+  window.location.hostname,
+  import.meta.env.VITE_CLERK_PUBLISHABLE_KEY,
+);
+const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+function stripBase(path) {
+  return basePath && path.startsWith(basePath) ? path.slice(basePath.length) || "/" : path;
+}
+
+// ── Appearance ────────────────────────────────────────────────────────────────
+const clerkAppearance = {
+  theme: dark,
+  options: {
+    logoPlacement: "inside",
+    logoLinkUrl: basePath || "/",
+    logoImageUrl: `${window.location.origin}${basePath}/logo.svg`,
+  },
+  variables: {
+    colorPrimary: "#009999",
+    colorForeground: "#e2e8f0",
+    colorMutedForeground: "#94a3b8",
+    colorDanger: "#ef4444",
+    colorBackground: "#0d1117",
+    colorInput: "#161b22",
+    colorInputForeground: "#e2e8f0",
+    colorNeutral: "#30363d",
+    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    borderRadius: "0.375rem",
+  },
+  elements: {
+    rootBox: { width: "100%", display: "flex", justifyContent: "center" },
+    cardBox: {
+      backgroundColor: "#161b22",
+      borderRadius: "0.75rem",
+      width: "440px",
+      maxWidth: "100%",
+      overflow: "hidden",
+      border: "1px solid #30363d",
+    },
+    card: { boxShadow: "none", border: "none", backgroundColor: "transparent", borderRadius: "0" },
+    footer: { boxShadow: "none", border: "none", backgroundColor: "transparent", borderRadius: "0" },
+    headerTitle: { color: "#e2e8f0" },
+    headerSubtitle: { color: "#94a3b8" },
+    socialButtonsBlockButtonText: { color: "#e2e8f0" },
+    formFieldLabel: { color: "#94a3b8" },
+    footerActionLink: { color: "#009999" },
+    footerActionText: { color: "#94a3b8" },
+    dividerText: { color: "#94a3b8" },
+    identityPreviewEditButton: { color: "#009999" },
+    formFieldSuccessText: { color: "#22c55e" },
+    alertText: { color: "#e2e8f0" },
+    logoBox: { marginBottom: "0.5rem" },
+    logoImage: { height: "48px" },
+    socialButtonsBlockButton: { borderColor: "#30363d", backgroundColor: "#0d1117" },
+    formButtonPrimary: { backgroundColor: "#009999", color: "#ffffff" },
+    formFieldInput: { backgroundColor: "#0d1117", borderColor: "#30363d", color: "#e2e8f0" },
+    dividerLine: { backgroundColor: "#30363d" },
+    alert: { backgroundColor: "#161b22" },
+    otpCodeFieldInput: { backgroundColor: "#0d1117", borderColor: "#30363d", color: "#e2e8f0" },
+    formFieldRow: {},
+    main: {},
+    footerAction: {},
+  },
+};
+
+// ── Auth pages ────────────────────────────────────────────────────────────────
+function SignInPage() {
+  return (
+    <div style={{
+      display: "flex",
+      minHeight: "100dvh",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#0d1117",
+      padding: "1rem",
+    }}>
+      <SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} />
+    </div>
+  );
+}
+
+function SignUpPage() {
+  return (
+    <div style={{
+      display: "flex",
+      minHeight: "100dvh",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#0d1117",
+      padding: "1rem",
+    }}>
+      <SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} />
+    </div>
+  );
+}
+
+// ── Landing (home for signed-out users) ───────────────────────────────────────
+function Landing() {
+  return (
+    <div style={{
+      minHeight: "100dvh",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#0d1117",
+      gap: "2rem",
+    }}>
+      <div style={{ textAlign: "center" }}>
+        <img
+          src="/siemens-favicon.png"
+          alt="Siemens"
+          style={{ width: "64px", height: "64px", borderRadius: "12px", marginBottom: "1.5rem" }}
+        />
+        <h1 style={{ color: "#e2e8f0", fontSize: "1.75rem", fontWeight: "700", margin: 0 }}>
+          Agentforce Workshop
+        </h1>
+        <p style={{ color: "#94a3b8", marginTop: "0.5rem" }}>
+          Siemens DISW IT Leadership Executive Discussion
+        </p>
+      </div>
+      <Link
+        href="/sign-in"
+        style={{
+          padding: "0.75rem 2rem",
+          backgroundColor: "#009999",
+          color: "#ffffff",
+          borderRadius: "0.375rem",
+          textDecoration: "none",
+          fontWeight: "600",
+          fontSize: "0.9375rem",
+        }}
+      >
+        Sign In to Continue
+      </Link>
+    </div>
+  );
+}
+
+function HomeRoute() {
+  return (
+    <>
+      <Show when="signed-in">
+        <Redirect to="/executive-summary" />
+      </Show>
+      <Show when="signed-out">
+        <Landing />
+      </Show>
+    </>
+  );
+}
+
+// ── Search ────────────────────────────────────────────────────────────────────
 function SearchCard() {
-  const navigate = useNavigate();
+  const [, setLocation] = useLocation();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
@@ -24,7 +183,7 @@ function SearchCard() {
 
   function go(item) {
     if (!item) return;
-    navigate(item.path);
+    setLocation(item.path);
     setOpen(false);
   }
 
@@ -89,6 +248,7 @@ function SearchCard() {
   );
 }
 
+// ── Page content ──────────────────────────────────────────────────────────────
 function PageView({ path }) {
   const data = pages[path];
   const idx = routeOrder.indexOf(path);
@@ -108,7 +268,6 @@ function PageView({ path }) {
           </div>
         </section>
       )}
-
       <section className="panel">
         {!data.hero && (
           <div className="pad">
@@ -158,18 +317,19 @@ function PageView({ path }) {
           </div>
         ))}
       </section>
-
       <div className="flow-nav">
-        <Link to={prev}>Previous: {prevLabel}</Link>
-        <Link to={next}>Next: {nextLabel}</Link>
+        <Link href={prev}>Previous: {prevLabel}</Link>
+        <Link href={next}>Next: {nextLabel}</Link>
       </div>
     </div>
   );
 }
 
-export default function App() {
-  const location = useLocation();
-  const navigate = useNavigate();
+// ── Protected app shell (rendered only when signed in) ────────────────────────
+function AppShell() {
+  const [location, setLocation] = useLocation();
+  const { signOut } = useClerk();
+  const { user } = useUser();
   const [collapsed, setCollapsed] = useState(false);
   const [presentationMode, setPresentationMode] = useState(false);
 
@@ -188,17 +348,17 @@ export default function App() {
         setPresentationMode((prev) => !prev);
       }
       if (event.key === "ArrowRight") {
-        const idx = routeOrder.indexOf(location.pathname);
-        if (idx >= 0) navigate(routeOrder[(idx + 1) % routeOrder.length]);
+        const idx = routeOrder.indexOf(location);
+        if (idx >= 0) setLocation(routeOrder[(idx + 1) % routeOrder.length]);
       }
       if (event.key === "ArrowLeft") {
-        const idx = routeOrder.indexOf(location.pathname);
-        if (idx >= 0) navigate(routeOrder[(idx - 1 + routeOrder.length) % routeOrder.length]);
+        const idx = routeOrder.indexOf(location);
+        if (idx >= 0) setLocation(routeOrder[(idx - 1 + routeOrder.length) % routeOrder.length]);
       }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [location.pathname, navigate]);
+  }, [location, setLocation]);
 
   return (
     <div className={`app-shell ${collapsed ? "nav-collapsed" : ""} ${presentationMode ? "presentation" : ""}`}>
@@ -216,15 +376,30 @@ export default function App() {
             <p className="nav-title">{section.title}</p>
             {section.links.map((link) => (
               <Link
-                className={`nav-link ${location.pathname === link.path ? "active" : ""}`}
+                className={`nav-link ${location === link.path ? "active" : ""}`}
                 key={link.path}
-                to={link.path}
+                href={link.path}
               >
                 {link.label}
               </Link>
             ))}
           </div>
         ))}
+        <div className="nav-group" style={{ marginTop: "auto", paddingTop: "1rem", borderTop: "1px solid #1e293b" }}>
+          {user?.primaryEmailAddress?.emailAddress && (
+            <p style={{ fontSize: "0.75rem", color: "#64748b", padding: "0 0.75rem 0.5rem", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              {user.primaryEmailAddress.emailAddress}
+            </p>
+          )}
+          <button
+            className="nav-link"
+            style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", width: "100%", color: "#94a3b8" }}
+            onClick={() => signOut({ redirectUrl: basePath || "/" })}
+            type="button"
+          >
+            Sign Out
+          </button>
+        </div>
       </aside>
       <main className="main">
         <div className="controls-row">
@@ -235,13 +410,72 @@ export default function App() {
             {presentationMode ? "Exit Presentation Mode" : "Presentation Mode"}
           </button>
         </div>
-        <Routes>
+        <Switch>
           {routeOrder.map((path) => (
-            <Route key={path} path={path} element={<PageView path={path} />} />
+            <Route key={path} path={path}>
+              <PageView path={path} />
+            </Route>
           ))}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+          <Route>
+            <Redirect to={routeOrder[0]} />
+          </Route>
+        </Switch>
       </main>
     </div>
+  );
+}
+
+// ── Root router with Clerk ────────────────────────────────────────────────────
+function ClerkProviderWithRoutes() {
+  const [, setLocation] = useLocation();
+
+  return (
+    <ClerkProvider
+      publishableKey={clerkPubKey}
+      proxyUrl={clerkProxyUrl}
+      appearance={clerkAppearance}
+      signInUrl={`${basePath}/sign-in`}
+      signUpUrl={`${basePath}/sign-up`}
+      localization={{
+        signIn: {
+          start: {
+            title: "Agentforce Workshop",
+            subtitle: "Sign in to access the executive discussion",
+          },
+        },
+        signUp: {
+          start: {
+            title: "Request Access",
+            subtitle: "Create an account to join the workshop",
+          },
+        },
+      }}
+      routerPush={(to) => setLocation(stripBase(to))}
+      routerReplace={(to) => setLocation(stripBase(to), { replace: true })}
+    >
+      <Switch>
+        <Route path="/" component={HomeRoute} />
+        <Route path="/sign-in/*?" component={SignInPage} />
+        <Route path="/sign-up/*?" component={SignUpPage} />
+        <Route>
+          <>
+            <Show when="signed-in">
+              <AppShell />
+            </Show>
+            <Show when="signed-out">
+              <Redirect to="/sign-in" />
+            </Show>
+          </>
+        </Route>
+      </Switch>
+    </ClerkProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <WouterRouter base={basePath}>
+      <ClerkProviderWithRoutes />
+    </WouterRouter>
   );
 }

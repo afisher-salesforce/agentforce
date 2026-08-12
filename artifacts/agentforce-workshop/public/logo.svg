@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64">
+  <rect x="0" y="0" width="64" height="64" rx="8" fill="#009999"/>
+  <text x="32" y="50" font-family="Arial,Helvetica,sans-serif" font-size="52" font-weight="bold" fill="white" text-anchor="middle">S</text>
+  <text x="80" y="27" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="700" fill="#e2e8f0" letter-spacing="1">AGENTFORCE</text>
+  <text x="80" y="47" font-family="Arial,Helvetica,sans-serif" font-size="13" fill="#94a3b8" letter-spacing="2">WORKSHOP</text>
+</svg>
