@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ClerkProvider, SignIn, SignUp, Show, useClerk, useUser } from "@clerk/react";
 
 // Allowlist — only these email domains can access content
@@ -170,7 +170,7 @@ function Landing() {
         {/* Buttons */}
         <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.25rem" }}>
           <Link
-            href="/sign-in"
+            href={`${basePath}/sign-in`}
             style={{
               padding: "0.75rem 2rem",
               backgroundColor: "#009999",
@@ -184,7 +184,7 @@ function Landing() {
             Sign In
           </Link>
           <Link
-            href="/sign-up"
+            href={`${basePath}/sign-up`}
             style={{
               padding: "0.75rem 2rem",
               backgroundColor: "transparent",
@@ -410,9 +410,20 @@ function PageView({ path }) {
 // ── Domain enforcement ────────────────────────────────────────────────────────
 function DomainRejected() {
   const { signOut } = useClerk();
+  const hasSignedOutRef = useRef(false);
+
   useEffect(() => {
-    signOut({ redirectUrl: basePath || '/' });
+    if (hasSignedOutRef.current) return;
+    hasSignedOutRef.current = true;
+
+    // Defer sign-out one tick to avoid auth state churn loops.
+    const timer = window.setTimeout(() => {
+      void signOut({ redirectUrl: basePath || "/" });
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, [signOut]);
+
   return (
     <div style={{
       display: 'flex',
@@ -445,9 +456,24 @@ function DomainRejected() {
 }
 
 function DomainGuard() {
-  const { user } = useUser();
+  const { user, isLoaded, isSignedIn } = useUser();
+
+  if (!isLoaded) {
+    return null;
+  }
+
+  if (!isSignedIn) {
+    return null;
+  }
+
   const email = user?.primaryEmailAddress?.emailAddress ?? '';
   const domain = email.split('@')[1]?.toLowerCase() ?? '';
+
+  // Don't reject while primary email is still resolving.
+  if (!domain) {
+    return null;
+  }
+
   if (!ALLOWED_DOMAINS.includes(domain)) {
     return <DomainRejected />;
   }
