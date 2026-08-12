@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ClerkProvider, SignIn, SignUp, Show, useAuth, useClerk, useUser } from "@clerk/react";
+import { Component, useEffect, useMemo, useRef, useState } from "react";
+import { ClerkProvider, SignIn, SignUp, useAuth, useClerk, useUser } from "@clerk/react";
 import { publishableKeyFromHost } from "@clerk/react/internal";
 import { dark } from "@clerk/themes";
 import { Switch, Route, Link, Redirect, useLocation, Router as WouterRouter } from "wouter";
@@ -226,17 +226,20 @@ function Landing() {
   );
 }
 
+// Uses useAuth() directly so we can show LoadingScreen during Clerk init
+// instead of the blank-page that <Show> produces before isLoaded is true.
 function HomeRoute() {
-  return (
-    <>
-      <Show when="signed-in">
-        <Redirect to={routeOrder[0]} />
-      </Show>
-      <Show when="signed-out">
-        <Landing />
-      </Show>
-    </>
-  );
+  const { isLoaded, isSignedIn } = useAuth();
+
+  if (!isLoaded) {
+    return <LoadingScreen />;
+  }
+
+  if (isSignedIn) {
+    return <Redirect to={routeOrder[0]} />;
+  }
+
+  return <Landing />;
 }
 
 // ── Search ────────────────────────────────────────────────────────────────────
@@ -663,10 +666,65 @@ function ClerkProviderWithRoutes() {
   );
 }
 
+// ── Error boundary ────────────────────────────────────────────────────────────
+// Catches any uncaught JS errors in the tree and renders a visible message
+// instead of the silent blank page that an unhandled error would produce.
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { error };
+  }
+  render() {
+    if (this.state.error) {
+      return (
+        <div style={{
+          display: "flex",
+          minHeight: "100dvh",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#0d1117",
+          padding: "2rem",
+        }}>
+          <div style={{
+            maxWidth: "520px",
+            backgroundColor: "#161b22",
+            borderRadius: "0.75rem",
+            padding: "2rem",
+            border: "1px solid #30363d",
+            textAlign: "center",
+          }}>
+            <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>⚠️</div>
+            <h2 style={{ color: "#e2e8f0", fontSize: "1.125rem", fontWeight: "700", margin: "0 0 0.75rem" }}>
+              Something went wrong
+            </h2>
+            <pre style={{
+              color: "#94a3b8",
+              fontSize: "0.75rem",
+              textAlign: "left",
+              overflowX: "auto",
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-word",
+              margin: 0,
+            }}>
+              {this.state.error?.message}
+            </pre>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function App() {
   return (
-    <WouterRouter base={basePath}>
-      <ClerkProviderWithRoutes />
-    </WouterRouter>
+    <ErrorBoundary>
+      <WouterRouter base={basePath}>
+        <ClerkProviderWithRoutes />
+      </WouterRouter>
+    </ErrorBoundary>
   );
 }
