@@ -6,7 +6,7 @@ const port = Number(process.env.PORT) || 3000;
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: "dist",
+    outDir: "dist/public",
     emptyOutDir: true,
   },
   server: {
