@@ -1,15 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ClerkProvider, SignIn, SignUp, Show, useClerk, useUser } from "@clerk/react";
-
-// Allowlist — named users
-const ALLOWED_EMAILS = new Set([
-  "afisher@salesforce.com",
-  "bill.schermer@salesforce.com",
-]);
+import { Component, useEffect, useMemo, useRef, useState } from "react";
+import { ClerkProvider, SignIn, SignUp, useAuth, useClerk, useUser } from "@clerk/react";
 import { publishableKeyFromHost } from "@clerk/react/internal";
 import { dark } from "@clerk/themes";
 import { Switch, Route, Link, Redirect, useLocation, Router as WouterRouter } from "wouter";
-import { navSections, pages, routeOrder, searchIndex } from "./data";
 
 // ── Clerk setup (verbatim) ────────────────────────────────────────────────────
 const clerkPubKey = publishableKeyFromHost(
@@ -54,33 +47,33 @@ const clerkAppearance = {
       border: "1px solid #30363d",
     },
     card: { boxShadow: "none", border: "none", backgroundColor: "transparent", borderRadius: "0" },
-    footer: { boxShadow: "none", border: "none", backgroundColor: "transparent", borderRadius: "0" },
-    headerTitle: { color: "#e2e8f0" },
-    headerSubtitle: { color: "#94a3b8" },
-    socialButtonsBlockButtonText: { color: "#e2e8f0" },
-    formFieldLabel: { color: "#94a3b8" },
-    footerActionLink: { color: "#009999" },
-    footerActionText: { color: "#94a3b8" },
-    dividerText: { color: "#94a3b8" },
-    identityPreviewEditButton: { color: "#009999" },
-    formFieldSuccessText: { color: "#22c55e" },
-    alertText: { color: "#e2e8f0" },
-    logoBox: { marginBottom: "0.5rem" },
-    logoImage: { height: "48px" },
-    socialButtonsBlockButton: { borderColor: "#30363d", backgroundColor: "#0d1117" },
-    formButtonPrimary: { backgroundColor: "#009999", color: "#ffffff" },
-    formFieldInput: { backgroundColor: "#0d1117", borderColor: "#30363d", color: "#e2e8f0" },
+    header: { padding: "2rem 2rem 0" },
+    main: { padding: "1.5rem 2rem 2rem" },
+    footer: { backgroundColor: "#0d1117", borderTop: "1px solid #21262d", padding: "1rem 2rem" },
+    socialButtonsBlockButton: {
+      backgroundColor: "#21262d",
+      border: "1px solid #30363d",
+      color: "#e2e8f0",
+    },
     dividerLine: { backgroundColor: "#30363d" },
-    alert: { backgroundColor: "#161b22" },
-    otpCodeFieldInput: { backgroundColor: "#0d1117", borderColor: "#30363d", color: "#e2e8f0" },
-    formFieldRow: {},
-    main: {},
-    footerAction: {},
+    dividerText: { color: "#64748b" },
+    formFieldInput: {
+      backgroundColor: "#0d1117",
+      border: "1px solid #30363d",
+      color: "#e2e8f0",
+    },
+    formButtonPrimary: {
+      backgroundColor: "#009999",
+      color: "#ffffff",
+    },
+    identityPreviewEditButtonIcon: { color: "#94a3b8" },
   },
 };
 
-// ── Auth pages ────────────────────────────────────────────────────────────────
+// ── Sign-in / sign-up pages ───────────────────────────────────────────────────
 function SignInPage() {
+  const { isLoaded, isSignedIn } = useAuth();
+  if (isLoaded && isSignedIn) return <Redirect to="/" />;
   return (
     <div style={{
       display: "flex",
@@ -88,14 +81,16 @@ function SignInPage() {
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "#0d1117",
-      padding: "1rem",
+      padding: "1.5rem",
     }}>
-      <SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} />
+      <SignIn routing="path" path={`${basePath}/sign-in`} />
     </div>
   );
 }
 
 function SignUpPage() {
+  const { isLoaded, isSignedIn } = useAuth();
+  if (isLoaded && isSignedIn) return <Redirect to="/" />;
   return (
     <div style={{
       display: "flex",
@@ -103,36 +98,33 @@ function SignUpPage() {
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "#0d1117",
-      padding: "1rem",
+      padding: "1.5rem",
     }}>
-      <SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} />
+      <SignUp routing="path" path={`${basePath}/sign-up`} />
     </div>
   );
 }
 
-// ── Landing (home for signed-out users) ───────────────────────────────────────
+// ── Landing page (public, unauthenticated) ────────────────────────────────────
 function Landing() {
   return (
     <div style={{
-      minHeight: "100dvh",
       display: "flex",
+      minHeight: "100dvh",
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "#0d1117",
-      padding: "2rem 1.5rem",
+      padding: "1.5rem",
     }}>
       <div style={{
-        maxWidth: "560px",
+        maxWidth: "520px",
         width: "100%",
-        textAlign: "center",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         gap: "1.25rem",
       }}>
-        {/* Cloud icon */}
         <img
-          src="/cloud.svg"
+          src="/logo.svg"
           alt=""
           style={{ width: "96px", height: "auto", marginBottom: "0.25rem" }}
         />
@@ -232,20 +224,20 @@ function Landing() {
   );
 }
 
+// Uses useAuth() directly so we can show LoadingScreen during Clerk init
+// instead of the blank-page that <Show> produces before isLoaded is true.
 function HomeRoute() {
-  const defaultSignedInRoute =
-    routeOrder.find((path) => path !== "/") || "/";
+  const { isLoaded, isSignedIn } = useAuth();
 
-  return (
-    <>
-      <Show when="signed-in">
-        <Redirect to={defaultSignedInRoute} />
-      </Show>
-      <Show when="signed-out">
-        <Landing />
-      </Show>
-    </>
-  );
+  if (!isLoaded) {
+    return <LoadingScreen />;
+  }
+
+  if (isSignedIn) {
+    return <DomainGuard />;
+  }
+
+  return <Landing />;
 }
 
 function AuthLoading({ message = "Loading secure workspace..." }) {
@@ -268,7 +260,7 @@ function AuthLoading({ message = "Loading secure workspace..." }) {
 }
 
 // ── Search ────────────────────────────────────────────────────────────────────
-function SearchCard() {
+function SearchCard({ searchIndex }) {
   const [, setLocation] = useLocation();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -282,7 +274,7 @@ function SearchCard() {
           [item.code, item.name, item.description, item.location].join(" ").toLowerCase().includes(q),
         );
     return list.slice(0, 12);
-  }, [query]);
+  }, [query, searchIndex]);
 
   useEffect(() => {
     setActive(filtered.length ? 0 : -1);
@@ -356,7 +348,7 @@ function SearchCard() {
 }
 
 // ── Page content ──────────────────────────────────────────────────────────────
-function PageView({ path }) {
+function PageView({ path, pages, routeOrder, navSections }) {
   const data = pages[path];
   const idx = routeOrder.indexOf(path);
   const prev = routeOrder[(idx - 1 + routeOrder.length) % routeOrder.length];
@@ -481,35 +473,86 @@ function DomainRejected() {
 }
 
 function DomainGuard() {
-  const { user, isLoaded, isSignedIn } = useUser();
+  const { isLoaded, isSignedIn, getToken } = useAuth();
+  // null = pending server response, true = allowed, false = denied
+  const [serverAllowed, setServerAllowed] = useState(null);
+  // null = not yet fetched, object = fetched content
+  const [appData, setAppData] = useState(null);
+  useEffect(() => {
+    if (!isLoaded || !isSignedIn) return;
 
-  if (!isLoaded) {
-    return <AuthLoading />;
+    let cancelled = false;
+    (async () => {
+      try {
+        const token = await getToken();
+
+        // Step 1: verify allowlist membership
+        const authRes = await fetch("/api/auth/check", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!authRes.ok) {
+          if (!cancelled) setServerAllowed(false);
+          return;
+        }
+
+        // Step 2: fetch protected content (only reachable by allowlisted users)
+        const dataRes = await fetch("/api/content/data", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!cancelled) {
+          if (dataRes.ok) {
+            const json = await dataRes.json();
+            setAppData(json);
+            setServerAllowed(true);
+          } else {
+            setServerAllowed(false);
+          }
+        }
+      } catch {
+        if (!cancelled) setServerAllowed(false);
+      }
+    })();
+
+    return () => { cancelled = true; };
+  }, [isLoaded, isSignedIn, getToken]);
+
+  if (!isLoaded || serverAllowed === null) {
+    return <LoadingScreen />;
   }
 
   if (!isSignedIn) {
     return <Redirect to="/sign-in" />;
   }
 
-  const userEmails = (user?.emailAddresses ?? [])
-    .map((entry) => entry.emailAddress?.toLowerCase())
-    .filter(Boolean);
-
-  // Keep UI visible while Clerk hydrates email addresses after callback.
-  if (userEmails.length === 0) {
-    return <AuthLoading message="Completing sign-in..." />;
-  }
-
-  const isAllowed = userEmails.some((email) => ALLOWED_EMAILS.has(email));
-
-  if (!isAllowed) {
+  if (!serverAllowed || !appData) {
     return <DomainRejected />;
   }
-  return <AppShell />;
+
+  return <AppShell appData={appData} />;
+}
+
+function LoadingScreen() {
+  return (
+    <div style={{
+      display: "flex",
+      minHeight: "100dvh",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#0d1117",
+    }}>
+      <div style={{ color: "#94a3b8", fontSize: "0.9375rem" }}>Loading…</div>
+    </div>
+  );
 }
 
 // ── Protected app shell (rendered only when signed in) ────────────────────────
-function AppShell() {
+function AppShell({ appData }) {
+  const { navSections, pages, searchIndex } = appData;
+  // Derive routeOrder from navSections (same logic as the old data.js)
+  const routeOrder = navSections.flatMap((section) => section.links.map((link) => link.path));
+
   const [location, setLocation] = useLocation();
   const { signOut } = useClerk();
   const { user } = useUser();
@@ -541,7 +584,7 @@ function AppShell() {
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [location, setLocation]);
+  }, [location, setLocation, routeOrder]);
 
   return (
     <div className={`app-shell ${collapsed ? "nav-collapsed" : ""} ${presentationMode ? "presentation" : ""}`}>
@@ -553,7 +596,7 @@ function AppShell() {
             <img className="brand-logo" src="/salesforce-logo.jpg" alt="Salesforce logo" />
           </div>
         </div>
-        <SearchCard />
+        <SearchCard searchIndex={searchIndex} />
         {navSections.map((section) => (
           <div className="nav-group" key={section.title}>
             <p className="nav-title">{section.title}</p>
@@ -596,7 +639,12 @@ function AppShell() {
         <Switch>
           {routeOrder.map((path) => (
             <Route key={path} path={path}>
-              <PageView path={path} />
+              <PageView
+                path={path}
+                pages={pages}
+                routeOrder={routeOrder}
+                navSections={navSections}
+              />
             </Route>
           ))}
           <Route>
@@ -606,6 +654,23 @@ function AppShell() {
       </main>
     </div>
   );
+}
+
+// ── Auth gate for protected routes ───────────────────────────────────────────
+// Replaces <Show> so we can show a loading state during Clerk initialization
+// instead of rendering nothing (the blank-page symptom).
+function AuthGate() {
+  const { isLoaded, isSignedIn } = useAuth();
+
+  if (!isLoaded) {
+    return <LoadingScreen />;
+  }
+
+  if (!isSignedIn) {
+    return <Redirect to="/sign-in" />;
+  }
+
+  return <DomainGuard />;
 }
 
 // ── Root router with Clerk ────────────────────────────────────────────────────
@@ -619,6 +684,8 @@ function ClerkProviderWithRoutes() {
       appearance={clerkAppearance}
       signInUrl={`${basePath}/sign-in`}
       signUpUrl={`${basePath}/sign-up`}
+      afterSignInUrl={`${basePath}/`}
+      afterSignUpUrl={`${basePath}/`}
       localization={{
         signIn: {
           start: {
@@ -641,24 +708,72 @@ function ClerkProviderWithRoutes() {
         <Route path="/sign-in/*?" component={SignInPage} />
         <Route path="/sign-up/*?" component={SignUpPage} />
         <Route>
-          <>
-            <Show when="signed-in">
-              <DomainGuard />
-            </Show>
-            <Show when="signed-out">
-              <Redirect to="/sign-in" />
-            </Show>
-          </>
+          <AuthGate />
         </Route>
       </Switch>
     </ClerkProvider>
   );
 }
 
+// ── Error boundary ────────────────────────────────────────────────────────────
+// Catches any uncaught JS errors in the tree and renders a visible message
+// instead of the silent blank page that an unhandled error would produce.
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { error };
+  }
+  render() {
+    if (this.state.error) {
+      return (
+        <div style={{
+          display: "flex",
+          minHeight: "100dvh",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#0d1117",
+          padding: "2rem",
+        }}>
+          <div style={{
+            maxWidth: "520px",
+            backgroundColor: "#161b22",
+            borderRadius: "0.75rem",
+            padding: "2rem",
+            border: "1px solid #30363d",
+            textAlign: "center",
+          }}>
+            <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>⚠️</div>
+            <h2 style={{ color: "#e2e8f0", fontSize: "1.125rem", fontWeight: "700", margin: "0 0 0.75rem" }}>
+              Something went wrong
+            </h2>
+            <pre style={{
+              color: "#94a3b8",
+              fontSize: "0.75rem",
+              textAlign: "left",
+              overflowX: "auto",
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-word",
+              margin: 0,
+            }}>
+              {this.state.error?.message}
+            </pre>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function App() {
   return (
-    <WouterRouter base={basePath}>
-      <ClerkProviderWithRoutes />
-    </WouterRouter>
+    <ErrorBoundary>
+      <WouterRouter base={basePath}>
+        <ClerkProviderWithRoutes />
+      </WouterRouter>
+    </ErrorBoundary>
   );
 }
