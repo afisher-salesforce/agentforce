@@ -1,13 +1,9 @@
 import { Router, type IRouter } from "express";
 import { getAuth, createClerkClient } from "@clerk/express";
 
-// Allowlist — must match the set used in the frontend DomainGuard.
-// Server-side enforcement is the authoritative check; the client-side
-// check is only a UX convenience and must not be relied on for security.
-const ALLOWED_EMAILS = new Set([
-  "afisher@salesforce.com",
-  "bill.schermer@salesforce.com",
-]);
+// Allowed email domains — any user whose email ends with one of these
+// domains is granted access. Server-side enforcement is authoritative.
+const ALLOWED_DOMAINS = ["@salesforce.com", "@siemens.com"];
 
 const clerkBackend = createClerkClient({
   secretKey: process.env.CLERK_SECRET_KEY,
@@ -18,10 +14,11 @@ const router: IRouter = Router();
 /**
  * GET /api/auth/check
  *
- * Verifies that the authenticated user's email address is on the allowlist.
- * Returns 200 { allowed: true } when access is granted, 403 otherwise.
- * The frontend must not render protected content until this endpoint
- * responds with 200 — client-side checks alone are not a security boundary.
+ * Verifies that the authenticated user has a salesforce.com or siemens.com
+ * email address. Returns 200 { allowed: true } when access is granted, 403
+ * otherwise. The frontend must not render protected content until this
+ * endpoint responds with 200 — client-side checks alone are not a security
+ * boundary.
  */
 router.get("/auth/check", async (req, res) => {
   const { userId } = getAuth(req);
@@ -38,7 +35,9 @@ router.get("/auth/check", async (req, res) => {
       e.emailAddress.toLowerCase(),
     );
 
-    const allowed = emails.some((email) => ALLOWED_EMAILS.has(email));
+    const allowed = emails.some((email) =>
+      ALLOWED_DOMAINS.some((domain) => email.endsWith(domain)),
+    );
 
     if (!allowed) {
       res.status(403).json({ error: "Forbidden" });
