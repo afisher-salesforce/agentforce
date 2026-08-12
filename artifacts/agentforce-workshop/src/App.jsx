@@ -113,39 +113,118 @@ function Landing() {
     <div style={{
       minHeight: "100dvh",
       display: "flex",
-      flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "#0d1117",
-      gap: "2rem",
+      padding: "2rem 1.5rem",
     }}>
-      <div style={{ textAlign: "center" }}>
+      <div style={{
+        maxWidth: "560px",
+        width: "100%",
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "1.25rem",
+      }}>
+        {/* Cloud icon */}
         <img
-          src="/siemens-favicon.png"
-          alt="Siemens"
-          style={{ width: "64px", height: "64px", borderRadius: "12px", marginBottom: "1.5rem" }}
+          src="/cloud.svg"
+          alt=""
+          style={{ width: "96px", height: "auto", marginBottom: "0.25rem" }}
         />
-        <h1 style={{ color: "#e2e8f0", fontSize: "1.75rem", fontWeight: "700", margin: 0 }}>
+
+        {/* Title */}
+        <h1 style={{
+          color: "#e2e8f0",
+          fontSize: "2.75rem",
+          fontWeight: "700",
+          margin: 0,
+          lineHeight: 1.15,
+        }}>
           Agentforce Workshop
         </h1>
-        <p style={{ color: "#94a3b8", marginTop: "0.5rem" }}>
+
+        {/* Subtitle */}
+        <p style={{
+          color: "#009999",
+          fontSize: "1.0625rem",
+          fontWeight: "600",
+          margin: 0,
+        }}>
           Siemens DISW IT Leadership Executive Discussion
         </p>
-      </div>
-      <Link
-        href="/sign-in"
-        style={{
-          padding: "0.75rem 2rem",
-          backgroundColor: "#009999",
-          color: "#ffffff",
-          borderRadius: "0.375rem",
-          textDecoration: "none",
-          fontWeight: "600",
+
+        {/* Body */}
+        <p style={{
+          color: "#94a3b8",
           fontSize: "0.9375rem",
-        }}
-      >
-        Sign In to Continue
-      </Link>
+          lineHeight: "1.65",
+          margin: 0,
+          maxWidth: "460px",
+        }}>
+          An internal briefing resource covering Salesforce AI capabilities and
+          the Agentforce platform for the Siemens DISW IT leadership team.
+        </p>
+
+        {/* Buttons */}
+        <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.25rem" }}>
+          <Link
+            href="/sign-in"
+            style={{
+              padding: "0.75rem 2rem",
+              backgroundColor: "#009999",
+              color: "#ffffff",
+              borderRadius: "0.375rem",
+              textDecoration: "none",
+              fontWeight: "600",
+              fontSize: "0.9375rem",
+            }}
+          >
+            Sign In
+          </Link>
+          <Link
+            href="/sign-up"
+            style={{
+              padding: "0.75rem 2rem",
+              backgroundColor: "transparent",
+              color: "#e2e8f0",
+              borderRadius: "0.375rem",
+              textDecoration: "none",
+              fontWeight: "600",
+              fontSize: "0.9375rem",
+              border: "1.5px solid #30363d",
+            }}
+          >
+            Request Access
+          </Link>
+        </div>
+
+        {/* Domain pills */}
+        <div style={{ display: "flex", gap: "0.625rem", marginTop: "0.25rem" }}>
+          {["@salesforce.com", "@siemens.com"].map((domain) => (
+            <span
+              key={domain}
+              style={{
+                padding: "0.375rem 0.875rem",
+                borderRadius: "999px",
+                border: "1px solid rgba(0,153,153,0.45)",
+                backgroundColor: "rgba(0,153,153,0.08)",
+                color: "#009999",
+                fontSize: "0.8125rem",
+                fontWeight: "500",
+              }}
+            >
+              {domain}
+            </span>
+          ))}
+        </div>
+
+        {/* Caption */}
+        <p style={{ color: "#475569", fontSize: "0.8125rem", margin: 0 }}>
+          Access restricted to Salesforce and Siemens email domains
+        </p>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,46 @@
+Clerk renders the login card client-side via JavaScript. Here are both relevant pieces:
+
+1. The HTML document (index.html) — what the browser actually receives:
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Salesforce Capabilities</title>
+    <meta name="description" content="Salesforce Capabilities — built on Replit. Update this description to reflect the app." />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Salesforce Capabilities" />
+    <meta property="og:description" content="Salesforce Capabilities — built on Replit. Update this description to reflect the app." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Salesforce Capabilities" />
+    <meta name="twitter:description" content="Salesforce Capabilities — built on Replit. Update this description to reflect the app." />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
+2. The sign-in page component (App.tsx) — what React mounts into #root at /sign-in:
+
+function SignInPage() {
+  return (
+    <div className="flex min-h-[100dvh] items-center justify-center bg-background px-4 py-12">
+      <SignIn
+        routing="path"
+        path="/sign-in"
+        signUpUrl="/sign-up"
+      />
+    </div>
+  );
+}
+
+The <SignIn> component is Clerk's pre-built widget — it injects its own shadow DOM, styles, and JavaScript bundle at runtime, which is what produces the branded card you see in the screenshot. There's no static HTML equivalent of that card; it only exists after JavaScript executes.
+
+If you need a static, shareable HTML snapshot of how the login page looks, I can take the screenshot and save it as a file, or build a standalone HTML mockup of the card's appearance.
