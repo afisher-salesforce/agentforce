@@ -1,3 +1,11 @@
+/**
+ * Protected briefing content for the Agentforce Workshop.
+ *
+ * This module is intentionally server-side only. It must never be imported
+ * by the frontend bundle — all access goes through the authenticated
+ * /api/content/data endpoint so the content is not shipped in the public JS.
+ */
+
 export const navSections = [
   {
     title: "Overview",
@@ -32,8 +40,6 @@ export const navSections = [
   },
 ];
 
-export const routeOrder = navSections.flatMap((section) => section.links.map((link) => link.path));
-
 export const searchIndex = [
   { code: "EAI", name: "Embedded AI Productivity Layer", description: "Embedded assistants in Salesforce workflows reduce repetitive execution and improve guided decisions.", location: "Embedded AI", path: "/embedded-ai" },
   { code: "AFR", name: "Agentforce Runtime and Guardrails", description: "Deployable enterprise agents with topics, actions, and trust controls.", location: "Agentforce", path: "/agentforce" },
@@ -44,7 +50,7 @@ export const searchIndex = [
   { code: "GAD", name: "GenAI Divide Framework", description: "Process-specific implementation and learning-loop model for measurable returns.", location: "Crossing the GenAI Divide", path: "/genai-divide" },
 ];
 
-export const pages = {
+export const pages: Record<string, unknown> = {
   "/": {
     pill: "Executive Enablement",
     title: "Agentic AI for Siemens DISW: From Strategy to Scaled Execution",
@@ -735,7 +741,7 @@ export const pages = {
       {
         title: "Legal Statement",
         legal:
-          "This presentation contains forward-looking statements about, among other things, trend analyses and statements regarding future events, anticipated growth and industry prospects, and our strategies, expectation or plans regarding product releases and enhancements. The achievement or success of the matters covered by such forward-looking statements involves risks, uncertainties and assumptions. If any such risks or uncertainties materialize or if any of the assumptions prove incorrect, results or outcomes could differ materially from those expressed or implied by these forward-looking statements. The risks and uncertainties referred to above include those factors discussed in Salesforce’s reports filed from time to time with the Securities and Exchange Commission, including, but not limited to our ability to meet the expectations of our customers; uncertainties regarding Al technologies and their integration into our product offerings; the effect of evolving domestic and foreign government regulations; regulatory developments and regulatory investigations involving us or affecting our industry; our ability to successfully introduce new services and product features, including related to AI and Agentforce; our ability to execute our business plans; the pace of change and innovation and our ability to compete in the markets in which we participate; and our ability to maintain and enhance our brands.",
+          "This presentation contains forward-looking statements about, among other things, trend analyses and statements regarding future events, anticipated growth and industry prospects, and our strategies, expectation or plans regarding product releases and enhancements. The achievement or success of the matters covered by such forward-looking statements involves risks, uncertainties and assumptions. If any such risks or uncertainties materialize or if any of the assumptions prove incorrect, results or outcomes could differ materially from those expressed or implied by these forward-looking statements. The risks and uncertainties referred to above include those factors discussed in Salesforce's reports filed from time to time with the Securities and Exchange Commission, including, but not limited to our ability to meet the expectations of our customers; uncertainties regarding Al technologies and their integration into our product offerings; the effect of evolving domestic and foreign government regulations; regulatory developments and regulatory investigations involving us or affecting our industry; our ability to successfully introduce new services and product features, including related to AI and Agentforce; our ability to execute our business plans; the pace of change and innovation and our ability to compete in the markets in which we participate; and our ability to maintain and enhance our brands.",
       },
     ],
   },
