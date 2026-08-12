@@ -1,5 +1,25 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, Component } from "react";
 import { ClerkProvider, SignIn, SignUp, Show, useClerk, useUser } from "@clerk/react";
+
+// Temporary — catches JS errors that produce a silent white page in production.
+// Remove once the root cause is identified.
+class ErrorBoundary extends Component {
+  constructor(props) { super(props); this.state = { error: null }; }
+  static getDerivedStateFromError(error) { return { error }; }
+  render() {
+    if (this.state.error) {
+      return (
+        <div style={{ padding: '2rem', fontFamily: 'monospace', background: '#0d1117', color: '#ef4444', minHeight: '100dvh' }}>
+          <h2 style={{ color: '#ef4444' }}>Runtime error (auth debug)</h2>
+          <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all', color: '#fca5a5' }}>
+            {this.state.error.message}{'\n\n'}{this.state.error.stack}
+          </pre>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 // Allowlist — only these email domains can access content
 const ALLOWED_DOMAINS = ['salesforce.com', 'siemens.com'];
@@ -656,8 +676,10 @@ function ClerkProviderWithRoutes() {
 
 export default function App() {
   return (
-    <WouterRouter base={basePath}>
-      <ClerkProviderWithRoutes />
-    </WouterRouter>
+    <ErrorBoundary>
+      <WouterRouter base={basePath}>
+        <ClerkProviderWithRoutes />
+      </WouterRouter>
+    </ErrorBoundary>
   );
 }
