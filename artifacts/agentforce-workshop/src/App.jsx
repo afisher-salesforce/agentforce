@@ -5,11 +5,12 @@ import { ClerkProvider, SignIn, SignUp, Show, useClerk, useUser } from "@clerk/r
 const ALLOWED_DOMAINS = ['salesforce.com', 'siemens.com'];
 
 // Admin accounts that bypass domain restrictions unconditionally
-const ADMIN_EMAILS = new Set(['afisher@salesforce.com', 'bill.schermer@salesforce.com']);
+// const ADMIN_EMAILS = new Set(['afisher@salesforce.com', 'bill.schermer@salesforce.com']);
 
 function isAllowedDomain(email) {
   const n = email.toLowerCase();
-  return ADMIN_EMAILS.has(n) || ALLOWED_DOMAINS.some((d) => n.endsWith(`@${d}`));
+  // return ADMIN_EMAILS.has(n) || ALLOWED_DOMAINS.some((d) => n.endsWith(`@${d}`));
+  return ALLOWED_DOMAINS.some((d) => n.endsWith(`@${d}`));
 }
 import { publishableKeyFromHost } from "@clerk/react/internal";
 import { dark } from "@clerk/themes";
