@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ClerkProvider, SignIn, SignUp, Show, useClerk, useUser } from "@clerk/react";
 
-// Allowlist — only these email domains can access content
-const ALLOWED_DOMAINS = ['salesforce.com', 'siemens.com'];
+// Allowlist — named users
+const ALLOWED_EMAILS = new Set([
+  "afisher@salesforce.com",
+  "bill.schermer@salesforce.com",
+]);
 import { publishableKeyFromHost } from "@clerk/react/internal";
 import { dark } from "@clerk/themes";
 import { Switch, Route, Link, Redirect, useLocation, Router as WouterRouter } from "wouter";
@@ -200,11 +203,11 @@ function Landing() {
           </Link>
         </div>
 
-        {/* Domain pills */}
+        {/* User allowlist pills */}
         <div style={{ display: "flex", gap: "0.625rem", marginTop: "0.25rem" }}>
-          {["@salesforce.com", "@siemens.com"].map((domain) => (
+          {["afisher@salesforce.com", "bill.schermer@salesforce.com"].map((email) => (
             <span
-              key={domain}
+              key={email}
               style={{
                 padding: "0.375rem 0.875rem",
                 borderRadius: "999px",
@@ -215,14 +218,14 @@ function Landing() {
                 fontWeight: "500",
               }}
             >
-              {domain}
+              {email}
             </span>
           ))}
         </div>
 
         {/* Caption */}
         <p style={{ color: "#475569", fontSize: "0.8125rem", margin: 0 }}>
-          Access restricted to Salesforce and Siemens email domains
+          Access restricted to named allowlisted users
         </p>
       </div>
     </div>
@@ -233,7 +236,7 @@ function HomeRoute() {
   return (
     <>
       <Show when="signed-in">
-        <Redirect to="/executive-summary" />
+        <Redirect to={routeOrder[0]} />
       </Show>
       <Show when="signed-out">
         <Landing />
@@ -445,8 +448,7 @@ function DomainRejected() {
             Access Restricted
           </h2>
           <p style={{ color: '#94a3b8', fontSize: '0.9375rem', lineHeight: '1.6', margin: 0 }}>
-            This site is available to <strong style={{ color: '#e2e8f0' }}>salesforce.com</strong> and{' '}
-            <strong style={{ color: '#e2e8f0' }}>siemens.com</strong> email addresses only.
+            This site is currently restricted to specific allowlisted user accounts.
             You are being signed out.
           </p>
         </div>
@@ -466,15 +468,14 @@ function DomainGuard() {
     return null;
   }
 
-  const email = user?.primaryEmailAddress?.emailAddress ?? '';
-  const domain = email.split('@')[1]?.toLowerCase() ?? '';
+  const email = (user?.primaryEmailAddress?.emailAddress ?? "").toLowerCase();
 
   // Don't reject while primary email is still resolving.
-  if (!domain) {
+  if (!email) {
     return null;
   }
 
-  if (!ALLOWED_DOMAINS.includes(domain)) {
+  if (!ALLOWED_EMAILS.has(email)) {
     return <DomainRejected />;
   }
   return <AppShell />;
