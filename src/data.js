@@ -7,7 +7,7 @@ export const navSections = [
     ],
   },
   {
-    title: "Vignettes",
+    title: "Salesforce AI Capability Areas",
     links: [
       { path: "/embedded-ai", label: "Embedded AI" },
       { path: "/agentforce", label: "Agentforce" },
@@ -137,7 +137,7 @@ export const pages = {
     ],
   },
   "/embedded-ai": {
-    pill: "Vignette",
+    pill: "Salesforce AI Capability",
     title: "Embedded AI",
     subhead: "Improve decision velocity inside existing Salesforce workflows without forcing users into separate tools.",
     sections: [
@@ -217,7 +217,7 @@ export const pages = {
     ],
   },
   "/agentforce": {
-    pill: "Vignette",
+    pill: "Salesforce AI Capability",
     title: "Agentforce",
     subhead: "Deploy enterprise-grade agents with governed actions, trusted grounding, and measurable operational outcomes.",
     sections: [
@@ -297,7 +297,7 @@ export const pages = {
     ],
   },
   "/data-360": {
-    pill: "Vignette",
+    pill: "Salesforce AI Capability",
     title: "Data 360",
     subhead: "Unify the context agents need to act with confidence across Salesforce, SAP, and adjacent systems.",
     sections: [
@@ -377,7 +377,7 @@ export const pages = {
     ],
   },
   "/headless-360": {
-    pill: "Vignette",
+    pill: "Salesforce AI Capability",
     title: "Headless 360",
     subhead: "Deliver Salesforce-powered intelligence across external touchpoints without duplicating business logic.",
     sections: [
@@ -457,7 +457,7 @@ export const pages = {
     ],
   },
   "/observability": {
-    pill: "Vignette",
+    pill: "Salesforce AI Capability",
     title: "Observability",
     subhead: "Create learning loops that convert pilot activity into reliable, scalable business outcomes.",
     sections: [

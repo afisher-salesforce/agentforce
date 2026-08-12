@@ -7,7 +7,7 @@ const NAV_SECTIONS = [
     ],
   },
   {
-    title: "Vignettes",
+    title: "Salesforce AI Capability Areas",
     links: [
       { href: "embedded-ai.html", label: "Embedded AI" },
       { href: "agentforce.html", label: "Agentforce" },
