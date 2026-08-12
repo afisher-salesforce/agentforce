@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ClerkProvider, SignIn, SignUp, Show, useClerk, useUser } from "@clerk/react";
+import { ClerkProvider, SignIn, SignUp, Show, useAuth, useClerk, useUser } from "@clerk/react";
 import { publishableKeyFromHost } from "@clerk/react/internal";
 import { dark } from "@clerk/themes";
 import { Switch, Route, Link, Redirect, useLocation, Router as WouterRouter } from "wouter";
@@ -461,24 +461,53 @@ function DomainGuard() {
   const { user, isLoaded, isSignedIn } = useUser();
 
   if (!isLoaded) {
-    return null;
+    return <LoadingScreen />;
   }
 
   if (!isSignedIn) {
     return null;
   }
 
-  const email = (user?.primaryEmailAddress?.emailAddress ?? "").toLowerCase();
+  // Check ALL email addresses (not just primary) — Google OAuth can populate
+  // a non-primary slot first, or primaryEmailAddress may still be resolving.
+  const allEmails = (user?.emailAddresses ?? []).map(
+    (e) => e.emailAddress.toLowerCase(),
+  );
 
-  // Don't reject while primary email is still resolving.
-  if (!email) {
-    return null;
+  // Also include primaryEmailAddress as a fallback in case emailAddresses is
+  // populated slightly later than primary.
+  const primaryEmail = (user?.primaryEmailAddress?.emailAddress ?? "").toLowerCase();
+  const emailsToCheck = primaryEmail
+    ? [...new Set([primaryEmail, ...allEmails])]
+    : allEmails;
+
+  // While the user object is loaded but email addresses haven't synced yet
+  // (can happen briefly after OAuth), show a loading screen rather than
+  // a permanent blank page.
+  if (emailsToCheck.length === 0) {
+    return <LoadingScreen />;
   }
 
-  if (!ALLOWED_EMAILS.has(email)) {
+  const allowed = emailsToCheck.some((email) => ALLOWED_EMAILS.has(email));
+
+  if (!allowed) {
     return <DomainRejected />;
   }
   return <AppShell />;
+}
+
+function LoadingScreen() {
+  return (
+    <div style={{
+      display: "flex",
+      minHeight: "100dvh",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#0d1117",
+    }}>
+      <div style={{ color: "#94a3b8", fontSize: "0.9375rem" }}>Loading…</div>
+    </div>
+  );
 }
 
 // ── Protected app shell (rendered only when signed in) ────────────────────────
@@ -581,6 +610,23 @@ function AppShell() {
   );
 }
 
+// ── Auth gate for protected routes ───────────────────────────────────────────
+// Replaces <Show> so we can show a loading state during Clerk initialization
+// instead of rendering nothing (the blank-page symptom).
+function AuthGate() {
+  const { isLoaded, isSignedIn } = useAuth();
+
+  if (!isLoaded) {
+    return <LoadingScreen />;
+  }
+
+  if (!isSignedIn) {
+    return <Redirect to="/sign-in" />;
+  }
+
+  return <DomainGuard />;
+}
+
 // ── Root router with Clerk ────────────────────────────────────────────────────
 function ClerkProviderWithRoutes() {
   const [, setLocation] = useLocation();
@@ -592,6 +638,8 @@ function ClerkProviderWithRoutes() {
       appearance={clerkAppearance}
       signInUrl={`${basePath}/sign-in`}
       signUpUrl={`${basePath}/sign-up`}
+      afterSignInUrl={`${basePath}/`}
+      afterSignUpUrl={`${basePath}/`}
       localization={{
         signIn: {
           start: {
@@ -614,14 +662,7 @@ function ClerkProviderWithRoutes() {
         <Route path="/sign-in/*?" component={SignInPage} />
         <Route path="/sign-up/*?" component={SignUpPage} />
         <Route>
-          <>
-            <Show when="signed-in">
-              <DomainGuard />
-            </Show>
-            <Show when="signed-out">
-              <Redirect to="/sign-in" />
-            </Show>
-          </>
+          <AuthGate />
         </Route>
       </Switch>
     </ClerkProvider>
