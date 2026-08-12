@@ -72,6 +72,8 @@ const clerkAppearance = {
 
 // ── Sign-in / sign-up pages ───────────────────────────────────────────────────
 function SignInPage() {
+  const { isLoaded, isSignedIn } = useAuth();
+  if (isLoaded && isSignedIn) return <Redirect to="/" />;
   return (
     <div style={{
       display: "flex",
@@ -81,17 +83,14 @@ function SignInPage() {
       backgroundColor: "#0d1117",
       padding: "1.5rem",
     }}>
-      <Show when="signed-out">
-        <SignIn routing="path" path={`${basePath}/sign-in`} />
-      </Show>
-      <Show when="signed-in">
-        <Redirect to={`${basePath}/`} />
-      </Show>
+      <SignIn routing="path" path={`${basePath}/sign-in`} />
     </div>
   );
 }
 
 function SignUpPage() {
+  const { isLoaded, isSignedIn } = useAuth();
+  if (isLoaded && isSignedIn) return <Redirect to="/" />;
   return (
     <div style={{
       display: "flex",
@@ -101,12 +100,7 @@ function SignUpPage() {
       backgroundColor: "#0d1117",
       padding: "1.5rem",
     }}>
-      <Show when="signed-out">
-        <SignUp routing="path" path={`${basePath}/sign-up`} />
-      </Show>
-      <Show when="signed-in">
-        <Redirect to={`${basePath}/`} />
-      </Show>
+      <SignUp routing="path" path={`${basePath}/sign-up`} />
     </div>
   );
 }
