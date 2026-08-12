@@ -203,11 +203,11 @@ function Landing() {
           </Link>
         </div>
 
-        {/* User allowlist pills */}
+        {/* Domain pills */}
         <div style={{ display: "flex", gap: "0.625rem", marginTop: "0.25rem" }}>
-          {["afisher@salesforce.com", "bill.schermer@salesforce.com"].map((email) => (
+          {["@salesforce.com", "@siemens.com"].map((domain) => (
             <span
-              key={email}
+              key={domain}
               style={{
                 padding: "0.375rem 0.875rem",
                 borderRadius: "999px",
@@ -218,14 +218,14 @@ function Landing() {
                 fontWeight: "500",
               }}
             >
-              {email}
+              {domain}
             </span>
           ))}
         </div>
 
         {/* Caption */}
         <p style={{ color: "#475569", fontSize: "0.8125rem", margin: 0 }}>
-          Access restricted to named allowlisted users
+          Access restricted to Salesforce and Siemens email domains
         </p>
       </div>
     </div>
@@ -448,7 +448,8 @@ function DomainRejected() {
             Access Restricted
           </h2>
           <p style={{ color: '#94a3b8', fontSize: '0.9375rem', lineHeight: '1.6', margin: 0 }}>
-            This site is currently restricted to specific allowlisted user accounts.
+            This site is available to <strong style={{ color: '#e2e8f0' }}>salesforce.com</strong> and{' '}
+            <strong style={{ color: '#e2e8f0' }}>siemens.com</strong> email domains only.
             You are being signed out.
           </p>
         </div>
