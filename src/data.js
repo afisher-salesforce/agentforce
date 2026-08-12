@@ -55,7 +55,7 @@ export const pages = {
         title: "Context",
         cards: [
           { title: "The GenAI Divide", body: "Despite $30-40B in enterprise GenAI spend, 95% of organizations report no measurable return; only 5% of pilots produce enterprise value." },
-          { title: "Root Cause", body: "Failure is primarily tied to poor workflow fit, weak adaptation loops, and lack of operational integration rather than model quality." },
+          { title: "Root Cause", body: "Outcome gaps are primarily tied to workflow-fit, adaptation-loop maturity, and operational integration rather than model quality." },
           { title: "What Winners Do", body: "Winners prioritize process-specific customization, outcome-based scoring, and partner-led execution models for speed and repeatability." },
         ],
       },
@@ -73,10 +73,10 @@ export const pages = {
       {
         title: "Current State, Friction Points, and Constraints",
         bullets: [
-          "Current team structures are not optimized to deliver Salesforce AI at enterprise speed and scale.",
+          "Current operating model is evolving to support Salesforce AI delivery at enterprise speed and scale.",
           "Multiple orgs and fragmented data increase governance and integration complexity.",
-          "No common governance model exists across AI agents being built in parallel.",
-          "Competing platform narratives and buy-vs-build pressure shape stakeholder expectations.",
+          "A shared governance baseline is still being established across AI agents being built in parallel.",
+          "Competing platform narratives and buy-vs-build priorities shape stakeholder expectations.",
         ],
       },
     ],
@@ -99,23 +99,23 @@ export const pages = {
           { title: "95%", body: "of organizations report no measurable P&L impact from integrated GenAI pilots." },
           { title: "5%", body: "are generating multi-million-dollar value from targeted implementations." },
           { title: "80%+ Explored", body: "general productivity tools, yet many outcomes remain individual-efficiency oriented instead of enterprise-financial." },
-          { title: "60% to 5% Funnel", body: "Most enterprise-system evaluations fail to reach production due to brittle workflows and weak operational fit." },
+          { title: "60% to 5% Funnel", body: "Many enterprise-system evaluations do not reach production due to workflow-fit and operationalization gaps." },
         ],
       },
       {
         title: "Four Patterns Behind the Divide",
         bullets: [
           "Limited disruption: structural transformation is concentrated in only a few sectors.",
-          "Enterprise paradox: large firms lead in pilots but lag in repeatable scale-up.",
+          "Enterprise paradox: large firms often lead in pilots but can take longer to standardize repeatable scale-up.",
           "Investment bias: spending favors visible top-line use cases over high-ROI back-office processes.",
-          "Implementation advantage: external partnership-led execution reports materially higher success rates than internal-only builds.",
+          "Implementation advantage: blended delivery models (internal teams plus focused partners) often improve speed-to-value and repeatability.",
         ],
       },
       {
         title: "Root Cause",
         bullets: [
           "The principal scaling barrier is learning behavior, not model sophistication.",
-          "Systems that do not retain feedback, adapt to context, and improve over time fail to create durable business outcomes.",
+          "Systems that do not retain feedback, adapt to context, and improve over time struggle to create durable business outcomes.",
         ],
       },
       {
@@ -166,6 +166,24 @@ export const pages = {
         ],
       },
       {
+        title: "Capability Framework",
+        cards: [
+          { title: "Target Personas", body: "Application Support leads, Salesforce Admins, Service Operations managers, and Delivery Managers responsible for quality and throughput." },
+          { title: "Potential Sales Use Cases", body: "Seller preparation copilots, account-summary generation, and guided next-best-action prompts for opportunity and renewal planning." },
+          { title: "Potential Service Use Cases", body: "Case triage guidance, resolution drafting, knowledge recommendations, and handoff summaries across support tiers." },
+          { title: "Business Value", body: "Faster cycle times, higher response consistency, and improved workforce productivity with policy-aligned AI assistance." },
+        ],
+      },
+      {
+        title: "IT Leadership Discussion Questions",
+        cards: [
+          { title: "Workflow Priority", body: "Which support or development workflows have the highest friction and are best candidates for embedded copilots first?" },
+          { title: "Guardrails", body: "Which control points (prompt policies, approvals, and data boundaries) are mandatory before broader rollout?" },
+          { title: "Human Oversight", body: "Where should human-in-the-loop checkpoints remain non-negotiable for risk, compliance, or customer-impacting actions?" },
+          { title: "Success Metrics", body: "What 60-day KPI baseline should define success (cycle time, containment, quality, and escalation trends)?" },
+        ],
+      },
+      {
         title: "Trailhead Resources (Public)",
         subhead:
           "Curated public learning paths to help teams operationalize embedded AI capabilities inside existing Salesforce workflows.",
@@ -212,11 +230,11 @@ export const pages = {
         ],
       },
       {
-        title: "CPQ+ Bridge Strategy",
+        title: "Potential DISW Fit",
         bullets: [
-          "CPQ+ constraints limit native agentic extensibility.",
-          "Agentforce for Revenue Management pilot is the modernization path for internal quoting agents.",
-          "Use this bridge to increase SELA value realization instead of defending legacy boundaries.",
+          "Internal quoting and renewals workflows where Agentforce for Revenue Management can modernize CPQ+ adjacent execution.",
+          "Cross-functional agent use cases that require governed actions across support, development, and IT strategy teams.",
+          "Pilot motions where shared trust controls and reusable action patterns can accelerate SELA capability consumption.",
         ],
       },
       {
@@ -225,6 +243,24 @@ export const pages = {
           { title: "Actionable Agents", body: "Move from passive assistants to task-completing agents with business controls." },
           { title: "Bridge from CPQ+", body: "Create an actionable path from managed-package constraints to modern quoting workflows." },
           { title: "Faster Time-to-Value", body: "Combine pro-code acceleration and reusable delivery patterns." },
+        ],
+      },
+      {
+        title: "Capability Framework",
+        cards: [
+          { title: "Target Personas", body: "Enterprise Architects, Salesforce Developers, Revenue Operations leaders, and IT Governance owners." },
+          { title: "Potential Sales Use Cases", body: "Guided quoting and renewal orchestration, seller copilot flows, and account-priority recommendations with governed actions." },
+          { title: "Potential Service Use Cases", body: "Agent-assisted escalation handling, multi-system action orchestration, and policy-aware task execution in support operations." },
+          { title: "Business Value", body: "Higher execution speed from idea to production, stronger governance confidence, and improved SELA capability consumption." },
+        ],
+      },
+      {
+        title: "IT Leadership Discussion Questions",
+        cards: [
+          { title: "Use-Case Selection", body: "Which 2-3 agent candidates have clear owners, measurable outcomes, and realistic implementation windows?" },
+          { title: "Trust Model", body: "What trust, approval, and audit model is required for agent actions across orgs and systems?" },
+          { title: "Investment Alignment", body: "Where does Agentforce complement existing CPQ+ and platform investments versus replacing steps?" },
+          { title: "Production Readiness", body: "What minimum readiness checklist should be required before any agent moves into production?" },
         ],
       },
       {
@@ -274,10 +310,11 @@ export const pages = {
         ],
       },
       {
-        title: "Objection Handling",
+        title: "Potential DISW Fit",
         bullets: [
-          "Address consumption concerns through value-backed use-case prioritization and unmetered capability planning where applicable.",
-          "Compare against custom data-engineering alternatives on speed, governance, and long-term maintainability.",
+          "Customer and operations context unification for support, retention, and renewal scenarios across multiple orgs.",
+          "Data grounding patterns that improve agent reliability while reducing duplicative integration and data-prep effort.",
+          "Cross-cloud activation use cases where shared insights improve decision quality and measurable cycle-time outcomes.",
         ],
       },
       {
@@ -286,6 +323,24 @@ export const pages = {
           { title: "Unified Customer Context", body: "Connect fragmented records into a trusted profile for decisioning." },
           { title: "Grounded Responses", body: "Improve response quality with context-aware retrieval and activation." },
           { title: "Cross-Cloud Activation", body: "Operationalize insights across support, sales, and digital channels." },
+        ],
+      },
+      {
+        title: "Capability Framework",
+        cards: [
+          { title: "Target Personas", body: "Data Architects, Integration Architects, Service Leaders, and Revenue Operations stakeholders." },
+          { title: "Potential Sales Use Cases", body: "Unified account context for expansion planning, renewal-risk detection, and guided account action recommendations." },
+          { title: "Potential Service Use Cases", body: "Grounded support responses, cross-system case context, and consistent decision support across service channels." },
+          { title: "Business Value", body: "Higher decision quality, lower duplicate integration effort, and faster activation of cross-cloud use cases." },
+        ],
+      },
+      {
+        title: "IT Leadership Discussion Questions",
+        cards: [
+          { title: "Data Domains", body: "Which data domains are most critical to ground first-wave agent decisions?" },
+          { title: "Architecture Choice", body: "Which zero-copy and sharing patterns best balance speed, governance, and long-term maintainability?" },
+          { title: "Controls", body: "What identity, access, and consent controls are required for cross-cloud activation?" },
+          { title: "Readiness Thresholds", body: "What data-quality thresholds must be met before scaling use cases across multiple orgs?" },
         ],
       },
       {
@@ -335,10 +390,11 @@ export const pages = {
         ],
       },
       {
-        title: "Strategic Positioning",
+        title: "Potential DISW Fit",
         bullets: [
-          "Avoid channel wars; focus on consistent intelligence delivery across preferred user surfaces.",
-          "Keep Salesforce as the governed execution engine, not just a data repository.",
+          "External portal and Teams-adjacent experiences that require consistent Salesforce-powered intelligence across channels.",
+          "Integration-led delivery patterns where Agent Fabric and MuleSoft orchestrate trusted actions across enterprise systems.",
+          "Use cases that benefit from channel flexibility without duplicating backend logic or governance controls.",
         ],
       },
       {
@@ -347,6 +403,24 @@ export const pages = {
           { title: "Channel Flexibility", body: "Expose consistent intelligence in portals and custom experiences." },
           { title: "Governed Integration", body: "Use API and MCP patterns to keep execution controlled and auditable." },
           { title: "Lower Rebuild Cost", body: "Reuse enterprise capabilities instead of rebuilding logic per channel." },
+        ],
+      },
+      {
+        title: "Capability Framework",
+        cards: [
+          { title: "Target Personas", body: "Digital Experience leaders, Integration Architects, Support Channel owners, and Security/Governance teams." },
+          { title: "Potential Sales Use Cases", body: "Account and renewal intelligence surfaced in external channels and collaboration tools with governed backend actions." },
+          { title: "Potential Service Use Cases", body: "Portal-based support assistants, omnichannel case guidance, and trusted cross-system action orchestration." },
+          { title: "Business Value", body: "Consistent customer and employee experiences across channels without duplicative backend logic or policy drift." },
+        ],
+      },
+      {
+        title: "IT Leadership Discussion Questions",
+        cards: [
+          { title: "Channel Priority", body: "Which external and internal channels should be prioritized for governed AI experiences first?" },
+          { title: "Reuse Strategy", body: "How will we prevent duplicated business logic as new channels are added?" },
+          { title: "Integration Standard", body: "Which API, event, and orchestration patterns should be standardized for secure scale?" },
+          { title: "Control Points", body: "What enterprise control points are required for external action execution and auditability?" },
         ],
       },
       {
@@ -403,10 +477,11 @@ export const pages = {
         ],
       },
       {
-        title: "Why Leadership Cares",
+        title: "Potential DISW Fit",
         bullets: [
-          "Observability turns AI from a leap of faith into a governed performance system.",
-          "Cross-org reporting enables consistent quality expectations despite multi-org complexity.",
+          "Cross-org observability baselines for agent quality, containment, and escalation trends across Siemens environments.",
+          "Leadership reporting needs where measurable AI outcomes must be tied to operational KPIs and governance standards.",
+          "Continuous-improvement motions where telemetry informs iteration priorities for support, development, and strategy teams.",
         ],
       },
       {
@@ -415,6 +490,24 @@ export const pages = {
           { title: "Quality Visibility", body: "Track agent outcomes, escalations, and reliability in one operating view." },
           { title: "Operational Learning", body: "Use feedback loops to continuously improve decision quality." },
           { title: "Governance Confidence", body: "Prove performance and policy adherence with measurable telemetry." },
+        ],
+      },
+      {
+        title: "Capability Framework",
+        cards: [
+          { title: "Target Personas", body: "IT Strategy leaders, Service Operations leaders, Platform Owners, and AI Governance/Compliance teams." },
+          { title: "Potential Sales Use Cases", body: "Renewal and opportunity assistance quality tracking, recommendation effectiveness, and escalation pattern monitoring." },
+          { title: "Potential Service Use Cases", body: "Containment, handoff, and resolution-quality monitoring with feedback loops to improve support outcomes." },
+          { title: "Business Value", body: "Evidence-based scaling decisions, stronger governance confidence, and continuous quality improvement across agent programs." },
+        ],
+      },
+      {
+        title: "IT Leadership Discussion Questions",
+        cards: [
+          { title: "KPI Set", body: "What 5 leadership metrics should define agent health and business value at scale?" },
+          { title: "Operating Cadence", body: "What review cadence should govern prompt, process, and policy updates based on telemetry?" },
+          { title: "Escalation Taxonomy", body: "How should escalation categories and thresholds be standardized across orgs?" },
+          { title: "Scale Criteria", body: "What evidence is required to move from pilot confidence to broad production rollout?" },
         ],
       },
       {
@@ -581,7 +674,7 @@ export const pages = {
           },
           {
             title: "Transformation Moment",
-            body: "The business is actively balancing SaaS transition, post-acquisition integration, and AI-led growth objectives under margin pressure.",
+            body: "The business is actively balancing SaaS transition, post-acquisition integration, and AI-led growth objectives alongside margin discipline.",
           },
           {
             title: "IT Imperative",
@@ -594,7 +687,7 @@ export const pages = {
         bullets: [
           "DISW is transitioning from perpetual licensing toward SaaS/subscription, increasing retention and expansion sensitivity.",
           "Continuing acquisitions increase urgency for customer data unification and process harmonization.",
-          "Digital business growth and AI investment are high while margin and complexity pressures remain.",
+          "Digital business growth and AI investment are high while margin and complexity considerations remain.",
           "Leadership expectations emphasize platform rationalization and accelerated time-to-value for enterprise initiatives.",
         ],
       },
@@ -607,7 +700,7 @@ export const pages = {
           },
           {
             title: "Buy-vs-Build Decision Lens",
-            body: "Service cost, internal capability constraints, and speed-to-market pressure require pragmatic architecture decisions and reusable patterns.",
+            body: "Delivery capacity, partner economics, and speed-to-market priorities require pragmatic architecture decisions and reusable patterns.",
           },
           {
             title: "SELA Opportunity",
