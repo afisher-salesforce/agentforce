@@ -626,6 +626,33 @@ function AppShell() {
   );
 }
 
+// If Clerk has a stale/deleted session in the browser it will retry it
+// indefinitely and never resolve isLoaded, producing a permanent white page.
+// This component detects that and hard-navigates to /sign-in after a timeout.
+function ClerkLoadingGuard({ children }) {
+  const { isLoaded } = useUser();
+  useEffect(() => {
+    if (isLoaded) return;
+    const t = setTimeout(() => {
+      // Clerk still not loaded after 8 s → stale session; clear it and reload
+      console.warn('[auth] Clerk load timeout — clearing storage and reloading');
+      try {
+        // Remove Clerk-related keys from localStorage
+        Object.keys(localStorage)
+          .filter((k) => k.startsWith('__clerk') || k.startsWith('clerk'))
+          .forEach((k) => localStorage.removeItem(k));
+        // Clear all cookies on the current domain
+        document.cookie.split(';').forEach((c) => {
+          document.cookie = c.replace(/^ +/, '').replace(/=.*/, `=;expires=${new Date(0).toUTCString()};path=/`);
+        });
+      } catch (_) {}
+      window.location.href = `${basePath}/sign-in`;
+    }, 8000);
+    return () => clearTimeout(t);
+  }, [isLoaded]);
+  return <>{children}</>;
+}
+
 // ── Root router with Clerk ────────────────────────────────────────────────────
 function ClerkProviderWithRoutes() {
   const [, setLocation] = useLocation();
@@ -654,6 +681,7 @@ function ClerkProviderWithRoutes() {
       routerPush={(to) => setLocation(stripBase(to))}
       routerReplace={(to) => setLocation(stripBase(to), { replace: true })}
     >
+      <ClerkLoadingGuard>
       <Switch>
         <Route path="/" component={HomeRoute} />
         <Route path="/sign-in/*?" component={SignInPage} />
@@ -670,6 +698,7 @@ function ClerkProviderWithRoutes() {
           </Show>
         </Route>
       </Switch>
+      </ClerkLoadingGuard>
     </ClerkProvider>
   );
 }
