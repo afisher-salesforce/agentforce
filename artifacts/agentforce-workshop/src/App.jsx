@@ -13,6 +13,18 @@ const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 const buildStamp = typeof __BUILD_SHA__ === "string" && __BUILD_SHA__ ? __BUILD_SHA__ : "unknown";
 
+function authDebug(message) {
+  const timestamp = new Date().toISOString().slice(11, 19);
+  const line = `[${timestamp}] ${message}`;
+  if (!window.__AFW_AUTH_DEBUG__) window.__AFW_AUTH_DEBUG__ = [];
+  window.__AFW_AUTH_DEBUG__.push(line);
+  if (window.__AFW_AUTH_DEBUG__.length > 40) {
+    window.__AFW_AUTH_DEBUG__ = window.__AFW_AUTH_DEBUG__.slice(-40);
+  }
+  console.log(`[AFW auth] ${line}`);
+  window.dispatchEvent(new CustomEvent("afw-auth-debug"));
+}
+
 function stripBase(path) {
   return basePath && path.startsWith(basePath) ? path.slice(basePath.length) || "/" : path;
 }
@@ -229,6 +241,9 @@ function Landing() {
 // instead of the blank-page that <Show> produces before isLoaded is true.
 function HomeRoute() {
   const { isLoaded, isSignedIn } = useAuth();
+  useEffect(() => {
+    authDebug(`HomeRoute: isLoaded=${isLoaded} isSignedIn=${isSignedIn}`);
+  }, [isLoaded, isSignedIn]);
 
   if (!isLoaded) {
     return <LoadingScreen />;
@@ -480,6 +495,9 @@ function DomainGuard() {
   // null = not yet fetched, object = fetched content
   const [appData, setAppData] = useState(null);
   useEffect(() => {
+    authDebug(`DomainGuard: isLoaded=${isLoaded} isSignedIn=${isSignedIn} serverAllowed=${serverAllowed}`);
+  }, [isLoaded, isSignedIn, serverAllowed]);
+  useEffect(() => {
     if (!isLoaded || !isSignedIn) return;
 
     let cancelled = false;
@@ -491,6 +509,7 @@ function DomainGuard() {
         const authRes = await fetch("/api/auth/check", {
           headers: { Authorization: `Bearer ${token}` },
         });
+        authDebug(`DomainGuard: /api/auth/check -> ${authRes.status}`);
 
         if (!authRes.ok) {
           if (!cancelled) setServerAllowed(false);
@@ -501,6 +520,7 @@ function DomainGuard() {
         const dataRes = await fetch("/api/content/data", {
           headers: { Authorization: `Bearer ${token}` },
         });
+        authDebug(`DomainGuard: /api/content/data -> ${dataRes.status}`);
 
         if (!cancelled) {
           if (dataRes.ok) {
@@ -512,6 +532,7 @@ function DomainGuard() {
           }
         }
       } catch {
+        authDebug("DomainGuard: fetch failed");
         if (!cancelled) setServerAllowed(false);
       }
     })();
@@ -665,6 +686,9 @@ function AppShell({ appData }) {
 // instead of rendering nothing (the blank-page symptom).
 function AuthGate() {
   const { isLoaded, isSignedIn } = useAuth();
+  useEffect(() => {
+    authDebug(`AuthGate: isLoaded=${isLoaded} isSignedIn=${isSignedIn}`);
+  }, [isLoaded, isSignedIn]);
 
   if (!isLoaded) {
     return <LoadingScreen />;
@@ -772,12 +796,52 @@ class ErrorBoundary extends Component {
   }
 }
 
+function AuthDebugOverlay() {
+  const [entries, setEntries] = useState(() => window.__AFW_AUTH_DEBUG__ || []);
+
+  useEffect(() => {
+    const sync = () => setEntries([...(window.__AFW_AUTH_DEBUG__ || [])]);
+    window.addEventListener("afw-auth-debug", sync);
+    sync();
+    return () => window.removeEventListener("afw-auth-debug", sync);
+  }, []);
+
+  return (
+    <div style={{
+      position: "fixed",
+      left: "0.75rem",
+      bottom: "0.75rem",
+      width: "min(560px, calc(100vw - 1.5rem))",
+      maxHeight: "38vh",
+      overflow: "auto",
+      zIndex: 99999,
+      backgroundColor: "rgba(13, 17, 23, 0.94)",
+      border: "1px solid #30363d",
+      borderRadius: "0.5rem",
+      padding: "0.5rem 0.625rem",
+      fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+      fontSize: "0.72rem",
+      lineHeight: 1.4,
+      color: "#cbd5e1",
+      pointerEvents: "none",
+    }}>
+      <div style={{ color: "#94a3b8", marginBottom: "0.35rem" }}>
+        Auth debug · build {buildStamp}
+      </div>
+      {entries.slice(-10).map((entry, index) => (
+        <div key={`${index}-${entry}`}>{entry}</div>
+      ))}
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <ErrorBoundary>
       <WouterRouter base={basePath}>
         <ClerkProviderWithRoutes />
       </WouterRouter>
+      <AuthDebugOverlay />
     </ErrorBoundary>
   );
 }
