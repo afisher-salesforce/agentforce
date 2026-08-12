@@ -11,6 +11,7 @@ const clerkPubKey = publishableKeyFromHost(
 );
 const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+const buildStamp = typeof __BUILD_SHA__ === "string" && __BUILD_SHA__ ? __BUILD_SHA__ : "unknown";
 
 function stripBase(path) {
   return basePath && path.startsWith(basePath) ? path.slice(basePath.length) || "/" : path;
@@ -625,6 +626,9 @@ function AppShell({ appData }) {
           >
             Sign Out
           </button>
+          <p style={{ fontSize: "0.7rem", color: "#475569", padding: "0.5rem 0.75rem 0", margin: 0 }}>
+            Build: {buildStamp}
+          </p>
         </div>
       </aside>
       <main className="main">
