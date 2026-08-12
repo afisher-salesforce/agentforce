@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import sfLogo from "@assets/salesforce-logo.jpg";
 import { navSections, pages, routeOrder, searchIndex } from "./data";
 
 function SearchCard() {
@@ -27,7 +26,6 @@ function SearchCard() {
     if (!item) return;
     navigate(item.path);
     setOpen(false);
-    setQuery("");
   }
 
   return (
@@ -38,7 +36,6 @@ function SearchCard() {
         value={query}
         placeholder="Search capabilities or domains"
         onFocus={() => setOpen(true)}
-        onBlur={() => setTimeout(() => setOpen(false), 150)}
         onChange={(event) => {
           setQuery(event.target.value);
           setOpen(true);
@@ -75,7 +72,7 @@ function SearchCard() {
                 <button
                   key={item.code + item.name}
                   className={`search-result ${index === active ? "is-active" : ""}`}
-                  onMouseDown={() => go(item)}
+                  onClick={() => go(item)}
                   type="button"
                 >
                   <code>{item.code}</code>
@@ -97,13 +94,8 @@ function PageView({ path }) {
   const idx = routeOrder.indexOf(path);
   const prev = routeOrder[(idx - 1 + routeOrder.length) % routeOrder.length];
   const next = routeOrder[(idx + 1) % routeOrder.length];
-  const allLinks = navSections.flatMap((s) => s.links);
-  const prevLabel = allLinks.find((l) => l.path === prev)?.label;
-  const nextLabel = allLinks.find((l) => l.path === next)?.label;
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, [path]);
+  const prevLabel = navSections.flatMap((s) => s.links).find((l) => l.path === prev)?.label;
+  const nextLabel = navSections.flatMap((s) => s.links).find((l) => l.path === next)?.label;
 
   return (
     <div className="container route-fade">
@@ -148,7 +140,7 @@ function PageView({ path }) {
                     <p className="resource-meta">{resource.label}</p>
                     <p className="resource-link-wrap">
                       <a className="resource-link" href={resource.url} target="_blank" rel="noopener noreferrer">
-                        Open Trailhead resource ↗
+                        Open Trailhead resource
                       </a>
                     </p>
                   </article>
@@ -162,14 +154,14 @@ function PageView({ path }) {
                 ))}
               </ul>
             )}
-            {section.legal && <p className="legal-text">{section.legal}</p>}
+            {section.legal && <p className="legal">{section.legal}</p>}
           </div>
         ))}
       </section>
 
       <div className="flow-nav">
-        <Link to={prev}>← {prevLabel}</Link>
-        <Link to={next}>{nextLabel} →</Link>
+        <Link to={prev}>Previous: {prevLabel}</Link>
+        <Link to={next}>Next: {nextLabel}</Link>
       </div>
     </div>
   );
@@ -182,19 +174,28 @@ export default function App() {
   const [presentationMode, setPresentationMode] = useState(false);
 
   useEffect(() => {
-    function handler(e) {
-      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
-      const idx = routeOrder.indexOf(location.pathname);
-      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
-        e.preventDefault();
-        navigate(routeOrder[(idx + 1) % routeOrder.length]);
-      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
-        e.preventDefault();
-        navigate(routeOrder[(idx - 1 + routeOrder.length) % routeOrder.length]);
-      } else if (e.key === "p" || e.key === "P") {
+    const persisted = window.localStorage.getItem("afw-nav-collapsed");
+    setCollapsed(persisted === "1");
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem("afw-nav-collapsed", collapsed ? "1" : "0");
+  }, [collapsed]);
+
+  useEffect(() => {
+    const handler = (event) => {
+      if (event.key.toLowerCase() === "p") {
         setPresentationMode((prev) => !prev);
       }
-    }
+      if (event.key === "ArrowRight") {
+        const idx = routeOrder.indexOf(location.pathname);
+        if (idx >= 0) navigate(routeOrder[(idx + 1) % routeOrder.length]);
+      }
+      if (event.key === "ArrowLeft") {
+        const idx = routeOrder.indexOf(location.pathname);
+        if (idx >= 0) navigate(routeOrder[(idx - 1 + routeOrder.length) % routeOrder.length]);
+      }
+    };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, [location.pathname, navigate]);
@@ -206,7 +207,7 @@ export default function App() {
           <h1>Agentforce Workshop</h1>
           <p>Siemens DISW IT Leadership Executive Discussion</p>
           <div className="logo-pill">
-            <img className="brand-logo" src={sfLogo} alt="Salesforce logo" />
+            <img className="brand-logo" src="/salesforce-logo.jpg" alt="Salesforce logo" />
           </div>
         </div>
         <SearchCard />
@@ -225,7 +226,6 @@ export default function App() {
           </div>
         ))}
       </aside>
-
       <main className="main">
         <div className="controls-row">
           <button className="nav-toggle" onClick={() => setCollapsed((prev) => !prev)} type="button">
