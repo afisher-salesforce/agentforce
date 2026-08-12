@@ -3,6 +3,9 @@ import { ClerkProvider, SignIn, SignUp, Show, useClerk, useUser } from "@clerk/r
 
 // Allowlist — only these email domains can access content
 const ALLOWED_DOMAINS = ['salesforce.com', 'siemens.com'];
+
+// Individual emails always granted access regardless of domain
+const ALLOWED_EMAILS = ['afisher@salesforce.com', 'bill.schermer@salesforce.com'];
 import { publishableKeyFromHost } from "@clerk/react/internal";
 import { dark } from "@clerk/themes";
 import { Switch, Route, Link, Redirect, useLocation, Router as WouterRouter } from "wouter";
@@ -446,9 +449,9 @@ function DomainRejected() {
 
 function DomainGuard() {
   const { user } = useUser();
-  const email = user?.primaryEmailAddress?.emailAddress ?? '';
-  const domain = email.split('@')[1]?.toLowerCase() ?? '';
-  if (!ALLOWED_DOMAINS.includes(domain)) {
+  const email = (user?.primaryEmailAddress?.emailAddress ?? '').toLowerCase();
+  const domain = email.split('@')[1] ?? '';
+  if (!ALLOWED_DOMAINS.includes(domain) && !ALLOWED_EMAILS.includes(email)) {
     return <DomainRejected />;
   }
   return <AppShell />;
