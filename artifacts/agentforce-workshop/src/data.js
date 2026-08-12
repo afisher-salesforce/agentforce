@@ -349,8 +349,8 @@ export const pages = {
           "Curated public learning paths to support Data 360 adoption, governance, and cross-cloud context strategy.",
         resources: [
           {
-            title: "Unlock Your Data with Data Cloud",
-            body: "Comprehensive path for Data Cloud foundations, unification, and activation.",
+            title: "Unlock Your Data with Data 360",
+            body: "Comprehensive path for Data 360 foundations, unification, and activation.",
             label: "Trail · 606 min",
             url: "https://trailhead.salesforce.com/en/content/learn/trails/unlock-your-data-with-data-cloud",
           },
@@ -580,8 +580,8 @@ export const pages = {
             url: "https://trailhead.salesforce.com/en/content/learn/trails/build-agentforce-solutions-with-pro-code-tools",
           },
           {
-            title: "Phase 2 · Unlock Your Data with Data Cloud",
-            body: "Build the unified data context needed for grounding, personalization, and cross-cloud decisions.",
+            title: "Phase 2 · Unlock Your Data with Data 360",
+            body: "Build the unified Data 360 context needed for grounding, personalization, and cross-cloud decisions.",
             label: "Trail · 606 min",
             url: "https://trailhead.salesforce.com/en/content/learn/trails/unlock-your-data-with-data-cloud",
           },
@@ -638,8 +638,8 @@ export const pages = {
             url: "https://trailhead.salesforce.com/en/content/learn/trails/build-agentforce-solutions-with-pro-code-tools",
           },
           {
-            title: "Phase 2 · Unlock Your Data with Data Cloud",
-            body: "Build shared data-context capabilities required for grounded, cross-cloud agent outcomes.",
+            title: "Phase 2 · Unlock Your Data with Data 360",
+            body: "Build shared Data 360 context capabilities required for grounded, cross-cloud agent outcomes.",
             label: "Trail · 606 min",
             url: "https://trailhead.salesforce.com/en/content/learn/trails/unlock-your-data-with-data-cloud",
           },
