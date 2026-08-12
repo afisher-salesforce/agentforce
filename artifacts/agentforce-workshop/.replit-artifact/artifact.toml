@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Agentforce Workshop"
+description = "A single-page informational site for the Agentforce Workshop prepared for Siemens DISW IT Leadership. Presents five strategic Agentforce domains with executive talking points in a dark-themed, sidebar-navigation layout."
+version = "1.0.0"
+id = "artifacts/agentforce-workshop"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21513
+
+[services.development]
+run = "pnpm --filter @workspace/agentforce-workshop run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/agentforce-workshop", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/agentforce-workshop/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21513"
+BASE_PATH = "/"
