@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { ClerkProvider, SignIn, SignUp, Show, useClerk, useUser } from "@clerk/react";
+
+// Allowlist — only these email domains can access content
+const ALLOWED_DOMAINS = ['salesforce.com', 'siemens.com'];
 import { publishableKeyFromHost } from "@clerk/react/internal";
 import { dark } from "@clerk/themes";
 import { Switch, Route, Link, Redirect, useLocation, Router as WouterRouter } from "wouter";
@@ -325,6 +328,53 @@ function PageView({ path }) {
   );
 }
 
+// ── Domain enforcement ────────────────────────────────────────────────────────
+function DomainRejected() {
+  const { signOut } = useClerk();
+  useEffect(() => {
+    signOut({ redirectUrl: basePath || '/' });
+  }, [signOut]);
+  return (
+    <div style={{
+      display: 'flex',
+      minHeight: '100dvh',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#0d1117',
+      padding: '1.5rem',
+    }}>
+      <div style={{ maxWidth: '420px', width: '100%', textAlign: 'center' }}>
+        <div style={{
+          backgroundColor: '#161b22',
+          borderRadius: '0.75rem',
+          padding: '2rem',
+          border: '1px solid #30363d',
+        }}>
+          <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🔒</div>
+          <h2 style={{ color: '#e2e8f0', fontSize: '1.125rem', fontWeight: '700', margin: '0 0 0.75rem' }}>
+            Access Restricted
+          </h2>
+          <p style={{ color: '#94a3b8', fontSize: '0.9375rem', lineHeight: '1.6', margin: 0 }}>
+            This site is available to <strong style={{ color: '#e2e8f0' }}>salesforce.com</strong> and{' '}
+            <strong style={{ color: '#e2e8f0' }}>siemens.com</strong> email addresses only.
+            You are being signed out.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DomainGuard() {
+  const { user } = useUser();
+  const email = user?.primaryEmailAddress?.emailAddress ?? '';
+  const domain = email.split('@')[1]?.toLowerCase() ?? '';
+  if (!ALLOWED_DOMAINS.includes(domain)) {
+    return <DomainRejected />;
+  }
+  return <AppShell />;
+}
+
 // ── Protected app shell (rendered only when signed in) ────────────────────────
 function AppShell() {
   const [location, setLocation] = useLocation();
@@ -460,7 +510,7 @@ function ClerkProviderWithRoutes() {
         <Route>
           <>
             <Show when="signed-in">
-              <AppShell />
+              <DomainGuard />
             </Show>
             <Show when="signed-out">
               <Redirect to="/sign-in" />
