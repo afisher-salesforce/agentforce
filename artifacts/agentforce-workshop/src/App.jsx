@@ -448,7 +448,11 @@ function DomainRejected() {
 }
 
 function DomainGuard() {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
+  // Wait for Clerk to finish loading the user (e.g. after OAuth callback)
+  // before running the domain check — otherwise user is null, the check
+  // fails, and DomainRejected fires signOut() before the session settles.
+  if (!isLoaded) return null;
   const email = (user?.primaryEmailAddress?.emailAddress ?? '').toLowerCase();
   const domain = email.split('@')[1] ?? '';
   if (!ALLOWED_DOMAINS.includes(domain) && !ALLOWED_EMAILS.includes(email)) {
