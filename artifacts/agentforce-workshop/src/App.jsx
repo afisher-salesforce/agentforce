@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ClerkProvider, SignIn, SignUp, Show, useClerk, useUser } from "@clerk/react";
+import { ClerkProvider, SignIn, SignUp, Show, useClerk, useUser, useAuth } from "@clerk/react";
 
 // Allowlist — only these email domains can access content
 const ALLOWED_DOMAINS = ['salesforce.com', 'siemens.com'];
@@ -233,16 +233,11 @@ function Landing() {
 }
 
 function HomeRoute() {
-  return (
-    <>
-      <Show when="signed-in">
-        <Redirect to="/executive-summary" />
-      </Show>
-      <Show when="signed-out">
-        <Landing />
-      </Show>
-    </>
-  );
+  const { isSignedIn, isLoaded } = useAuth();
+  // Hold a dark screen while Clerk re-hydrates — never show blank white
+  if (!isLoaded) return <div style={{ minHeight: "100dvh", backgroundColor: "#0d1117" }} />;
+  if (isSignedIn) return <Redirect to="/executive-summary" />;
+  return <Landing />;
 }
 
 // ── Search ────────────────────────────────────────────────────────────────────
@@ -447,6 +442,16 @@ function DomainRejected() {
   );
 }
 
+// Replaces <Show> in the catch-all route — <Show> renders nothing during
+// Clerk's loading phase, leaving a blank screen after OAuth in production.
+// useAuth() lets us render a placeholder and redirect explicitly.
+function AuthGuard() {
+  const { isSignedIn, isLoaded } = useAuth();
+  if (!isLoaded) return <div style={{ minHeight: "100dvh", backgroundColor: "#0d1117" }} />;
+  if (!isSignedIn) return <Redirect to="/sign-in" />;
+  return <DomainGuard />;
+}
+
 function DomainGuard() {
   const { user, isLoaded } = useUser();
   // Wait for Clerk to finish loading the user (e.g. after OAuth callback)
@@ -572,6 +577,8 @@ function ClerkProviderWithRoutes() {
       appearance={clerkAppearance}
       signInUrl={`${basePath}/sign-in`}
       signUpUrl={`${basePath}/sign-up`}
+      afterSignInUrl={`${basePath}/executive-summary`}
+      afterSignUpUrl={`${basePath}/executive-summary`}
       localization={{
         signIn: {
           start: {
@@ -594,14 +601,7 @@ function ClerkProviderWithRoutes() {
         <Route path="/sign-in/*?" component={SignInPage} />
         <Route path="/sign-up/*?" component={SignUpPage} />
         <Route>
-          <>
-            <Show when="signed-in">
-              <DomainGuard />
-            </Show>
-            <Show when="signed-out">
-              <Redirect to="/sign-in" />
-            </Show>
-          </>
+          <AuthGuard />
         </Route>
       </Switch>
     </ClerkProvider>
