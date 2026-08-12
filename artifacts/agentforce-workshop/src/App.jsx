@@ -3,7 +3,6 @@ import { ClerkProvider, SignIn, SignUp, useAuth, useClerk, useUser } from "@cler
 import { publishableKeyFromHost } from "@clerk/react/internal";
 import { dark } from "@clerk/themes";
 import { Switch, Route, Link, Redirect, useLocation, Router as WouterRouter } from "wouter";
-import { navSections, pages, routeOrder, searchIndex } from "./data";
 
 // ── Clerk setup (verbatim) ────────────────────────────────────────────────────
 const clerkPubKey = publishableKeyFromHost(
@@ -48,32 +47,30 @@ const clerkAppearance = {
       border: "1px solid #30363d",
     },
     card: { boxShadow: "none", border: "none", backgroundColor: "transparent", borderRadius: "0" },
-    footer: { boxShadow: "none", border: "none", backgroundColor: "transparent", borderRadius: "0" },
-    headerTitle: { color: "#e2e8f0" },
-    headerSubtitle: { color: "#94a3b8" },
-    socialButtonsBlockButtonText: { color: "#e2e8f0" },
-    formFieldLabel: { color: "#94a3b8" },
-    footerActionLink: { color: "#009999" },
-    footerActionText: { color: "#94a3b8" },
-    dividerText: { color: "#94a3b8" },
-    identityPreviewEditButton: { color: "#009999" },
-    formFieldSuccessText: { color: "#22c55e" },
-    alertText: { color: "#e2e8f0" },
-    logoBox: { marginBottom: "0.5rem" },
-    logoImage: { height: "48px" },
-    socialButtonsBlockButton: { borderColor: "#30363d", backgroundColor: "#0d1117" },
-    formButtonPrimary: { backgroundColor: "#009999", color: "#ffffff" },
-    formFieldInput: { backgroundColor: "#0d1117", borderColor: "#30363d", color: "#e2e8f0" },
+    header: { padding: "2rem 2rem 0" },
+    main: { padding: "1.5rem 2rem 2rem" },
+    footer: { backgroundColor: "#0d1117", borderTop: "1px solid #21262d", padding: "1rem 2rem" },
+    socialButtonsBlockButton: {
+      backgroundColor: "#21262d",
+      border: "1px solid #30363d",
+      color: "#e2e8f0",
+    },
     dividerLine: { backgroundColor: "#30363d" },
-    alert: { backgroundColor: "#161b22" },
-    otpCodeFieldInput: { backgroundColor: "#0d1117", borderColor: "#30363d", color: "#e2e8f0" },
-    formFieldRow: {},
-    main: {},
-    footerAction: {},
+    dividerText: { color: "#64748b" },
+    formFieldInput: {
+      backgroundColor: "#0d1117",
+      border: "1px solid #30363d",
+      color: "#e2e8f0",
+    },
+    formButtonPrimary: {
+      backgroundColor: "#009999",
+      color: "#ffffff",
+    },
+    identityPreviewEditButtonIcon: { color: "#94a3b8" },
   },
 };
 
-// ── Auth pages ────────────────────────────────────────────────────────────────
+// ── Sign-in / sign-up pages ───────────────────────────────────────────────────
 function SignInPage() {
   return (
     <div style={{
@@ -82,9 +79,14 @@ function SignInPage() {
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "#0d1117",
-      padding: "1rem",
+      padding: "1.5rem",
     }}>
-      <SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} />
+      <Show when="signed-out">
+        <SignIn routing="path" path={`${basePath}/sign-in`} />
+      </Show>
+      <Show when="signed-in">
+        <Redirect to={`${basePath}/`} />
+      </Show>
     </div>
   );
 }
@@ -97,36 +99,38 @@ function SignUpPage() {
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "#0d1117",
-      padding: "1rem",
+      padding: "1.5rem",
     }}>
-      <SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} />
+      <Show when="signed-out">
+        <SignUp routing="path" path={`${basePath}/sign-up`} />
+      </Show>
+      <Show when="signed-in">
+        <Redirect to={`${basePath}/`} />
+      </Show>
     </div>
   );
 }
 
-// ── Landing (home for signed-out users) ───────────────────────────────────────
+// ── Landing page (public, unauthenticated) ────────────────────────────────────
 function Landing() {
   return (
     <div style={{
-      minHeight: "100dvh",
       display: "flex",
+      minHeight: "100dvh",
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "#0d1117",
-      padding: "2rem 1.5rem",
+      padding: "1.5rem",
     }}>
       <div style={{
-        maxWidth: "560px",
+        maxWidth: "520px",
         width: "100%",
-        textAlign: "center",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         gap: "1.25rem",
       }}>
-        {/* Cloud icon */}
         <img
-          src="/cloud.svg"
+          src="/logo.svg"
           alt=""
           style={{ width: "96px", height: "auto", marginBottom: "0.25rem" }}
         />
@@ -236,14 +240,14 @@ function HomeRoute() {
   }
 
   if (isSignedIn) {
-    return <Redirect to={routeOrder[0]} />;
+    return <Redirect to="/" />;
   }
 
   return <Landing />;
 }
 
 // ── Search ────────────────────────────────────────────────────────────────────
-function SearchCard() {
+function SearchCard({ searchIndex }) {
   const [, setLocation] = useLocation();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -257,7 +261,7 @@ function SearchCard() {
           [item.code, item.name, item.description, item.location].join(" ").toLowerCase().includes(q),
         );
     return list.slice(0, 12);
-  }, [query]);
+  }, [query, searchIndex]);
 
   useEffect(() => {
     setActive(filtered.length ? 0 : -1);
@@ -331,7 +335,7 @@ function SearchCard() {
 }
 
 // ── Page content ──────────────────────────────────────────────────────────────
-function PageView({ path }) {
+function PageView({ path, pages, routeOrder, navSections }) {
   const data = pages[path];
   const idx = routeOrder.indexOf(path);
   const prev = routeOrder[(idx - 1 + routeOrder.length) % routeOrder.length];
@@ -459,6 +463,8 @@ function DomainGuard() {
   const { isLoaded, isSignedIn, getToken } = useAuth();
   // null = pending server response, true = allowed, false = denied
   const [serverAllowed, setServerAllowed] = useState(null);
+  // null = not yet fetched, object = fetched content
+  const [appData, setAppData] = useState(null);
 
   useEffect(() => {
     if (!isLoaded || !isSignedIn) return;
@@ -467,10 +473,31 @@ function DomainGuard() {
     (async () => {
       try {
         const token = await getToken();
-        const res = await fetch("/api/auth/check", {
+
+        // Step 1: verify allowlist membership
+        const authRes = await fetch("/api/auth/check", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (!cancelled) setServerAllowed(res.ok);
+
+        if (!authRes.ok) {
+          if (!cancelled) setServerAllowed(false);
+          return;
+        }
+
+        // Step 2: fetch protected content (only reachable by allowlisted users)
+        const dataRes = await fetch("/api/content/data", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!cancelled) {
+          if (dataRes.ok) {
+            const json = await dataRes.json();
+            setAppData(json);
+            setServerAllowed(true);
+          } else {
+            setServerAllowed(false);
+          }
+        }
       } catch {
         if (!cancelled) setServerAllowed(false);
       }
@@ -487,10 +514,11 @@ function DomainGuard() {
     return null;
   }
 
-  if (!serverAllowed) {
+  if (!serverAllowed || !appData) {
     return <DomainRejected />;
   }
-  return <AppShell />;
+
+  return <AppShell appData={appData} />;
 }
 
 function LoadingScreen() {
@@ -508,7 +536,11 @@ function LoadingScreen() {
 }
 
 // ── Protected app shell (rendered only when signed in) ────────────────────────
-function AppShell() {
+function AppShell({ appData }) {
+  const { navSections, pages, searchIndex } = appData;
+  // Derive routeOrder from navSections (same logic as the old data.js)
+  const routeOrder = navSections.flatMap((section) => section.links.map((link) => link.path));
+
   const [location, setLocation] = useLocation();
   const { signOut } = useClerk();
   const { user } = useUser();
@@ -540,7 +572,7 @@ function AppShell() {
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [location, setLocation]);
+  }, [location, setLocation, routeOrder]);
 
   return (
     <div className={`app-shell ${collapsed ? "nav-collapsed" : ""} ${presentationMode ? "presentation" : ""}`}>
@@ -552,7 +584,7 @@ function AppShell() {
             <img className="brand-logo" src="/salesforce-logo.jpg" alt="Salesforce logo" />
           </div>
         </div>
-        <SearchCard />
+        <SearchCard searchIndex={searchIndex} />
         {navSections.map((section) => (
           <div className="nav-group" key={section.title}>
             <p className="nav-title">{section.title}</p>
@@ -595,7 +627,12 @@ function AppShell() {
         <Switch>
           {routeOrder.map((path) => (
             <Route key={path} path={path}>
-              <PageView path={path} />
+              <PageView
+                path={path}
+                pages={pages}
+                routeOrder={routeOrder}
+                navSections={navSections}
+              />
             </Route>
           ))}
           <Route>

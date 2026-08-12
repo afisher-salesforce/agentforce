@@ -1,18 +1,21 @@
 import { Router, type IRouter } from "express";
 import { getAuth } from "@clerk/express";
 import { isUserAllowed } from "../lib/allowlist";
+import { navSections, pages, searchIndex } from "../data";
 
 const router: IRouter = Router();
 
 /**
- * GET /api/auth/check
+ * GET /api/content/data
  *
- * Verifies that the authenticated user's email address is on the allowlist.
- * Returns 200 { allowed: true } when access is granted, 403 otherwise.
- * The frontend must not render protected content until this endpoint
- * responds with 200 — client-side checks alone are not a security boundary.
+ * Returns the protected briefing content (navSections, pages, searchIndex)
+ * to authenticated, allowlisted users only.
+ *
+ * Content is intentionally NOT bundled into the frontend — it lives here so
+ * it is never present in the public JavaScript that anyone can download
+ * without an account.
  */
-router.get("/auth/check", async (req, res) => {
+router.get("/content/data", async (req, res) => {
   const { userId } = getAuth(req);
 
   if (!userId) {
@@ -28,7 +31,7 @@ router.get("/auth/check", async (req, res) => {
       return;
     }
 
-    res.json({ allowed: true });
+    res.json({ navSections, pages, searchIndex });
   } catch {
     res.status(500).json({ error: "Internal server error" });
   }
