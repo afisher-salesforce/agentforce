@@ -1,11 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
-import { ClerkProvider, SignIn, SignUp, Show, useClerk, useUser, useAuth } from "@clerk/react";
+import { ClerkProvider, SignIn, SignUp, Show, useClerk, useUser } from "@clerk/react";
 
 // Allowlist — only these email domains can access content
 const ALLOWED_DOMAINS = ['salesforce.com', 'siemens.com'];
 
-// Individual emails always granted access regardless of domain
-const ALLOWED_EMAILS = ['afisher@salesforce.com', 'bill.schermer@salesforce.com'];
+// Admin accounts that bypass domain restrictions unconditionally
+const ADMIN_EMAILS = new Set(['afisher@salesforce.com', 'bill.schermer@salesforce.com']);
+
+function isAllowedDomain(email) {
+  const n = email.toLowerCase();
+  return ADMIN_EMAILS.has(n) || ALLOWED_DOMAINS.some((d) => n.endsWith(`@${d}`));
+}
 import { publishableKeyFromHost } from "@clerk/react/internal";
 import { dark } from "@clerk/themes";
 import { Switch, Route, Link, Redirect, useLocation, Router as WouterRouter } from "wouter";
@@ -232,12 +237,22 @@ function Landing() {
   );
 }
 
+// Home route: renders landing when signed out, redirects into app when signed in.
+// Uses <Show> (not useAuth) — the proven pattern from the reference implementation.
+// Never an unconditional redirect: auth state is always checked first.
 function HomeRoute() {
-  const { isSignedIn, isLoaded } = useAuth();
-  // Hold a dark screen while Clerk re-hydrates — never show blank white
-  if (!isLoaded) return <div style={{ minHeight: "100dvh", backgroundColor: "#0d1117" }} />;
-  if (isSignedIn) return <Redirect to="/executive-summary" />;
-  return <Landing />;
+  return (
+    <>
+      <Show when="signed-in">
+        <DomainGate>
+          <Redirect to="/executive-summary" />
+        </DomainGate>
+      </Show>
+      <Show when="signed-out">
+        <Landing />
+      </Show>
+    </>
+  );
 }
 
 // ── Search ────────────────────────────────────────────────────────────────────
@@ -406,11 +421,9 @@ function PageView({ path }) {
 }
 
 // ── Domain enforcement ────────────────────────────────────────────────────────
-function DomainRejected() {
+// Shown when the user's email doesn't match any allowed domain.
+function AccessDenied() {
   const { signOut } = useClerk();
-  useEffect(() => {
-    signOut({ redirectUrl: basePath || '/' });
-  }, [signOut]);
   return (
     <div style={{
       display: 'flex',
@@ -431,39 +444,65 @@ function DomainRejected() {
           <h2 style={{ color: '#e2e8f0', fontSize: '1.125rem', fontWeight: '700', margin: '0 0 0.75rem' }}>
             Access Restricted
           </h2>
-          <p style={{ color: '#94a3b8', fontSize: '0.9375rem', lineHeight: '1.6', margin: 0 }}>
+          <p style={{ color: '#94a3b8', fontSize: '0.9375rem', lineHeight: '1.6', margin: '0 0 1.5rem' }}>
             This site is available to <strong style={{ color: '#e2e8f0' }}>salesforce.com</strong> and{' '}
             <strong style={{ color: '#e2e8f0' }}>siemens.com</strong> email addresses only.
-            You are being signed out.
           </p>
+          <button
+            onClick={() => signOut({ redirectUrl: basePath || '/' })}
+            style={{
+              padding: '0.625rem 1.5rem',
+              backgroundColor: '#009999',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '0.375rem',
+              cursor: 'pointer',
+              fontWeight: '600',
+              fontSize: '0.9375rem',
+            }}
+            type="button"
+          >
+            Sign Out
+          </button>
         </div>
       </div>
     </div>
   );
 }
 
-// Replaces <Show> in the catch-all route — <Show> renders nothing during
-// Clerk's loading phase, leaving a blank screen after OAuth in production.
-// useAuth() lets us render a placeholder and redirect explicitly.
-function AuthGuard() {
-  const { isSignedIn, isLoaded } = useAuth();
-  if (!isLoaded) return <div style={{ minHeight: "100dvh", backgroundColor: "#0d1117" }} />;
-  if (!isSignedIn) return <Redirect to="/sign-in" />;
-  return <DomainGuard />;
-}
-
-function DomainGuard() {
+// Matches the proven pattern from the reference app: show a spinner while the
+// user object loads, then either redirect to /access-denied or pass through.
+// Must be used inside <Show when="signed-in"> so user is always signed in here.
+function DomainGate({ children }) {
   const { user, isLoaded } = useUser();
-  // Wait for Clerk to finish loading the user (e.g. after OAuth callback)
-  // before running the domain check — otherwise user is null, the check
-  // fails, and DomainRejected fires signOut() before the session settles.
-  if (!isLoaded) return null;
-  const email = (user?.primaryEmailAddress?.emailAddress ?? '').toLowerCase();
-  const domain = email.split('@')[1] ?? '';
-  if (!ALLOWED_DOMAINS.includes(domain) && !ALLOWED_EMAILS.includes(email)) {
-    return <DomainRejected />;
+
+  if (!isLoaded) {
+    return (
+      <div style={{
+        minHeight: '100dvh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#0d1117',
+      }}>
+        <div style={{
+          width: '2rem',
+          height: '2rem',
+          border: '2px solid #009999',
+          borderTopColor: 'transparent',
+          borderRadius: '50%',
+          animation: 'spin 0.8s linear infinite',
+        }} />
+      </div>
+    );
   }
-  return <AppShell />;
+
+  const email = (user?.primaryEmailAddress?.emailAddress ?? '').toLowerCase();
+  if (user && !isAllowedDomain(email)) {
+    return <Redirect to="/access-denied" />;
+  }
+
+  return <>{children}</>;
 }
 
 // ── Protected app shell (rendered only when signed in) ────────────────────────
@@ -577,8 +616,6 @@ function ClerkProviderWithRoutes() {
       appearance={clerkAppearance}
       signInUrl={`${basePath}/sign-in`}
       signUpUrl={`${basePath}/sign-up`}
-      afterSignInUrl={`${basePath}/executive-summary`}
-      afterSignUpUrl={`${basePath}/executive-summary`}
       localization={{
         signIn: {
           start: {
@@ -600,8 +637,16 @@ function ClerkProviderWithRoutes() {
         <Route path="/" component={HomeRoute} />
         <Route path="/sign-in/*?" component={SignInPage} />
         <Route path="/sign-up/*?" component={SignUpPage} />
+        <Route path="/access-denied" component={AccessDenied} />
         <Route>
-          <AuthGuard />
+          <Show when="signed-in">
+            <DomainGate>
+              <AppShell />
+            </DomainGate>
+          </Show>
+          <Show when="signed-out">
+            <Redirect to="/sign-in" />
+          </Show>
         </Route>
       </Switch>
     </ClerkProvider>
