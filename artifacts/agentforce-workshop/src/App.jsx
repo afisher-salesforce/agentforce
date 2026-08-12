@@ -233,15 +233,37 @@ function Landing() {
 }
 
 function HomeRoute() {
+  const defaultSignedInRoute =
+    routeOrder.find((path) => path !== "/") || "/";
+
   return (
     <>
       <Show when="signed-in">
-        <Redirect to={routeOrder[0]} />
+        <Redirect to={defaultSignedInRoute} />
       </Show>
       <Show when="signed-out">
         <Landing />
       </Show>
     </>
+  );
+}
+
+function AuthLoading({ message = "Loading secure workspace..." }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        minHeight: "100dvh",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#0d1117",
+        padding: "1.5rem",
+      }}
+    >
+      <p style={{ color: "#94a3b8", fontSize: "0.95rem", margin: 0 }}>
+        {message}
+      </p>
+    </div>
   );
 }
 
@@ -462,21 +484,25 @@ function DomainGuard() {
   const { user, isLoaded, isSignedIn } = useUser();
 
   if (!isLoaded) {
-    return null;
+    return <AuthLoading />;
   }
 
   if (!isSignedIn) {
-    return null;
+    return <Redirect to="/sign-in" />;
   }
 
-  const email = (user?.primaryEmailAddress?.emailAddress ?? "").toLowerCase();
+  const userEmails = (user?.emailAddresses ?? [])
+    .map((entry) => entry.emailAddress?.toLowerCase())
+    .filter(Boolean);
 
-  // Don't reject while primary email is still resolving.
-  if (!email) {
-    return null;
+  // Keep UI visible while Clerk hydrates email addresses after callback.
+  if (userEmails.length === 0) {
+    return <AuthLoading message="Completing sign-in..." />;
   }
 
-  if (!ALLOWED_EMAILS.has(email)) {
+  const isAllowed = userEmails.some((email) => ALLOWED_EMAILS.has(email));
+
+  if (!isAllowed) {
     return <DomainRejected />;
   }
   return <AppShell />;
