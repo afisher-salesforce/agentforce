@@ -5,12 +5,6 @@ import { dark } from "@clerk/themes";
 import { Switch, Route, Link, Redirect, useLocation, Router as WouterRouter } from "wouter";
 import { navSections, pages, routeOrder, searchIndex } from "./data";
 
-// Allowlist — named users
-const ALLOWED_EMAILS = new Set([
-  "afisher@salesforce.com",
-  "bill.schermer@salesforce.com",
-]);
-
 // ── Clerk setup (verbatim) ────────────────────────────────────────────────────
 const clerkPubKey = publishableKeyFromHost(
   window.location.hostname,
@@ -459,9 +453,30 @@ function DomainRejected() {
 }
 
 function DomainGuard() {
-  const { user, isLoaded, isSignedIn } = useUser();
+  const { isLoaded, isSignedIn, getToken } = useAuth();
+  // null = pending server response, true = allowed, false = denied
+  const [serverAllowed, setServerAllowed] = useState(null);
 
-  if (!isLoaded) {
+  useEffect(() => {
+    if (!isLoaded || !isSignedIn) return;
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const token = await getToken();
+        const res = await fetch("/api/auth/check", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!cancelled) setServerAllowed(res.ok);
+      } catch {
+        if (!cancelled) setServerAllowed(false);
+      }
+    })();
+
+    return () => { cancelled = true; };
+  }, [isLoaded, isSignedIn, getToken]);
+
+  if (!isLoaded || serverAllowed === null) {
     return <LoadingScreen />;
   }
 
@@ -469,29 +484,7 @@ function DomainGuard() {
     return null;
   }
 
-  // Check ALL email addresses (not just primary) — Google OAuth can populate
-  // a non-primary slot first, or primaryEmailAddress may still be resolving.
-  const allEmails = (user?.emailAddresses ?? []).map(
-    (e) => e.emailAddress.toLowerCase(),
-  );
-
-  // Also include primaryEmailAddress as a fallback in case emailAddresses is
-  // populated slightly later than primary.
-  const primaryEmail = (user?.primaryEmailAddress?.emailAddress ?? "").toLowerCase();
-  const emailsToCheck = primaryEmail
-    ? [...new Set([primaryEmail, ...allEmails])]
-    : allEmails;
-
-  // While the user object is loaded but email addresses haven't synced yet
-  // (can happen briefly after OAuth), show a loading screen rather than
-  // a permanent blank page.
-  if (emailsToCheck.length === 0) {
-    return <LoadingScreen />;
-  }
-
-  const allowed = emailsToCheck.some((email) => ALLOWED_EMAILS.has(email));
-
-  if (!allowed) {
+  if (!serverAllowed) {
     return <DomainRejected />;
   }
   return <AppShell />;
