@@ -2,6 +2,7 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import path from "path";
 import { createRequire } from "module";
+import { execSync } from "child_process";
 
 // Force all nested dependencies to resolve to the same React instance.
 // Without this, Vite can bundle two copies of React when a dependency
@@ -11,11 +12,23 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const reactPath = path.dirname(require.resolve("react/package.json"));
 const reactDomPath = path.dirname(require.resolve("react-dom/package.json"));
+const buildSha = (() => {
+  try {
+    return execSync("git rev-parse --short HEAD", { stdio: ["ignore", "pipe", "ignore"] })
+      .toString()
+      .trim();
+  } catch {
+    return "unknown";
+  }
+})();
 
 const port = Number(process.env.PORT) || 3000;
 
 export default defineConfig({
   plugins: [react()],
+  define: {
+    __BUILD_SHA__: JSON.stringify(buildSha),
+  },
   resolve: {
     alias: {
       react: reactPath,
