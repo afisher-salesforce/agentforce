@@ -234,10 +234,29 @@ function HomeRoute() {
   }
 
   if (isSignedIn) {
-    return <Redirect to="/" />;
+    return <DomainGuard />;
   }
 
   return <Landing />;
+}
+
+function AuthLoading({ message = "Loading secure workspace..." }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        minHeight: "100dvh",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#0d1117",
+        padding: "1.5rem",
+      }}
+    >
+      <p style={{ color: "#94a3b8", fontSize: "0.95rem", margin: 0 }}>
+        {message}
+      </p>
+    </div>
+  );
 }
 
 // ── Search ────────────────────────────────────────────────────────────────────
@@ -459,7 +478,6 @@ function DomainGuard() {
   const [serverAllowed, setServerAllowed] = useState(null);
   // null = not yet fetched, object = fetched content
   const [appData, setAppData] = useState(null);
-
   useEffect(() => {
     if (!isLoaded || !isSignedIn) return;
 
@@ -505,7 +523,7 @@ function DomainGuard() {
   }
 
   if (!isSignedIn) {
-    return null;
+    return <Redirect to="/sign-in" />;
   }
 
   if (!serverAllowed || !appData) {
