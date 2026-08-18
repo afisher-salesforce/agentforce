@@ -3,33 +3,33 @@ import { ClerkProvider, SignIn, SignUp, useAuth, useClerk, useUser } from "@cler
 import { publishableKeyFromHost } from "@clerk/react/internal";
 import { dark } from "@clerk/themes";
 import { Switch, Route, Link, Redirect, useLocation, Router as WouterRouter } from "wouter";
+import { navSections, pages, searchIndex, routeOrder } from "./data";
 
-// ── Clerk setup (verbatim) ────────────────────────────────────────────────────
+// ── Clerk setup ─────────────────────────────────────────────────────────────
 const clerkPubKey = publishableKeyFromHost(
   window.location.hostname,
   import.meta.env.VITE_CLERK_PUBLISHABLE_KEY,
 );
 const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
-const buildStamp = typeof __BUILD_SHA__ === "string" && __BUILD_SHA__ ? __BUILD_SHA__ : "unknown";
-
-function authDebug(message) {
-  const timestamp = new Date().toISOString().slice(11, 19);
-  const line = `[${timestamp}] ${message}`;
-  if (!window.__AFW_AUTH_DEBUG__) window.__AFW_AUTH_DEBUG__ = [];
-  window.__AFW_AUTH_DEBUG__.push(line);
-  if (window.__AFW_AUTH_DEBUG__.length > 40) {
-    window.__AFW_AUTH_DEBUG__ = window.__AFW_AUTH_DEBUG__.slice(-40);
-  }
-  console.log(`[AFW auth] ${line}`);
-  window.dispatchEvent(new CustomEvent("afw-auth-debug"));
-}
 
 function stripBase(path) {
   return basePath && path.startsWith(basePath) ? path.slice(basePath.length) || "/" : path;
 }
 
-// ── Appearance ────────────────────────────────────────────────────────────────
+// ── Domain restriction ──────────────────────────────────────────────────────
+const ALLOWED_DOMAINS = ["salesforce.com", "siemens.com"];
+const ADMIN_EMAILS = new Set([
+  "afisher@salesforce.com",
+  "bill.schermer@salesforce.com",
+]);
+
+function isAllowedDomain(email) {
+  const normalized = email.toLowerCase();
+  return ADMIN_EMAILS.has(normalized) || ALLOWED_DOMAINS.some((d) => normalized.endsWith(`@${d}`));
+}
+
+// ── Appearance ──────────────────────────────────────────────────────────────
 const clerkAppearance = {
   theme: dark,
   options: {
@@ -83,7 +83,7 @@ const clerkAppearance = {
   },
 };
 
-// ── Sign-in / sign-up pages ───────────────────────────────────────────────────
+// ── Sign-in / sign-up pages ─────────────────────────────────────────────────
 function SignInPage() {
   const { isLoaded, isSignedIn } = useAuth();
   if (isLoaded && isSignedIn) return <Redirect to="/" />;
@@ -118,7 +118,7 @@ function SignUpPage() {
   );
 }
 
-// ── Landing page (public, unauthenticated) ────────────────────────────────────
+// ── Landing page (public, unauthenticated) ──────────────────────────────────
 function Landing() {
   return (
     <div style={{
@@ -141,8 +141,6 @@ function Landing() {
           alt=""
           style={{ width: "96px", height: "auto", marginBottom: "0.25rem" }}
         />
-
-        {/* Title */}
         <h1 style={{
           color: "#e2e8f0",
           fontSize: "2.75rem",
@@ -152,8 +150,6 @@ function Landing() {
         }}>
           Agentforce Workshop
         </h1>
-
-        {/* Subtitle */}
         <p style={{
           color: "#009999",
           fontSize: "1.0625rem",
@@ -162,8 +158,6 @@ function Landing() {
         }}>
           Siemens DISW IT Leadership Executive Discussion
         </p>
-
-        {/* Body */}
         <p style={{
           color: "#94a3b8",
           fontSize: "0.9375rem",
@@ -174,8 +168,6 @@ function Landing() {
           An internal briefing resource covering Salesforce AI capabilities and
           the Agentforce platform for the Siemens DISW IT leadership team.
         </p>
-
-        {/* Buttons */}
         <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.25rem" }}>
           <Link
             href={`${basePath}/sign-in`}
@@ -207,8 +199,6 @@ function Landing() {
             Request Access
           </Link>
         </div>
-
-        {/* Domain pills */}
         <div style={{ display: "flex", gap: "0.625rem", marginTop: "0.25rem" }}>
           {["@salesforce.com", "@siemens.com"].map((domain) => (
             <span
@@ -227,8 +217,6 @@ function Landing() {
             </span>
           ))}
         </div>
-
-        {/* Caption */}
         <p style={{ color: "#475569", fontSize: "0.8125rem", margin: 0 }}>
           Access restricted to Salesforce and Siemens email domains
         </p>
@@ -237,46 +225,98 @@ function Landing() {
   );
 }
 
-// Uses useAuth() directly so we can show LoadingScreen during Clerk init
-// instead of the blank-page that <Show> produces before isLoaded is true.
+// ── Loading screen ──────────────────────────────────────────────────────────
+function LoadingScreen() {
+  return (
+    <div style={{
+      display: "flex",
+      minHeight: "100dvh",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#0d1117",
+    }}>
+      <div style={{ color: "#94a3b8", fontSize: "0.9375rem" }}>Loading…</div>
+    </div>
+  );
+}
+
+// ── Home route ──────────────────────────────────────────────────────────────
 function HomeRoute() {
   const { isLoaded, isSignedIn } = useAuth();
-  useEffect(() => {
-    authDebug(`HomeRoute: isLoaded=${isLoaded} isSignedIn=${isSignedIn}`);
-  }, [isLoaded, isSignedIn]);
 
   if (!isLoaded) {
     return <LoadingScreen />;
   }
 
   if (isSignedIn) {
-    return <DomainGuard />;
+    return <DomainGate><AppShell /></DomainGate>;
   }
 
   return <Landing />;
 }
 
-function AuthLoading({ message = "Loading secure workspace..." }) {
+// ── Domain gate (client-side) ───────────────────────────────────────────────
+function DomainGate({ children }) {
+  const { user, isLoaded } = useUser();
+
+  if (!isLoaded) {
+    return <LoadingScreen />;
+  }
+
+  const email = user?.primaryEmailAddress?.emailAddress ?? "";
+  if (user && !isAllowedDomain(email)) {
+    return <DomainRejected />;
+  }
+
+  return <>{children}</>;
+}
+
+function DomainRejected() {
+  const { signOut } = useClerk();
+  const hasSignedOutRef = useRef(false);
+
+  useEffect(() => {
+    if (hasSignedOutRef.current) return;
+    hasSignedOutRef.current = true;
+    const timer = window.setTimeout(() => {
+      void signOut({ redirectUrl: basePath || "/" });
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [signOut]);
+
   return (
-    <div
-      style={{
-        display: "flex",
-        minHeight: "100dvh",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#0d1117",
-        padding: "1.5rem",
-      }}
-    >
-      <p style={{ color: "#94a3b8", fontSize: "0.95rem", margin: 0 }}>
-        {message}
-      </p>
+    <div style={{
+      display: "flex",
+      minHeight: "100dvh",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#0d1117",
+      padding: "1.5rem",
+    }}>
+      <div style={{ maxWidth: "420px", width: "100%", textAlign: "center" }}>
+        <div style={{
+          backgroundColor: "#161b22",
+          borderRadius: "0.75rem",
+          padding: "2rem",
+          border: "1px solid #30363d",
+        }}>
+          <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>🔒</div>
+          <h2 style={{ color: "#e2e8f0", fontSize: "1.125rem", fontWeight: "700", margin: "0 0 0.75rem" }}>
+            Access Restricted
+          </h2>
+          <p style={{ color: "#94a3b8", fontSize: "0.9375rem", lineHeight: "1.6", margin: 0 }}>
+            This site is available to <strong style={{ color: "#e2e8f0" }}>salesforce.com</strong> and{" "}
+            <strong style={{ color: "#e2e8f0" }}>siemens.com</strong> email domains only.
+            You are being signed out.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
 
-// ── Search ────────────────────────────────────────────────────────────────────
-function SearchCard({ searchIndex }) {
+// ── Search ──────────────────────────────────────────────────────────────────
+function SearchCard() {
   const [, setLocation] = useLocation();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -290,7 +330,7 @@ function SearchCard({ searchIndex }) {
           [item.code, item.name, item.description, item.location].join(" ").toLowerCase().includes(q),
         );
     return list.slice(0, 12);
-  }, [query, searchIndex]);
+  }, [query]);
 
   useEffect(() => {
     setActive(filtered.length ? 0 : -1);
@@ -363,8 +403,8 @@ function SearchCard({ searchIndex }) {
   );
 }
 
-// ── Page content ──────────────────────────────────────────────────────────────
-function PageView({ path, pages, routeOrder, navSections }) {
+// ── Page content ────────────────────────────────────────────────────────────
+function PageView({ path }) {
   const data = pages[path];
   const idx = routeOrder.indexOf(path);
   const prev = routeOrder[(idx - 1 + routeOrder.length) % routeOrder.length];
@@ -440,141 +480,8 @@ function PageView({ path, pages, routeOrder, navSections }) {
   );
 }
 
-// ── Domain enforcement ────────────────────────────────────────────────────────
-function DomainRejected() {
-  const { signOut } = useClerk();
-  const hasSignedOutRef = useRef(false);
-
-  useEffect(() => {
-    if (hasSignedOutRef.current) return;
-    hasSignedOutRef.current = true;
-
-    // Defer sign-out one tick to avoid auth state churn loops.
-    const timer = window.setTimeout(() => {
-      void signOut({ redirectUrl: basePath || "/" });
-    }, 0);
-
-    return () => window.clearTimeout(timer);
-  }, [signOut]);
-
-  return (
-    <div style={{
-      display: 'flex',
-      minHeight: '100dvh',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#0d1117',
-      padding: '1.5rem',
-    }}>
-      <div style={{ maxWidth: '420px', width: '100%', textAlign: 'center' }}>
-        <div style={{
-          backgroundColor: '#161b22',
-          borderRadius: '0.75rem',
-          padding: '2rem',
-          border: '1px solid #30363d',
-        }}>
-          <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🔒</div>
-          <h2 style={{ color: '#e2e8f0', fontSize: '1.125rem', fontWeight: '700', margin: '0 0 0.75rem' }}>
-            Access Restricted
-          </h2>
-          <p style={{ color: '#94a3b8', fontSize: '0.9375rem', lineHeight: '1.6', margin: 0 }}>
-            This site is available to <strong style={{ color: '#e2e8f0' }}>salesforce.com</strong> and{' '}
-            <strong style={{ color: '#e2e8f0' }}>siemens.com</strong> email domains only.
-            You are being signed out.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function DomainGuard() {
-  const { isLoaded, isSignedIn, getToken } = useAuth();
-  // null = pending server response, true = allowed, false = denied
-  const [serverAllowed, setServerAllowed] = useState(null);
-  // null = not yet fetched, object = fetched content
-  const [appData, setAppData] = useState(null);
-  useEffect(() => {
-    authDebug(`DomainGuard: isLoaded=${isLoaded} isSignedIn=${isSignedIn} serverAllowed=${serverAllowed}`);
-  }, [isLoaded, isSignedIn, serverAllowed]);
-  useEffect(() => {
-    if (!isLoaded || !isSignedIn) return;
-
-    let cancelled = false;
-    (async () => {
-      try {
-        const token = await getToken();
-
-        // Step 1: verify allowlist membership
-        const authRes = await fetch("/api/auth/check", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        authDebug(`DomainGuard: /api/auth/check -> ${authRes.status}`);
-
-        if (!authRes.ok) {
-          if (!cancelled) setServerAllowed(false);
-          return;
-        }
-
-        // Step 2: fetch protected content (only reachable by allowlisted users)
-        const dataRes = await fetch("/api/content/data", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        authDebug(`DomainGuard: /api/content/data -> ${dataRes.status}`);
-
-        if (!cancelled) {
-          if (dataRes.ok) {
-            const json = await dataRes.json();
-            setAppData(json);
-            setServerAllowed(true);
-          } else {
-            setServerAllowed(false);
-          }
-        }
-      } catch {
-        authDebug("DomainGuard: fetch failed");
-        if (!cancelled) setServerAllowed(false);
-      }
-    })();
-
-    return () => { cancelled = true; };
-  }, [isLoaded, isSignedIn, getToken]);
-
-  if (!isLoaded || serverAllowed === null) {
-    return <LoadingScreen />;
-  }
-
-  if (!isSignedIn) {
-    return <Redirect to="/sign-in" />;
-  }
-
-  if (!serverAllowed || !appData) {
-    return <DomainRejected />;
-  }
-
-  return <AppShell appData={appData} />;
-}
-
-function LoadingScreen() {
-  return (
-    <div style={{
-      display: "flex",
-      minHeight: "100dvh",
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: "#0d1117",
-    }}>
-      <div style={{ color: "#94a3b8", fontSize: "0.9375rem" }}>Loading…</div>
-    </div>
-  );
-}
-
-// ── Protected app shell (rendered only when signed in) ────────────────────────
-function AppShell({ appData }) {
-  const { navSections, pages, searchIndex } = appData;
-  // Derive routeOrder from navSections (same logic as the old data.js)
-  const routeOrder = navSections.flatMap((section) => section.links.map((link) => link.path));
-
+// ── Protected app shell ─────────────────────────────────────────────────────
+function AppShell() {
   const [location, setLocation] = useLocation();
   const { signOut } = useClerk();
   const { user } = useUser();
@@ -606,7 +513,7 @@ function AppShell({ appData }) {
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [location, setLocation, routeOrder]);
+  }, [location, setLocation]);
 
   return (
     <div className={`app-shell ${collapsed ? "nav-collapsed" : ""} ${presentationMode ? "presentation" : ""}`}>
@@ -618,7 +525,7 @@ function AppShell({ appData }) {
             <img className="brand-logo" src="/salesforce-logo.jpg" alt="Salesforce logo" />
           </div>
         </div>
-        <SearchCard searchIndex={searchIndex} />
+        <SearchCard />
         {navSections.map((section) => (
           <div className="nav-group" key={section.title}>
             <p className="nav-title">{section.title}</p>
@@ -647,9 +554,6 @@ function AppShell({ appData }) {
           >
             Sign Out
           </button>
-          <p style={{ fontSize: "0.7rem", color: "#475569", padding: "0.5rem 0.75rem 0", margin: 0 }}>
-            Build: {buildStamp}
-          </p>
         </div>
       </aside>
       <main className="main">
@@ -664,12 +568,7 @@ function AppShell({ appData }) {
         <Switch>
           {routeOrder.map((path) => (
             <Route key={path} path={path}>
-              <PageView
-                path={path}
-                pages={pages}
-                routeOrder={routeOrder}
-                navSections={navSections}
-              />
+              <PageView path={path} />
             </Route>
           ))}
           <Route>
@@ -681,14 +580,9 @@ function AppShell({ appData }) {
   );
 }
 
-// ── Auth gate for protected routes ───────────────────────────────────────────
-// Replaces <Show> so we can show a loading state during Clerk initialization
-// instead of rendering nothing (the blank-page symptom).
+// ── Auth gate for protected routes ──────────────────────────────────────────
 function AuthGate() {
   const { isLoaded, isSignedIn } = useAuth();
-  useEffect(() => {
-    authDebug(`AuthGate: isLoaded=${isLoaded} isSignedIn=${isSignedIn}`);
-  }, [isLoaded, isSignedIn]);
 
   if (!isLoaded) {
     return <LoadingScreen />;
@@ -698,54 +592,14 @@ function AuthGate() {
     return <Redirect to="/sign-in" />;
   }
 
-  return <DomainGuard />;
-}
-
-// ── Root router with Clerk ────────────────────────────────────────────────────
-function ClerkProviderWithRoutes() {
-  const [, setLocation] = useLocation();
-
   return (
-    <ClerkProvider
-      publishableKey={clerkPubKey}
-      proxyUrl={clerkProxyUrl}
-      appearance={clerkAppearance}
-      signInUrl={`${basePath}/sign-in`}
-      signUpUrl={`${basePath}/sign-up`}
-      afterSignInUrl={`${basePath}/`}
-      afterSignUpUrl={`${basePath}/`}
-      localization={{
-        signIn: {
-          start: {
-            title: "Agentforce Workshop",
-            subtitle: "Sign in to access the executive discussion",
-          },
-        },
-        signUp: {
-          start: {
-            title: "Request Access",
-            subtitle: "Create an account to join the workshop",
-          },
-        },
-      }}
-      routerPush={(to) => setLocation(stripBase(to))}
-      routerReplace={(to) => setLocation(stripBase(to), { replace: true })}
-    >
-      <Switch>
-        <Route path="/" component={HomeRoute} />
-        <Route path="/sign-in/*?" component={SignInPage} />
-        <Route path="/sign-up/*?" component={SignUpPage} />
-        <Route>
-          <AuthGate />
-        </Route>
-      </Switch>
-    </ClerkProvider>
+    <DomainGate>
+      <AppShell />
+    </DomainGate>
   );
 }
 
-// ── Error boundary ────────────────────────────────────────────────────────────
-// Catches any uncaught JS errors in the tree and renders a visible message
-// instead of the silent blank page that an unhandled error would produce.
+// ── Error boundary ──────────────────────────────────────────────────────────
 class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
@@ -796,42 +650,45 @@ class ErrorBoundary extends Component {
   }
 }
 
-function AuthDebugOverlay() {
-  const [entries, setEntries] = useState(() => window.__AFW_AUTH_DEBUG__ || []);
-
-  useEffect(() => {
-    const sync = () => setEntries([...(window.__AFW_AUTH_DEBUG__ || [])]);
-    window.addEventListener("afw-auth-debug", sync);
-    sync();
-    return () => window.removeEventListener("afw-auth-debug", sync);
-  }, []);
+// ── Root router with Clerk ──────────────────────────────────────────────────
+function ClerkProviderWithRoutes() {
+  const [, setLocation] = useLocation();
 
   return (
-    <div style={{
-      position: "fixed",
-      left: "0.75rem",
-      bottom: "0.75rem",
-      width: "min(560px, calc(100vw - 1.5rem))",
-      maxHeight: "38vh",
-      overflow: "auto",
-      zIndex: 99999,
-      backgroundColor: "rgba(13, 17, 23, 0.94)",
-      border: "1px solid #30363d",
-      borderRadius: "0.5rem",
-      padding: "0.5rem 0.625rem",
-      fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
-      fontSize: "0.72rem",
-      lineHeight: 1.4,
-      color: "#cbd5e1",
-      pointerEvents: "none",
-    }}>
-      <div style={{ color: "#94a3b8", marginBottom: "0.35rem" }}>
-        Auth debug · build {buildStamp}
-      </div>
-      {entries.slice(-10).map((entry, index) => (
-        <div key={`${index}-${entry}`}>{entry}</div>
-      ))}
-    </div>
+    <ClerkProvider
+      publishableKey={clerkPubKey}
+      proxyUrl={clerkProxyUrl}
+      appearance={clerkAppearance}
+      signInUrl={`${basePath}/sign-in`}
+      signUpUrl={`${basePath}/sign-up`}
+      afterSignInUrl={`${basePath}/`}
+      afterSignUpUrl={`${basePath}/`}
+      localization={{
+        signIn: {
+          start: {
+            title: "Agentforce Workshop",
+            subtitle: "Sign in to access the executive discussion",
+          },
+        },
+        signUp: {
+          start: {
+            title: "Request Access",
+            subtitle: "Create an account to join the workshop",
+          },
+        },
+      }}
+      routerPush={(to) => setLocation(stripBase(to))}
+      routerReplace={(to) => setLocation(stripBase(to), { replace: true })}
+    >
+      <Switch>
+        <Route path="/" component={HomeRoute} />
+        <Route path="/sign-in/*?" component={SignInPage} />
+        <Route path="/sign-up/*?" component={SignUpPage} />
+        <Route>
+          <AuthGate />
+        </Route>
+      </Switch>
+    </ClerkProvider>
   );
 }
 
@@ -841,7 +698,6 @@ export default function App() {
       <WouterRouter base={basePath}>
         <ClerkProviderWithRoutes />
       </WouterRouter>
-      <AuthDebugOverlay />
     </ErrorBoundary>
   );
 }

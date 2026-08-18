@@ -1,5 +1,5 @@
 {
-  "name": "@workspace/agentforce-workshop",
+  "name": "agentforce-workshop",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -12,12 +12,10 @@
   "dependencies": {
     "@clerk/react": "^6.14.1",
     "@clerk/themes": "^2.4.57",
+    "@vitejs/plugin-react": "^5.0.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "wouter": "catalog:"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "catalog:",
-    "vite": "catalog:"
+    "vite": "^7.3.2",
+    "wouter": "^3.10.0"
   }
 }

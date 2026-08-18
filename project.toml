@@ -1,0 +1,12 @@
+[_]
+schema-version = "0.2"
+
+[[io.buildpacks.group]]
+uri = "heroku/nodejs"
+
+[[io.buildpacks.group]]
+uri = "heroku/procfile"
+
+[[io.buildpacks.build.env]]
+name = "VITE_CLERK_PUBLISHABLE_KEY"
+value = "pk_test_ZGVjaWRpbmctZHJha2UtNzU5OC5jbGVyay5hY2NvdW50cy5kZXYk"

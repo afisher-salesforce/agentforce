@@ -1,1 +1,0 @@
-- [Clerk + Vite duplicate React fix](clerk-vite-react-dedup.md) — React #185 in production caused by two @clerk/shared versions; fix is resolve.alias + dedupe in vite.config.js
