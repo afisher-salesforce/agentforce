@@ -76,4 +76,21 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
+  console.log(`__dirname: ${__dirname}`);
+  console.log(`STATIC_DIR: ${STATIC_DIR}`);
+  console.log(`STATIC_DIR exists: ${fs.existsSync(STATIC_DIR)}`);
+  if (fs.existsSync(STATIC_DIR)) {
+    console.log(`Files in STATIC_DIR: ${fs.readdirSync(STATIC_DIR).join(", ")}`);
+  } else {
+    // Walk up to find where dist might be
+    const artDir = path.join(__dirname, "artifacts", "agentforce-workshop");
+    console.log(`artifacts/agentforce-workshop exists: ${fs.existsSync(artDir)}`);
+    if (fs.existsSync(artDir)) {
+      console.log(`Contents: ${fs.readdirSync(artDir).join(", ")}`);
+      const distDir = path.join(artDir, "dist");
+      if (fs.existsSync(distDir)) {
+        console.log(`dist contents: ${fs.readdirSync(distDir).join(", ")}`);
+      }
+    }
+  }
 });
