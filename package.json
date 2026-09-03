@@ -7,11 +7,8 @@
     "node": ">=20"
   },
   "scripts": {
-    "build": "cd artifacts/agentforce-workshop && npm install && npm run build",
-    "heroku-postbuild": "npm run build",
+    "heroku-postbuild": "cd artifacts/agentforce-workshop && npm install && npx vite build --outDir ../../dist/public && echo 'Build complete' && ls -la ../../dist/public/",
     "start": "node server.js"
   },
-  "dependencies": {
-    "express": "^4.21.0"
-  }
+  "dependencies": {}
 }
