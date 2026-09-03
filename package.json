@@ -9,7 +9,7 @@
   "scripts": {
     "build": "cd artifacts/agentforce-workshop && npm install && npm run build",
     "heroku-postbuild": "npm run build",
-    "start": "node artifacts/agentforce-workshop/server.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.21.0"

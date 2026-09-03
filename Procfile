@@ -1,1 +1,1 @@
-web: node artifacts/agentforce-workshop/server.js
+web: node server.js
