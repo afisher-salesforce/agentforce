@@ -7,7 +7,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "heroku-postbuild": "rm -rf dist/public/assets/*.js && cd artifacts/agentforce-workshop && npm install && VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY npx vite build --outDir ../../dist/public && echo 'Build complete' && ls -la ../../dist/public/assets/",
+    "heroku-postbuild": "rm -rf dist/public/assets/*.js && cd artifacts/agentforce-workshop && npm install && VITE_CLERK_PUBLISHABLE_KEY=pk_test_ZGVjaWRpbmctZHJha2UtNzU5OC5jbGVyay5hY2NvdW50cy5kZXYk npx vite build --outDir ../../dist/public && echo 'Build complete with Clerk key' && ls -la ../../dist/public/assets/",
     "start": "node server.js"
   },
   "dependencies": {}

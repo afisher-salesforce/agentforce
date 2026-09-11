@@ -99,6 +99,14 @@ server.listen(PORT, () => {
   console.log(`STATIC_DIR exists: ${fs.existsSync(STATIC_DIR)}`);
   if (fs.existsSync(STATIC_DIR)) {
     console.log(`Files: ${fs.readdirSync(STATIC_DIR).join(", ")}`);
+    const assetsDir = path.join(STATIC_DIR, "assets");
+    if (fs.existsSync(assetsDir)) {
+      console.log(`Assets: ${fs.readdirSync(assetsDir).join(", ")}`);
+    }
+    // Log the index.html content to verify which JS bundle it references
+    const idx = fs.readFileSync(path.join(STATIC_DIR, "index.html"), "utf-8");
+    const jsMatch = idx.match(/src="([^"]*\.js)"/);
+    console.log(`index.html references JS: ${jsMatch ? jsMatch[1] : "NONE"}`);
   } else {
     // Debug: check what's at the root
     const distDir = path.join(__dirname, "dist");
