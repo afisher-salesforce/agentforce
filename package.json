@@ -7,7 +7,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "heroku-postbuild": "echo 'Pre-built dist/public is committed to repo — no build step needed' && ls -la dist/public/",
+    "heroku-postbuild": "echo 'Using pre-built dist/public from repo' && ls -la dist/public/ && ls -la dist/public/assets/",
     "start": "node server.js"
   },
   "dependencies": {}

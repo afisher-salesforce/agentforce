@@ -56,9 +56,23 @@ const server = http.createServer((req, res) => {
   // Try to serve the static file
   fs.stat(filePath, (err, stats) => {
     if (!err && stats.isFile()) {
-      res.writeHead(200, { "Content-Type": getMime(filePath) });
+      const headers = { "Content-Type": getMime(filePath) };
+      // No-cache for index.html so browsers always get fresh asset references
+      if (path.basename(filePath) === "index.html") {
+        headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+        headers["Pragma"] = "no-cache";
+        headers["Expires"] = "0";
+      }
+      res.writeHead(200, headers);
       fs.createReadStream(filePath).pipe(res);
     } else {
+      // If the request has a file extension (e.g. .js, .css), return 404 instead of SPA fallback
+      const ext = path.extname(urlPath);
+      if (ext && ext !== ".html") {
+        res.writeHead(404);
+        res.end("Not Found");
+        return;
+      }
       // SPA fallback — serve index.html for all non-file routes
       const indexPath = path.join(STATIC_DIR, "index.html");
       fs.stat(indexPath, (err2) => {
@@ -66,7 +80,12 @@ const server = http.createServer((req, res) => {
           res.writeHead(404);
           res.end("Not Found");
         } else {
-          res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+          res.writeHead(200, {
+            "Content-Type": "text/html; charset=utf-8",
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0",
+          });
           fs.createReadStream(indexPath).pipe(res);
         }
       });
