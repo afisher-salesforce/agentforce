@@ -7,7 +7,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "heroku-postbuild": "cd artifacts/agentforce-workshop && npm install && npx vite build --outDir ../../dist/public && echo 'Build complete' && ls -la ../../dist/public/",
+    "heroku-postbuild": "echo 'Pre-built dist/public is committed to repo — no build step needed' && ls -la dist/public/",
     "start": "node server.js"
   },
   "dependencies": {}

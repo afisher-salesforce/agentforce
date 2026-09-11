@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentforce Workshop &mdash; Siemens DISW IT Leadership Executive Discussion</title>
+<style>
+  :root {
+    --bg: #07111a;
+    --panel: #0f1d2b;
+    --text: #eaf3fb;
+    --muted: #a2b8cf;
+    --accent: #15b7b9;
+    --border: #22384a;
+    --radius: 14px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    background: radial-gradient(circle at top right, #14324a 0%, #050b11 52%);
+    line-height: 1.6;
+  }
+
+  a { color: #9ff3f3; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 28px 60px;
+  }
+
+  /* ── Header ─────────────────────────────────────────────────── */
+  .doc-header {
+    text-align: center;
+    padding: 48px 0 36px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 40px;
+  }
+  .doc-header h1 {
+    margin: 0 0 8px;
+    font-size: 2.25rem;
+    font-weight: 700;
+  }
+  .doc-header .subtitle {
+    color: var(--accent);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  .doc-header .desc {
+    color: var(--muted);
+    font-size: 0.9375rem;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* ── Section divider ────────────────────────────────────────── */
+  .page-section {
+    margin-bottom: 48px;
+    padding-top: 32px;
+    border-top: 2px solid var(--border);
+  }
+  .page-section:first-of-type {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .pill {
+    display: inline-block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    border: 1px solid rgba(21, 183, 185, 0.45);
+    border-radius: 999px;
+    padding: 5px 10px;
+    color: #9ff3f3;
+    background: rgba(21, 183, 185, 0.16);
+    margin-bottom: 8px;
+  }
+
+  .page-title {
+    margin: 8px 0 6px;
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .page-subhead {
+    margin: 0 0 20px;
+    color: #c8d8e8;
+    font-size: 0.95rem;
+    max-width: 900px;
+  }
+
+  /* ── Topic blocks ───────────────────────────────────────────── */
+  .topic {
+    background: linear-gradient(160deg, rgba(17, 33, 48, 0.95), rgba(11, 22, 33, 0.95));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 28px;
+    margin-bottom: 16px;
+  }
+  .topic h3 {
+    margin: 0 0 12px;
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  .topic-subhead {
+    margin: 0 0 14px;
+    color: #c8d8e8;
+    font-size: 0.92rem;
+  }
+
+  /* ── Card grid ──────────────────────────────────────────────── */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgba(18, 36, 53, 0.66);
+    padding: 16px;
+  }
+  .card h4 {
+    margin: 0 0 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .card p {
+    margin: 0;
+    color: #c2d5e9;
+    font-size: 0.9rem;
+  }
+
+  /* ── Resource cards ─────────────────────────────────────────── */
+  .resource-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .resource-meta {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .resource-link-wrap {
+    margin-top: auto;
+    font-size: 0.84rem;
+  }
+
+  /* ── Bullet lists ───────────────────────────────────────────── */
+  ul {
+    margin: 8px 0 0;
+    padding-left: 20px;
+  }
+  li {
+    margin-bottom: 6px;
+    color: #c2d4e6;
+    font-size: 0.92rem;
+  }
+
+  /* ── Legal ──────────────────────────────────────────────────── */
+  .legal {
+    color: #c6d7ea;
+    max-width: 900px;
+    line-height: 1.65;
+    font-size: 0.88rem;
+  }
+
+  /* ── Responsive ─────────────────────────────────────────────── */
+  @media (max-width: 800px) {
+    .grid-3 {
+      grid-template-columns: 1fr;
+    }
+    .wrapper {
+      padding: 24px 16px 40px;
+    }
+    .page-title {
+      font-size: 1.4rem;
+    }
+  }
+
+  /* ── Print ──────────────────────────────────────────────────── */
+  @media print {
+    body {
+      background: #fff;
+      color: #1a1a1a;
+    }
+    .wrapper {
+      max-width: 100%;
+      padding: 0;
+    }
+    .doc-header {
+      border-bottom-color: #ccc;
+    }
+    .doc-header h1 { color: #111; }
+    .doc-header .subtitle { color: #007a7a; }
+    .doc-header .desc { color: #555; }
+    .pill {
+      border-color: #007a7a;
+      color: #007a7a;
+      background: rgba(0, 122, 122, 0.08);
+    }
+    .page-title { color: #111; }
+    .page-subhead { color: #444; }
+    .page-section { border-top-color: #ccc; }
+    .topic {
+      background: #f8f8f8;
+      border-color: #ddd;
+    }
+    .topic h3 { color: #111; }
+    .card {
+      background: #f0f0f0;
+      border-color: #ddd;
+    }
+    .card h4 { color: #111; }
+    .card p, li, .legal { color: #333; }
+    a { color: #007a7a; }
+    .page-section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header class="doc-header">
+    <h1>Agentforce Workshop</h1>
+    <p class="subtitle">Siemens DISW IT Leadership Executive Discussion</p>
+    <p class="desc">An internal briefing resource covering Salesforce AI capabilities and the Agentforce platform for the Siemens DISW IT leadership team.</p>
+  </header>
+
+  <!-- ================================================================== -->
+  <!-- 1. Executive Summary                                                -->
+  <!-- ================================================================== -->
+  <section class="page-section">
+    <span class="pill">Executive Enablement</span>
+    <h2 class="page-title">Agentic AI for Siemens DISW: From Strategy to Scaled Execution</h2>
+    <p class="page-subhead">Expose IT leadership to Salesforce AI capabilities beyond CPQ+, including Vibe Coding, Agentforce, Data 360, Agent Fabric, Headless 360, and Observability.</p>
+
+    <div class="topic">
+      <h3>Context</h3>
+      <div class="grid-3">
+        <article class="card"><h4>The GenAI Divide</h4><p>Despite $30-40B in enterprise GenAI spend, 95% of organizations report no measurable return; only 5% of pilots produce enterprise value.</p></article>
+        <article class="card"><h4>Root Cause</h4><p>Outcome gaps are primarily tied to workflow-fit, adaptation-loop maturity, and operational integration rather than model quality.</p></article>
+        <article class="card"><h4>What Winners Do</h4><p>Winners prioritize process-specific customization, outcome-based scoring, and partner-led execution models for speed and repeatability.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>Session Outcome</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Executive Enablement</h4><p>Align on immediate next steps for enablement, execution, and a Center of Excellence to improve Siemens SELA consumption and business impact.</p></article>
+      </div>
+      <ul>
+        <li>IT leadership understands Salesforce AI capability depth and governance implications.</li>
+        <li>Leaders identify where Vibe Coding and Agentforce accelerate current initiatives.</li>
+        <li>DISW selects candidate workflows for rapid whiteboarding and pilot design.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Current State, Friction Points, and Constraints</h3>
+      <ul>
+        <li>Current operating model is evolving to support Salesforce AI delivery at enterprise speed and scale.</li>
+        <li>Multiple orgs and fragmented data increase governance and integration complexity.</li>
+        <li>A shared governance baseline is still being established across AI agents being built in parallel.</li>
+        <li>Competing platform narratives and buy-vs-build priorities shape stakeholder expectations.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- 2. Crossing the GenAI Divide                                        -->
+  <!-- ================================================================== -->
+  <section class="page-section">
+    <span class="pill">Strategic Signal</span>
+    <h2 class="page-title">Crossing the GenAI Divide</h2>
+    <p class="page-subhead">Move from pilot-heavy experimentation to measurable enterprise value through workflow-specific design and learning-system architecture.</p>
+
+    <div class="topic">
+      <h3>Executive Snapshot</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Market Reality</h4><p>Despite significant enterprise investment, most integrated GenAI pilots still show no measurable financial return.</p></article>
+        <article class="card"><h4>The Divide</h4><p>A small group is extracting million-dollar outcomes, while most organizations remain pilot-heavy and production-light.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>What the Data Indicates</h3>
+      <div class="grid-3">
+        <article class="card"><h4>95%</h4><p>of organizations report no measurable P&amp;L impact from integrated GenAI pilots.</p></article>
+        <article class="card"><h4>5%</h4><p>are generating multi-million-dollar value from targeted implementations.</p></article>
+        <article class="card"><h4>80%+ Explored</h4><p>general productivity tools, yet many outcomes remain individual-efficiency oriented instead of enterprise-financial.</p></article>
+        <article class="card"><h4>60% to 5% Funnel</h4><p>Many enterprise-system evaluations do not reach production due to workflow-fit and operationalization gaps.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>Four Patterns Behind the Divide</h3>
+      <ul>
+        <li>Limited disruption: structural transformation is concentrated in only a few sectors.</li>
+        <li>Enterprise paradox: large firms often lead in pilots but can take longer to standardize repeatable scale-up.</li>
+        <li>Investment bias: spending favors visible top-line use cases over high-ROI back-office processes.</li>
+        <li>Implementation advantage: blended delivery models (internal teams plus focused partners) often improve speed-to-value and repeatability.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Root Cause</h3>
+      <ul>
+        <li>The principal scaling barrier is learning behavior, not model sophistication.</li>
+        <li>Systems that do not retain feedback, adapt to context, and improve over time struggle to create durable business outcomes.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>DISW Implications</h3>
+      <ul>
+        <li>Prioritize process-specific use cases with baseline metrics, measurable outcomes, and governance owners.</li>
+        <li>Use architecture that integrates with existing workflows and operational systems instead of isolated assistants.</li>
+        <li>Evaluate success using retention, conversion, cycle-time, and cost-to-serve outcomes rather than software benchmarks.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Action Principles for Crossing the Divide</h3>
+      <ul>
+        <li>Target workflows with operational pain and direct business accountability.</li>
+        <li>Pair enablement with observability to create measurable learning loops from day one.</li>
+        <li>Scale through COE-led standards for architecture, testing, and policy guardrails.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- 3. Embedded AI                                                      -->
+  <!-- ================================================================== -->
+  <section class="page-section">
+    <span class="pill">Salesforce AI Capability</span>
+    <h2 class="page-title">Embedded AI</h2>
+    <p class="page-subhead">Improve decision velocity inside existing Salesforce workflows without forcing users into separate tools.</p>
+
+    <div class="topic">
+      <h3>Executive Discussion Focus</h3>
+      <ul>
+        <li>Reduce repetitive work across support and operations with guided copilots.</li>
+        <li>Standardize recommendations while preserving human decision authority for sensitive actions.</li>
+        <li>Build confidence through prompt governance and repeatable release controls.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Potential DISW Fit</h3>
+      <ul>
+        <li>Support case triage and summary generation.</li>
+        <li>Internal preparation and handoff copilots for service and revenue teams.</li>
+        <li>Knowledge-assisted decision support for application support and IT strategy reviews.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Executive Value</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Faster Cycle Times</h4><p>Reduce repetitive effort in support and development workflows.</p></article>
+        <article class="card"><h4>Higher Consistency</h4><p>Standardized prompts and guidance improve output quality across teams.</p></article>
+        <article class="card"><h4>Governable Rollout</h4><p>Start small with trusted use cases and expand through policy guardrails.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>Capability Framework</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Target Personas</h4><p>Application Support leads, Salesforce Admins, Service Operations managers, and Delivery Managers responsible for quality and throughput.</p></article>
+        <article class="card"><h4>Potential Sales Use Cases</h4><p>Seller preparation copilots, account-summary generation, and guided next-best-action prompts for opportunity and renewal planning.</p></article>
+        <article class="card"><h4>Potential Service Use Cases</h4><p>Case triage guidance, resolution drafting, knowledge recommendations, and handoff summaries across support tiers.</p></article>
+        <article class="card"><h4>Business Value</h4><p>Faster cycle times, higher response consistency, and improved workforce productivity with policy-aligned AI assistance.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>IT Leadership Discussion Questions</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Workflow Priority</h4><p>Which support or development workflows have the highest friction and are best candidates for embedded copilots first?</p></article>
+        <article class="card"><h4>Guardrails</h4><p>Which control points (prompt policies, approvals, and data boundaries) are mandatory before broader rollout?</p></article>
+        <article class="card"><h4>Human Oversight</h4><p>Where should human-in-the-loop checkpoints remain non-negotiable for risk, compliance, or customer-impacting actions?</p></article>
+        <article class="card"><h4>Success Metrics</h4><p>What 60-day KPI baseline should define success (cycle time, containment, quality, and escalation trends)?</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>Trailhead Resources (Public)</h3>
+      <p class="topic-subhead">Curated public learning paths to help teams operationalize embedded AI capabilities inside existing Salesforce workflows.</p>
+      <div class="grid-3">
+        <article class="card resource-card">
+          <h4>Get Started with Prompts and Prompt Builder</h4>
+          <p>Build practical prompt design foundations for governed business usage.</p>
+          <p class="resource-meta">Trail &middot; 80 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/get-started-with-prompts-and-prompt-studio" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Take a Tour of the New Agentforce Builder</h4>
+          <p>Explore modern builder capabilities for rapid AI experience design.</p>
+          <p class="resource-meta">Trail &middot; 50 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/get-ready-for-the-new-agentforce-builder" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Get Smart with Salesforce Einstein</h4>
+          <p>Executive-friendly overview of AI patterns and CRM impact opportunities.</p>
+          <p class="resource-meta">Trail &middot; 75 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/get_smart_einstein" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Agentforce Vibes IDE Fundamentals</h4>
+          <p>Understand pro-code acceleration fundamentals for builder productivity.</p>
+          <p class="resource-meta">Module &middot; 25 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/modules/agentforce-vibes-ide-fundamentals" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- 4. Agentforce                                                       -->
+  <!-- ================================================================== -->
+  <section class="page-section">
+    <span class="pill">Salesforce AI Capability</span>
+    <h2 class="page-title">Agentforce</h2>
+    <p class="page-subhead">Deploy enterprise-grade agents with governed actions, trusted grounding, and measurable operational outcomes.</p>
+
+    <div class="topic">
+      <h3>Executive Discussion Focus</h3>
+      <ul>
+        <li>Show concept-to-deployment flow: Vibe Coding to Agentforce runtime with trust controls.</li>
+        <li>Reframe development value toward architecture and orchestration, not manual boilerplate.</li>
+        <li>Prioritize use cases needing reasoning across multiple systems and ambiguous inputs.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Potential DISW Fit</h3>
+      <ul>
+        <li>Internal quoting and renewals workflows where Agentforce for Revenue Management can modernize CPQ+ adjacent execution.</li>
+        <li>Cross-functional agent use cases that require governed actions across support, development, and IT strategy teams.</li>
+        <li>Pilot motions where shared trust controls and reusable action patterns can accelerate SELA capability consumption.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Executive Value</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Actionable Agents</h4><p>Move from passive assistants to task-completing agents with business controls.</p></article>
+        <article class="card"><h4>Bridge from CPQ+</h4><p>Create an actionable path from managed-package constraints to modern quoting workflows.</p></article>
+        <article class="card"><h4>Faster Time-to-Value</h4><p>Combine pro-code acceleration and reusable delivery patterns.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>Capability Framework</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Target Personas</h4><p>Enterprise Architects, Salesforce Developers, Revenue Operations leaders, and IT Governance owners.</p></article>
+        <article class="card"><h4>Potential Sales Use Cases</h4><p>Guided quoting and renewal orchestration, seller copilot flows, and account-priority recommendations with governed actions.</p></article>
+        <article class="card"><h4>Potential Service Use Cases</h4><p>Agent-assisted escalation handling, multi-system action orchestration, and policy-aware task execution in support operations.</p></article>
+        <article class="card"><h4>Business Value</h4><p>Higher execution speed from idea to production, stronger governance confidence, and improved SELA capability consumption.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>IT Leadership Discussion Questions</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Use-Case Selection</h4><p>Which 2-3 agent candidates have clear owners, measurable outcomes, and realistic implementation windows?</p></article>
+        <article class="card"><h4>Trust Model</h4><p>What trust, approval, and audit model is required for agent actions across orgs and systems?</p></article>
+        <article class="card"><h4>Investment Alignment</h4><p>Where does Agentforce complement existing CPQ+ and platform investments versus replacing steps?</p></article>
+        <article class="card"><h4>Production Readiness</h4><p>What minimum readiness checklist should be required before any agent moves into production?</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>Trailhead Resources (Public)</h3>
+      <p class="topic-subhead">Curated enablement links grounded in current Trailhead search results to accelerate Agentforce readiness for DISW IT builders and architects.</p>
+      <div class="grid-3">
+        <article class="card resource-card">
+          <h4>Build Agentforce Solutions with Pro-Code Tools</h4>
+          <p>Comprehensive path for developing, testing, and deploying production Agentforce solutions.</p>
+          <p class="resource-meta">Trail &middot; 1130 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/build-agentforce-solutions-with-pro-code-tools" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Agent Customization with Apex</h4>
+          <p>Practical module on creating custom agent actions and extending behavior with Apex.</p>
+          <p class="resource-meta">Module &middot; 30 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/modules/agent-customization-with-apex" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Build an Agent Using Agentforce DX</h4>
+          <p>Hands-on project for creating and deploying a custom AI agent with pro-code tools.</p>
+          <p class="resource-meta">Project &middot; 35 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/projects/create-an-agent-using-pro-code-tools" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Apex Testing</h4>
+          <p>Core unit testing practices to improve reliability, deployment quality, and production confidence.</p>
+          <p class="resource-meta">Module &middot; 135 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/modules/apex_testing" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- 5. Data 360                                                         -->
+  <!-- ================================================================== -->
+  <section class="page-section">
+    <span class="pill">Salesforce AI Capability</span>
+    <h2 class="page-title">Data 360</h2>
+    <p class="page-subhead">Unify the context agents need to act with confidence across Salesforce, SAP, and adjacent systems.</p>
+
+    <div class="topic">
+      <h3>Executive Discussion Focus</h3>
+      <ul>
+        <li>Improve answer quality and escalation decisions with cross-system context.</li>
+        <li>Use zero-copy patterns to reduce data duplication and integration debt.</li>
+        <li>Support support-portal and renewal scenarios with a shared intelligence layer.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Potential DISW Fit</h3>
+      <ul>
+        <li>Customer and operations context unification for support, retention, and renewal scenarios across multiple orgs.</li>
+        <li>Data grounding patterns that improve agent reliability while reducing duplicative integration and data-prep effort.</li>
+        <li>Cross-cloud activation use cases where shared insights improve decision quality and measurable cycle-time outcomes.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Executive Value</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Unified Customer Context</h4><p>Connect fragmented records into a trusted profile for decisioning.</p></article>
+        <article class="card"><h4>Grounded Responses</h4><p>Improve response quality with context-aware retrieval and activation.</p></article>
+        <article class="card"><h4>Cross-Cloud Activation</h4><p>Operationalize insights across support, sales, and digital channels.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>Capability Framework</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Target Personas</h4><p>Data Architects, Integration Architects, Service Leaders, and Revenue Operations stakeholders.</p></article>
+        <article class="card"><h4>Potential Sales Use Cases</h4><p>Unified account context for expansion planning, renewal-risk detection, and guided account action recommendations.</p></article>
+        <article class="card"><h4>Potential Service Use Cases</h4><p>Grounded support responses, cross-system case context, and consistent decision support across service channels.</p></article>
+        <article class="card"><h4>Business Value</h4><p>Higher decision quality, lower duplicate integration effort, and faster activation of cross-cloud use cases.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>IT Leadership Discussion Questions</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Data Domains</h4><p>Which data domains are most critical to ground first-wave agent decisions?</p></article>
+        <article class="card"><h4>Architecture Choice</h4><p>Which zero-copy and sharing patterns best balance speed, governance, and long-term maintainability?</p></article>
+        <article class="card"><h4>Controls</h4><p>What identity, access, and consent controls are required for cross-cloud activation?</p></article>
+        <article class="card"><h4>Readiness Thresholds</h4><p>What data-quality thresholds must be met before scaling use cases across multiple orgs?</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>Trailhead Resources (Public)</h3>
+      <p class="topic-subhead">Curated public learning paths to support Data 360 adoption, governance, and cross-cloud context strategy.</p>
+      <div class="grid-3">
+        <article class="card resource-card">
+          <h4>Unlock Your Data with Data 360</h4>
+          <p>Comprehensive path for Data 360 foundations, unification, and activation.</p>
+          <p class="resource-meta">Trail &middot; 606 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/unlock-your-data-with-data-cloud" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Model Data in Data 360</h4>
+          <p>Practical modeling and mapping guidance for scalable context architecture.</p>
+          <p class="resource-meta">Trail &middot; 50 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/model-data-in-customer-data-platform" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Administer Data 360</h4>
+          <p>Admin-focused controls for data operations, quality, and platform readiness.</p>
+          <p class="resource-meta">Trail &middot; 110 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/administer-customer-data-platform" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Use Data Insights Across Salesforce</h4>
+          <p>Expand cloud use cases by activating shared customer insight across teams.</p>
+          <p class="resource-meta">Trail &middot; 50 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/use-data-insights-across-cloud" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- 6. Headless 360                                                     -->
+  <!-- ================================================================== -->
+  <section class="page-section">
+    <span class="pill">Salesforce AI Capability</span>
+    <h2 class="page-title">Headless 360</h2>
+    <p class="page-subhead">Deliver Salesforce-powered intelligence across external touchpoints without duplicating business logic.</p>
+
+    <div class="topic">
+      <h3>Executive Discussion Focus</h3>
+      <ul>
+        <li>Enable external support portal experiences with Agentforce and MCP context access.</li>
+        <li>Support Microsoft Teams-facing coworker patterns while preserving centralized trust controls.</li>
+        <li>Use Agent Fabric with MuleSoft as the integration nervous system for secure action orchestration.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Potential DISW Fit</h3>
+      <ul>
+        <li>External portal and Teams-adjacent experiences that require consistent Salesforce-powered intelligence across channels.</li>
+        <li>Integration-led delivery patterns where Agent Fabric and MuleSoft orchestrate trusted actions across enterprise systems.</li>
+        <li>Use cases that benefit from channel flexibility without duplicating backend logic or governance controls.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Executive Value</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Channel Flexibility</h4><p>Expose consistent intelligence in portals and custom experiences.</p></article>
+        <article class="card"><h4>Governed Integration</h4><p>Use API and MCP patterns to keep execution controlled and auditable.</p></article>
+        <article class="card"><h4>Lower Rebuild Cost</h4><p>Reuse enterprise capabilities instead of rebuilding logic per channel.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>Capability Framework</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Target Personas</h4><p>Digital Experience leaders, Integration Architects, Support Channel owners, and Security/Governance teams.</p></article>
+        <article class="card"><h4>Potential Sales Use Cases</h4><p>Account and renewal intelligence surfaced in external channels and collaboration tools with governed backend actions.</p></article>
+        <article class="card"><h4>Potential Service Use Cases</h4><p>Portal-based support assistants, omnichannel case guidance, and trusted cross-system action orchestration.</p></article>
+        <article class="card"><h4>Business Value</h4><p>Consistent customer and employee experiences across channels without duplicative backend logic or policy drift.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>IT Leadership Discussion Questions</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Channel Priority</h4><p>Which external and internal channels should be prioritized for governed AI experiences first?</p></article>
+        <article class="card"><h4>Reuse Strategy</h4><p>How will we prevent duplicated business logic as new channels are added?</p></article>
+        <article class="card"><h4>Integration Standard</h4><p>Which API, event, and orchestration patterns should be standardized for secure scale?</p></article>
+        <article class="card"><h4>Control Points</h4><p>What enterprise control points are required for external action execution and auditability?</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>Trailhead Resources (Public)</h3>
+      <p class="topic-subhead">Curated public learning paths to support integration architecture, API strategy, and agentic orchestration outside the core UI shell.</p>
+      <div class="grid-3">
+        <article class="card resource-card">
+          <h4>Build Great APIs and Integrations with MuleSoft</h4>
+          <p>Core foundations for connected architecture and API-led delivery design.</p>
+          <p class="resource-meta">Trail &middot; 60 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/great-integrations-mulesoft" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Explore Integration Patterns and Practices</h4>
+          <p>Pattern-based guidance for scalable and resilient enterprise integration.</p>
+          <p class="resource-meta">Trail &middot; 130 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/explore-integration-patterns-and-practices" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Design Event-Driven Apps for Real-Time Integration</h4>
+          <p>Apply event-driven design for real-time orchestration across systems.</p>
+          <p class="resource-meta">Trail &middot; 470 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/design-eventdriven-apps-for-realtime-integration" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Agentic Integration with MuleSoft Vibes</h4>
+          <p>Quick-start module for applying agentic AI concepts in integration workflows.</p>
+          <p class="resource-meta">Module &middot; 10 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/modules/agentic-integration-with-mulesoft-vibes" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- 7. Observability                                                    -->
+  <!-- ================================================================== -->
+  <section class="page-section">
+    <span class="pill">Salesforce AI Capability</span>
+    <h2 class="page-title">Observability</h2>
+    <p class="page-subhead">Create learning loops that convert pilot activity into reliable, scalable business outcomes.</p>
+
+    <div class="topic">
+      <h3>Executive Discussion Focus</h3>
+      <ul>
+        <li>Track containment, quality, escalation, and cycle-time trends in business and IT terms.</li>
+        <li>Operationalize build, test, deploy, observe, and optimize as a repeatable lifecycle.</li>
+        <li>Use evidence-based telemetry to improve confidence and budget support over time.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Learning Loop Imperative</h3>
+      <ul>
+        <li>Observability is the mechanism that converts pilot activity into learning-capable systems with sustained business value.</li>
+        <li>Feedback capture and score-driven iteration should be treated as required architecture, not post-launch optimization.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Potential DISW Fit</h3>
+      <ul>
+        <li>Cross-org observability baselines for agent quality, containment, and escalation trends across Siemens environments.</li>
+        <li>Leadership reporting needs where measurable AI outcomes must be tied to operational KPIs and governance standards.</li>
+        <li>Continuous-improvement motions where telemetry informs iteration priorities for support, development, and strategy teams.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Executive Value</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Quality Visibility</h4><p>Track agent outcomes, escalations, and reliability in one operating view.</p></article>
+        <article class="card"><h4>Operational Learning</h4><p>Use feedback loops to continuously improve decision quality.</p></article>
+        <article class="card"><h4>Governance Confidence</h4><p>Prove performance and policy adherence with measurable telemetry.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>Capability Framework</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Target Personas</h4><p>IT Strategy leaders, Service Operations leaders, Platform Owners, and AI Governance/Compliance teams.</p></article>
+        <article class="card"><h4>Potential Sales Use Cases</h4><p>Renewal and opportunity assistance quality tracking, recommendation effectiveness, and escalation pattern monitoring.</p></article>
+        <article class="card"><h4>Potential Service Use Cases</h4><p>Containment, handoff, and resolution-quality monitoring with feedback loops to improve support outcomes.</p></article>
+        <article class="card"><h4>Business Value</h4><p>Evidence-based scaling decisions, stronger governance confidence, and continuous quality improvement across agent programs.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>IT Leadership Discussion Questions</h3>
+      <div class="grid-3">
+        <article class="card"><h4>KPI Set</h4><p>What 5 leadership metrics should define agent health and business value at scale?</p></article>
+        <article class="card"><h4>Operating Cadence</h4><p>What review cadence should govern prompt, process, and policy updates based on telemetry?</p></article>
+        <article class="card"><h4>Escalation Taxonomy</h4><p>How should escalation categories and thresholds be standardized across orgs?</p></article>
+        <article class="card"><h4>Scale Criteria</h4><p>What evidence is required to move from pilot confidence to broad production rollout?</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>Trailhead Resources (Public)</h3>
+      <p class="topic-subhead">Curated public learning paths for monitoring, quality control, and production governance across agentic implementations.</p>
+      <div class="grid-3">
+        <article class="card resource-card">
+          <h4>Agent Analytics and Monitoring</h4>
+          <p>Monitor agent performance and apply data-driven improvements to outcomes.</p>
+          <p class="resource-meta">Module &middot; 30 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/modules/agent-analytics-and-monitoring" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Event Monitoring Basics</h4>
+          <p>Use low-code Event Monitoring capabilities for security and operational visibility.</p>
+          <p class="resource-meta">Module &middot; 40 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/modules/event-monitoring-basics" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Event Monitoring Analytics App</h4>
+          <p>Visualize event log data to track risk, usage, and performance signals.</p>
+          <p class="resource-meta">Module &middot; 45 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/modules/event_monitoring_analytics" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Apex Testing</h4>
+          <p>Strengthen delivery confidence with robust unit testing and quality checks.</p>
+          <p class="resource-meta">Module &middot; 135 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/modules/apex_testing" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- 8. Capability Map and Sequencing                                    -->
+  <!-- ================================================================== -->
+  <section class="page-section">
+    <span class="pill">Architecture</span>
+    <h2 class="page-title">Capability Map and Sequencing</h2>
+    <p class="page-subhead">Sequence capabilities by value speed, dependency logic, and organizational readiness.</p>
+
+    <div class="topic">
+      <h3>Phased Delivery View</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Phase 1</h4><p>Embedded AI + enablement baseline for immediate productivity wins.</p></article>
+        <article class="card"><h4>Phase 2</h4><p>Core agent workflows with grounded data and baseline observability.</p></article>
+        <article class="card"><h4>Phase 3</h4><p>Strategic differentiation through advanced orchestration and COE scale standards.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>Trailhead Learning Path by Delivery Phase (Public)</h3>
+      <p class="topic-subhead">Use these curated resources to align enablement sequencing with the same phased delivery model used in the capability roadmap.</p>
+      <div class="grid-3">
+        <article class="card resource-card">
+          <h4>Phase 1 &middot; Agentforce Vibes IDE Fundamentals</h4>
+          <p>Rapid builder enablement for pro-code collaboration and AI-assisted development patterns.</p>
+          <p class="resource-meta">Module &middot; 25 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/modules/agentforce-vibes-ide-fundamentals" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Phase 1 &middot; Get Started with Prompts and Prompt Builder</h4>
+          <p>Establish prompt-design fundamentals required for trusted, repeatable embedded AI usage.</p>
+          <p class="resource-meta">Trail &middot; 80 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/get-started-with-prompts-and-prompt-studio" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Phase 2 &middot; Build Agentforce Solutions with Pro-Code Tools</h4>
+          <p>Deep execution path for building, testing, and deploying production-ready Agentforce solutions.</p>
+          <p class="resource-meta">Trail &middot; 1130 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/build-agentforce-solutions-with-pro-code-tools" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Phase 2 &middot; Unlock Your Data with Data 360</h4>
+          <p>Build the unified Data 360 context needed for grounding, personalization, and cross-cloud decisions.</p>
+          <p class="resource-meta">Trail &middot; 606 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/unlock-your-data-with-data-cloud" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Phase 3 &middot; Explore Integration Patterns and Practices</h4>
+          <p>Scale architecture through integration patterns that reduce complexity and improve resilience.</p>
+          <p class="resource-meta">Trail &middot; 130 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/explore-integration-patterns-and-practices" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Phase 3 &middot; Agent Analytics and Monitoring</h4>
+          <p>Operationalize learning loops with agent monitoring and continuous outcome improvement.</p>
+          <p class="resource-meta">Module &middot; 30 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/modules/agent-analytics-and-monitoring" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- 9. Operating Model and Next Steps                                   -->
+  <!-- ================================================================== -->
+  <section class="page-section">
+    <span class="pill">Architecture</span>
+    <h2 class="page-title">Operating Model and Next Steps</h2>
+    <p class="page-subhead">Translate strategy into execution momentum through a practical COE-centered delivery model.</p>
+
+    <div class="topic">
+      <h3>Immediate Execution Priorities</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Pilot Portfolio</h4><p>Select 2-3 high-confidence workflows with clear owners and baselines.</p></article>
+        <article class="card"><h4>Enablement Motion</h4><p>Run instructor-led + Trailhead pathways across admin, dev, and architect roles.</p></article>
+        <article class="card"><h4>COE Governance</h4><p>Set architecture standards, observability KPIs, and release controls from day one.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>COE Enablement Plan by Phase (Public Trailhead)</h3>
+      <p class="topic-subhead">Sequence capability building across IT roles so the Center of Excellence can move from pilot support to enterprise-scale governance.</p>
+      <div class="grid-3">
+        <article class="card resource-card">
+          <h4>Phase 1 &middot; Build Your Administrator Career on Salesforce</h4>
+          <p>Establish admin-led platform fluency for secure configuration and operational ownership.</p>
+          <p class="resource-meta">Trail &middot; 910 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/build-your-admin-career-on-salesforce" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Phase 1 &middot; Get Started with Prompts and Prompt Builder</h4>
+          <p>Build shared prompt design and governance fundamentals across delivery teams.</p>
+          <p class="resource-meta">Trail &middot; 80 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/get-started-with-prompts-and-prompt-studio" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Phase 2 &middot; Build Agentforce Solutions with Pro-Code Tools</h4>
+          <p>Enable developers and architects to deliver production-grade agent workflows faster.</p>
+          <p class="resource-meta">Trail &middot; 1130 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/build-agentforce-solutions-with-pro-code-tools" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Phase 2 &middot; Unlock Your Data with Data 360</h4>
+          <p>Build shared Data 360 context capabilities required for grounded, cross-cloud agent outcomes.</p>
+          <p class="resource-meta">Trail &middot; 606 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/unlock-your-data-with-data-cloud" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Phase 3 &middot; Build Your Architect Career on Salesforce</h4>
+          <p>Scale architecture standards, reference patterns, and cross-org governance rigor.</p>
+          <p class="resource-meta">Trail &middot; 355 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/trails/salesforce-architect-careers" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+        <article class="card resource-card">
+          <h4>Phase 3 &middot; Agent Analytics and Monitoring</h4>
+          <p>Operationalize learning loops and quality controls for sustained business outcomes.</p>
+          <p class="resource-meta">Module &middot; 30 min</p>
+          <p class="resource-link-wrap"><a href="https://trailhead.salesforce.com/en/content/learn/modules/agent-analytics-and-monitoring" target="_blank" rel="noopener noreferrer">Open Trailhead resource</a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- 10. External Research                                               -->
+  <!-- ================================================================== -->
+  <section class="page-section">
+    <span class="pill">Appendix</span>
+    <h2 class="page-title">External Research</h2>
+    <p class="page-subhead">Public and account-level research indicates DISW is balancing SaaS transition, post-M&amp;A integration, and AI-led growth targets, creating strong demand for governed automation and unified data context.</p>
+
+    <div class="topic">
+      <h3>Siemens DISW Overview</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Scale and Scope</h4><p>DISW operates as a global software business with broad product breadth, complex enterprise operations, and a high expectation for execution consistency across regions.</p></article>
+        <article class="card"><h4>Transformation Moment</h4><p>The business is actively balancing SaaS transition, post-acquisition integration, and AI-led growth objectives alongside margin discipline.</p></article>
+        <article class="card"><h4>IT Imperative</h4><p>Corporate IT is expected to move from tool support toward platform governance, capability reuse, and measurable value realization.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>Business and Transformation Signals</h3>
+      <ul>
+        <li>DISW is transitioning from perpetual licensing toward SaaS/subscription, increasing retention and expansion sensitivity.</li>
+        <li>Continuing acquisitions increase urgency for customer data unification and process harmonization.</li>
+        <li>Digital business growth and AI investment are high while margin and complexity considerations remain.</li>
+        <li>Leadership expectations emphasize platform rationalization and accelerated time-to-value for enterprise initiatives.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Competitive and Platform Dynamics</h3>
+      <div class="grid-3">
+        <article class="card"><h4>Competing Stack Pressure</h4><p>DISW must balance Salesforce acceleration with SAP, Microsoft, and open-source initiatives already influencing stakeholder preferences.</p></article>
+        <article class="card"><h4>Buy-vs-Build Decision Lens</h4><p>Delivery capacity, partner economics, and speed-to-market priorities require pragmatic architecture decisions and reusable patterns.</p></article>
+        <article class="card"><h4>SELA Opportunity</h4><p>The existing enterprise commitment creates a strong path to scale if capability consumption and governance become execution standards.</p></article>
+      </div>
+    </div>
+
+    <div class="topic">
+      <h3>Implications for This Discussion</h3>
+      <ul>
+        <li>Anchor discussion in architecture and operating model decisions, not isolated feature demos.</li>
+        <li>Frame Salesforce AI as the path to execution speed within an already-approved global platform commitment.</li>
+        <li>Position measurable progress around use-case adoption and capability consumption rather than customer-specific metrics.</li>
+        <li>Use phased enablement and governance motions to convert interest into repeatable production outcomes.</li>
+      </ul>
+    </div>
+
+    <div class="topic">
+      <h3>Decision Prompts for IT Leadership</h3>
+      <ul>
+        <li>Which 2-3 workflows have the strongest blend of business urgency and operational feasibility for near-term pilots?</li>
+        <li>What governance controls are mandatory before scaling from pilot to broad rollout across multiple orgs?</li>
+        <li>Where should partner-led acceleration be used to close capability gaps without delaying execution?</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- 11. Forward Looking Statement                                       -->
+  <!-- ================================================================== -->
+  <section class="page-section">
+    <span class="pill">Appendix</span>
+    <h2 class="page-title">Forward Looking Statement</h2>
+
+    <div class="topic">
+      <h3>Legal Statement</h3>
+      <p class="legal">This presentation contains forward-looking statements about, among other things, trend analyses and statements regarding future events, anticipated growth and industry prospects, and our strategies, expectation or plans regarding product releases and enhancements. The achievement or success of the matters covered by such forward-looking statements involves risks, uncertainties and assumptions. If any such risks or uncertainties materialize or if any of the assumptions prove incorrect, results or outcomes could differ materially from those expressed or implied by these forward-looking statements. The risks and uncertainties referred to above include those factors discussed in Salesforce's reports filed from time to time with the Securities and Exchange Commission, including, but not limited to our ability to meet the expectations of our customers; uncertainties regarding Al technologies and their integration into our product offerings; the effect of evolving domestic and foreign government regulations; regulatory developments and regulatory investigations involving us or affecting our industry; our ability to successfully introduce new services and product features, including related to AI and Agentforce; our ability to execute our business plans; the pace of change and innovation and our ability to compete in the markets in which we participate; and our ability to maintain and enhance our brands.</p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
