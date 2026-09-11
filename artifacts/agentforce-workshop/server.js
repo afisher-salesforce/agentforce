@@ -1,27 +1,104 @@
-import express from "express";
-import { fileURLToPath } from "url";
-import path from "path";
+import http from "node:http";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const app = express();
 const PORT = process.env.PORT || 3000;
+const STATIC_DIR = path.join(__dirname, "dist", "public");
 
-// Redirect HTTP to HTTPS on Heroku
-app.use((req, res, next) => {
-  if (req.header('x-forwarded-proto') !== 'https') {
-    res.redirect(`https://${req.header('host')}${req.url}`);
-  } else {
-    next();
+const MIME_TYPES = {
+  ".html": "text/html; charset=utf-8",
+  ".js":   "application/javascript; charset=utf-8",
+  ".mjs":  "application/javascript; charset=utf-8",
+  ".css":  "text/css; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".png":  "image/png",
+  ".jpg":  "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".gif":  "image/gif",
+  ".svg":  "image/svg+xml",
+  ".webp": "image/webp",
+  ".ico":  "image/x-icon",
+  ".woff": "font/woff",
+  ".woff2":"font/woff2",
+  ".ttf":  "font/ttf",
+  ".otf":  "font/otf",
+  ".map":  "application/json",
+  ".txt":  "text/plain; charset=utf-8",
+  ".xml":  "application/xml; charset=utf-8",
+  ".webmanifest": "application/manifest+json",
+};
+
+function getMime(filePath) {
+  return MIME_TYPES[path.extname(filePath).toLowerCase()] || "application/octet-stream";
+}
+
+const server = http.createServer((req, res) => {
+  // Redirect HTTP to HTTPS on Heroku
+  if (req.headers["x-forwarded-proto"] && req.headers["x-forwarded-proto"] !== "https") {
+    res.writeHead(301, { Location: `https://${req.headers.host}${req.url}` });
+    res.end();
+    return;
   }
+
+  const urlPath = decodeURIComponent(req.url.split("?")[0]);
+  const filePath = path.join(STATIC_DIR, urlPath);
+
+  if (!filePath.startsWith(STATIC_DIR)) {
+    res.writeHead(403);
+    res.end("Forbidden");
+    return;
+  }
+
+  fs.stat(filePath, (err, stats) => {
+    if (!err && stats.isFile()) {
+      const headers = { "Content-Type": getMime(filePath) };
+      if (path.basename(filePath) === "index.html") {
+        headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+        headers["Pragma"] = "no-cache";
+        headers["Expires"] = "0";
+      }
+      res.writeHead(200, headers);
+      fs.createReadStream(filePath).pipe(res);
+    } else {
+      const ext = path.extname(urlPath);
+      if (ext && ext !== ".html") {
+        res.writeHead(404);
+        res.end("Not Found");
+        return;
+      }
+      const indexPath = path.join(STATIC_DIR, "index.html");
+      fs.stat(indexPath, (err2) => {
+        if (err2) {
+          res.writeHead(404);
+          res.end("Not Found");
+        } else {
+          res.writeHead(200, {
+            "Content-Type": "text/html; charset=utf-8",
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0",
+          });
+          fs.createReadStream(indexPath).pipe(res);
+        }
+      });
+    }
+  });
 });
 
-app.use(express.static(path.join(__dirname, "dist/public")));
-
-// SPA fallback — serve index.html for all non-file routes
-app.get("*", (_req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "public", "index.html"));
-});
-
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
+  console.log(`STATIC_DIR: ${STATIC_DIR}`);
+  console.log(`STATIC_DIR exists: ${fs.existsSync(STATIC_DIR)}`);
+  if (fs.existsSync(STATIC_DIR)) {
+    console.log(`Files: ${fs.readdirSync(STATIC_DIR).join(", ")}`);
+    const assetsDir = path.join(STATIC_DIR, "assets");
+    if (fs.existsSync(assetsDir)) {
+      console.log(`Assets: ${fs.readdirSync(assetsDir).join(", ")}`);
+    }
+    const idx = fs.readFileSync(path.join(STATIC_DIR, "index.html"), "utf-8");
+    const jsMatch = idx.match(/src="([^"]*\.js)"/);
+    console.log(`index.html references JS: ${jsMatch ? jsMatch[1] : "NONE"}`);
+  }
 });
